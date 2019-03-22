@@ -140,6 +140,27 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 			model.Add(item)
 		}
 	})
-
+	editDocBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("editDocBtn", core.Qt__FindChildrenRecursively).Pointer())
+	editDocBtn.ConnectClicked(func(bool) {
+		selected := findRow(resultTreeview, resultTreeview.CurrentIndex())
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle(fmt.Sprintf("Edit: %d", selected))
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		editLayout := NewEditLayout()
+		subwin.Layout().AddWidget(editLayout)
+		RegisterEditLayoutBtn(editLayout, subwin)
+		subwin.SetModal(true)
+		subwin.SetMinimumSize2(640, 480)
+		subwin.Exec()
+	})
 	return mainWidget
+}
+
+func findRow(treeView *widgets.QTreeView, current *core.QModelIndex) int {
+	// parent := current.Parent()
+	// if parent != current {
+	// 	return findRow(treeView, parent)
+	// }
+	return current.Row()
+
 }

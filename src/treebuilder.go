@@ -38,7 +38,7 @@ func traverse(current interface{}, parent interface{}, level int, parentItem *Tr
 		item = NewTreeItem(nil).initWith([]string{castToString(parent), fmt.Sprintf("[%d elements]", len(val)), "array"})
 		level++
 		for k, v := range val {
-			traverse(v, k, level, item)
+			traverse(v, fmt.Sprintf("[%d]", k), level, item)
 		}
 	case bson.M:
 		if level == 0 {

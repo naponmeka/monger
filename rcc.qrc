@@ -1,6 +1,8 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
 <file>qml/connect.ui</file>
+<file>qml/edit.ui</file>
+<file>qml/export.ui</file>
 <file>qml/main.ui</file>
 </qresource>
 </RCC>
