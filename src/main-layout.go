@@ -67,7 +67,6 @@ func registerTemplateBtn(widget *widgets.QWidget, queryPlainTextEdit *widgets.QP
 }
 
 func registerActionBtn(widget *widgets.QWidget, queryPlainTextEdit *widgets.QPlainTextEdit, currentCollection *string) {
-	// executeBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("executeBtn", core.Qt__FindChildrenRecursively).Pointer())
 	countBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("countBtn", core.Qt__FindChildrenRecursively).Pointer())
 	explainBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("explainBtn", core.Qt__FindChildrenRecursively).Pointer())
 
@@ -96,7 +95,10 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 	databaseComboBox := widgets.NewQFontComboBoxFromPointer(widget.FindChild("databaseComboBox", core.Qt__FindChildrenRecursively).Pointer())
 	collectionComboBox := widgets.NewQFontComboBoxFromPointer(widget.FindChild("collectionComboBox", core.Qt__FindChildrenRecursively).Pointer())
 	queryPlainTextEdit := widgets.NewQPlainTextEditFromPointer(widget.FindChild("queryPlainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
+	beginSpinBox := widgets.NewQSpinBoxFromPointer(widget.FindChild("beginSpinBox", core.Qt__FindChildrenRecursively).Pointer())
+	endSpinBox := widgets.NewQSpinBoxFromPointer(widget.FindChild("endSpinBox", core.Qt__FindChildrenRecursively).Pointer())
 
+	currentDB := ""
 	currentCollection := ""
 	registerTemplateBtn(widget, queryPlainTextEdit, &currentCollection)
 	registerActionBtn(widget, queryPlainTextEdit, &currentCollection)
@@ -104,11 +106,18 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 	collections := []string{}
 	databaseComboBox.AddItems(dbs)
 	databaseComboBox.ConnectCurrentIndexChanged(func(idx int) {
-		dbName := dbs[idx]
-		collections = connectdb.ListCollection(mongoURI, dbName)
+		currentDB = dbs[idx]
+		collections = connectdb.ListCollection(mongoURI, currentDB)
 		collectionComboBox.Clear()
 		collectionComboBox.AddItems(collections)
 	})
+	if len(dbs) > 0 {
+		currentDB = dbs[0]
+		collections = connectdb.ListCollection(mongoURI, currentDB)
+		currentCollection = collections[0]
+		collectionComboBox.Clear()
+		collectionComboBox.AddItems(collections)
+	}
 
 	collectionComboBox.ConnectCurrentIndexChanged(func(idx int) {
 		if idx >= 0 && idx < len(collections) {
@@ -120,5 +129,17 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 	resultTreeview := widgets.NewQTreeViewFromPointer(widget.FindChild("resultTreeView", core.Qt__FindChildrenRecursively).Pointer())
 	model := NewCustomTreeModel(nil)
 	resultTreeview.SetModel(model)
+	executeBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("executeBtn", core.Qt__FindChildrenRecursively).Pointer())
+	executeBtn.ConnectClicked(func(bool) {
+		maxPossibleDocCount := endSpinBox.Value() - beginSpinBox.Value()
+		for i := 0; i < maxPossibleDocCount; i++ {
+			model.Remove()
+		}
+		currentQuery := queryPlainTextEdit.ToPlainText()
+		for _, item := range createItems(mongoURI, currentDB, currentCollection, currentQuery) {
+			model.Add(item)
+		}
+	})
+
 	return mainWidget
 }

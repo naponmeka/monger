@@ -16,15 +16,6 @@ type CustomTreeModel struct {
 
 func (m *CustomTreeModel) init() {
 	m.rootItem = NewTreeItem(nil).initWith([]string{"Key", "Value", "Type"})
-	m.rootItem.appendChild(NewTreeItem(nil).initWith([]string{"john", "doe", "N/A"}))
-
-	firstChild := NewTreeItem(nil).initWith([]string{"john", "bob", "N/A"})
-	secondChild := NewTreeItem(nil).initWith([]string{"jim", "bob", "N/A"})
-	thirdChild := NewTreeItem(nil).initWith([]string{"jimmy", "bob", "N/A"})
-
-	firstChild.appendChild(secondChild)
-	secondChild.appendChild(thirdChild)
-	m.rootItem.appendChild(firstChild)
 
 	m.ConnectIndex(m.index)
 	m.ConnectParent(m.parent)

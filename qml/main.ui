@@ -374,10 +374,10 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox"/>
+         <widget class="QSpinBox" name="beginSpinBox"/>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox_2">
+         <widget class="QSpinBox" name="endSpinBox">
           <property name="value">
            <number>50</number>
           </property>
