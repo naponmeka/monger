@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 
+	"github.com/therecipe/qt/gui"
+
 	"github.com/naponmeka/robone/src"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
@@ -57,6 +59,29 @@ func newWindow() {
 	tab := src.NewConnectLayout(tabsHolder)
 	tabsHolder.AddTab(tab, "Connect")
 	window.SetCentralWidget(tabsLayout)
+	window.ConnectKeyPressEvent(func(event *gui.QKeyEvent) {
+		if event.Modifiers() == core.Qt__ControlModifier {
+			if event.Key() == 84 { // T
+				tab := src.NewConnectLayout(tabsHolder)
+				tabsHolder.AddTab(tab, "Connect")
+				tabsHolder.SetCurrentIndex(tabsHolder.Count() - 1)
+			}
+		} else if event.Modifiers() == (core.Qt__ControlModifier | core.Qt__ShiftModifier) {
+			if event.Key() == 91 { // [
+				if tabsHolder.CurrentIndex() > 0 {
+					tabsHolder.SetCurrentIndex(tabsHolder.CurrentIndex() - 1)
+				} else {
+					tabsHolder.SetCurrentIndex(tabsHolder.Count() - 1)
+				}
+			} else if event.Key() == 93 { //]
+				if tabsHolder.CurrentIndex() < tabsHolder.Count()-1 {
+					tabsHolder.SetCurrentIndex(tabsHolder.CurrentIndex() + 1)
+				} else {
+					tabsHolder.SetCurrentIndex(0)
+				}
+			}
+		}
+	})
 	window.Show()
 }
 
