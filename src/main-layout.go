@@ -117,6 +117,7 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 		currentCollection = collections[0]
 		collectionComboBox.Clear()
 		collectionComboBox.AddItems(collections)
+		queryPlainTextEdit.SetPlainText(fmt.Sprintf("db.getCollection('%s).find({})", currentCollection))
 	}
 
 	collectionComboBox.ConnectCurrentIndexChanged(func(idx int) {

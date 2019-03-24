@@ -15,3 +15,12 @@ func NewExportLayout() *widgets.QWidget {
 	file.Close()
 	return exportDialogWidget
 }
+
+func RegisterExportLayoutBtn(widget *widgets.QWidget, subwin *widgets.QDialog) {
+	//bsonBrowseBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("bsonBrowseBtn", core.Qt__FindChildrenRecursively).Pointer())
+	//bsonBrowseBtn.ConnectClicked(func(bool) {
+	//	fileDialog := widgets.NewQFileDialog(nil, 0)
+	//	fileDialog.SetFileMode
+	//	fileDialog.Show()
+	//})
+}
