@@ -20,12 +20,23 @@ func registerTemplateBtn(mainWidget *widgets.QWidget, queryPlainTextEdit *widget
 		queryPlainTextEdit.SetPlainText(".find({})")
 	})
 	insertBtn.ConnectClicked(func(bool) {
-		queryPlainTextEdit.SetPlainText(".insert([\n{}\n])")
+		queryPlainTextEdit.SetPlainText(`.insert(
+  [
+    {}
+  ],
+  {
+    "ordered": true
+  }
+])`)
 	})
 	updateBtn.ConnectClicked(func(bool) {
 		txt := `.update(
   {query},
-  {update}
+  {update},
+  {
+    "upsert": false,
+    "multi": false
+  }
 )`
 		queryPlainTextEdit.SetPlainText(txt)
 	})
@@ -118,7 +129,12 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 			model.Remove()
 		}
 		currentQuery := queryPlainTextEdit.ToPlainText()
-		for _, item := range createItems(mongoURI, currentDB, currentCollection, currentQuery) {
+		items, err := createItems(mongoURI, currentDB, currentCollection, currentQuery)
+		if err != nil {
+			widgets.QMessageBox_Information(nil, "Error", "wrong query", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+			return
+		}
+		for _, item := range items {
 			model.Add(item)
 		}
 	})

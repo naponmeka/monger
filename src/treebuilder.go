@@ -3,20 +3,16 @@ package src
 import (
 	"fmt"
 	"reflect"
-	"strings"
 
 	"github.com/globalsign/mgo/bson"
 	"github.com/naponmeka/robone/connectdb"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func createItems(mongoURI, db, collectionName, query string) (items []*TreeItem) {
-	var documents []bson.M
-	if strings.HasPrefix(query, ".find") {
-		findCondition := connectdb.GetStringInBetween(query, ".find(", ")")
-		documents = connectdb.FindDocuments(mongoURI, db, collectionName, findCondition)
-	} else {
-		documents = connectdb.ListDocuments(mongoURI, db, collectionName)
+func createItems(mongoURI, db, collectionName, query string) (items []*TreeItem, err error) {
+	documents, err := connectdb.Query(mongoURI, db, collectionName, query)
+	if err != nil {
+		return items, err
 	}
 	for _, doc := range documents {
 		item := traverse(doc, doc, 0, nil)

@@ -3,7 +3,6 @@ package connectdb
 import (
 	"context"
 	"log"
-	"strings"
 	"time"
 
 	"github.com/globalsign/mgo/bson"
@@ -91,6 +90,19 @@ func ListDocuments(mongoURI, db, collectionName string) (results []bson.M) {
 	return
 }
 
+func GetCollection(mongoURI, db, collectionName string) *mongo.Collection {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoURI))
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = client.Ping(ctx, readpref.Primary())
+	if err != nil {
+		log.Fatal(err)
+	}
+	return client.Database(db).Collection(collectionName)
+}
+
 func FindDocuments(mongoURI, db, collectionName, query string) (results []bson.M) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoURI))
@@ -102,9 +114,6 @@ func FindDocuments(mongoURI, db, collectionName, query string) (results []bson.M
 		log.Fatal(err)
 	}
 	collection := client.Database(db).Collection(collectionName)
-	if err != nil {
-		log.Fatal(err)
-	}
 	if query == "" {
 		query = "{}"
 	}
@@ -125,12 +134,74 @@ func FindDocuments(mongoURI, db, collectionName, query string) (results []bson.M
 	return
 }
 
-func GetStringInBetween(str string, start string, end string) (result string) {
-	s := strings.Index(str, start)
-	if s == -1 {
-		return
+func InsertDocuments(mongoURI, db, collectionName, rawDocuments string) (results []bson.M) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://root:root@localhost:27017/admin"))
+	if err != nil {
+		log.Fatal(err)
 	}
-	s += len(start)
-	e := strings.Index(str, end)
-	return str[s:e]
+	err = client.Ping(ctx, readpref.Primary())
+	if err != nil {
+		log.Fatal(err)
+	}
+	collection := client.Database(db).Collection(collectionName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	bDocs := make([]interface{}, 0)
+	// var bdoc interface{}
+	err = bson.UnmarshalJSON([]byte(rawDocuments), &bDocs)
+	if err != nil {
+		panic(err)
+	}
+	rawResults, err := collection.InsertMany(ctx, bDocs)
+	for _, r := range rawResults.InsertedIDs {
+		bDoc := bson.M{"_id": r}
+		results = append(results, bDoc)
+	}
+	return
+}
+
+func UpdateDocuments(mongoURI, db, collectionName, queryFilterStr, updateStr, updateOptionStr string) (results []bson.M) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://root:root@localhost:27017/admin"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = client.Ping(ctx, readpref.Primary())
+	if err != nil {
+		log.Fatal(err)
+	}
+	collection := client.Database(db).Collection(collectionName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var filter interface{}
+	err = bson.UnmarshalJSON([]byte(queryFilterStr), &filter)
+	if err != nil {
+		panic(err)
+	}
+	var update interface{}
+	err = bson.UnmarshalJSON([]byte(updateStr), &update)
+	if err != nil {
+		panic(err)
+	}
+	if updateOptionStr == "" {
+		updateOptionStr = "{}"
+	}
+	var updateOption *options.UpdateOptions
+	err = bson.UnmarshalJSON([]byte(updateOptionStr), &updateOption)
+	if err != nil {
+		panic(err)
+	}
+
+	updateResult, err := collection.UpdateMany(ctx, filter, update, updateOption)
+	resultDoc := bson.M{
+		"MatchedCount":  updateResult.MatchedCount,
+		"ModifiedCount": updateResult.ModifiedCount,
+		"UpsertedCount": updateResult.UpsertedCount,
+		"UpsertedID":    updateResult.UpsertedID,
+	}
+	results = append(results, resultDoc)
+	return
 }
