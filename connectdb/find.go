@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/globalsign/mgo/bson"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -17,7 +17,7 @@ func findExtractor(query string) (filter interface{}, option *options.FindOption
 	}
 	query = fmt.Sprintf("[%s]", query)
 	var fields []interface{}
-	err = bson.UnmarshalJSON([]byte(query), &fields)
+	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
 	filter = fields[0]
 	if len(fields) == 2 {
 		option = &options.FindOptions{

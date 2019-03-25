@@ -6,13 +6,15 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
-func NewEditLayout() *widgets.QWidget {
+func NewEditLayout(docStr string) *widgets.QWidget {
 	var widget = widgets.NewQWidget(nil, 0)
 	var loader = uitools.NewQUiLoader(nil)
 	var file = core.NewQFile2(":/qml/edit.ui")
 	file.Open(core.QIODevice__ReadOnly)
 	exportDialogWidget := loader.Load(file, widget)
 	file.Close()
+	plainTextEdit := widgets.NewQPlainTextEditFromPointer(widget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
+	plainTextEdit.SetPlainText(docStr)
 	return exportDialogWidget
 }
 

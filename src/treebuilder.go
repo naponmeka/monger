@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/globalsign/mgo/bson"
 	"github.com/naponmeka/robone/connectdb"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func createItems(mongoURI, db, collectionName, query string) (items []*TreeItem, err error) {
-	documents, err := connectdb.Query(mongoURI, db, collectionName, query)
+func createItems(mongoURI, db, collectionName, query string) (items []*TreeItem, documents []bson.M, err error) {
+	documents, err = connectdb.Query(mongoURI, db, collectionName, query)
 	if err != nil {
-		return items, err
+		return nil, nil, err
 	}
 	for _, doc := range documents {
 		item := traverse(doc, doc, 0, nil)

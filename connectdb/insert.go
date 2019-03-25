@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/globalsign/mgo/bson"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -16,7 +16,7 @@ func insertExtractor(query string) (documents []interface{}, option *options.Ins
 	}
 	query = fmt.Sprintf("[%s]", query)
 	var fields []interface{}
-	err = bson.UnmarshalJSON([]byte(query), &fields)
+	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
 	documents = fields[0].([]interface{})
 	ordered := true
 	if len(fields) > 1 {

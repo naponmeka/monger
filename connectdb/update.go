@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/globalsign/mgo/bson"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -16,7 +16,7 @@ func updateExtractor(query string) (filter interface{}, update interface{}, opti
 	}
 	query = fmt.Sprintf("[%s]", query)
 	var fields []interface{}
-	err = bson.UnmarshalJSON([]byte(query), &fields)
+	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
 	filter = fields[0]
 	update = fields[1]
 	option = &options.UpdateOptions{}

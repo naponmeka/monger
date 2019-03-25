@@ -8,6 +8,7 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func registerTemplateBtn(mainWidget *widgets.QWidget, queryPlainTextEdit *widgets.QPlainTextEdit) {
@@ -95,6 +96,8 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 	registerActionBtn(mainWidget, queryPlainTextEdit)
 	dbs := connectdb.ListDB(mongoURI)
 	collections := []string{}
+	documents := []bson.M{}
+
 	databaseComboBox.AddItems(dbs)
 	databaseComboBox.ConnectCurrentIndexChanged(func(idx int) {
 		currentDB = dbs[idx]
@@ -129,7 +132,8 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 			model.Remove()
 		}
 		currentQuery := queryPlainTextEdit.ToPlainText()
-		items, err := createItems(mongoURI, currentDB, currentCollection, currentQuery)
+		items, docs, err := createItems(mongoURI, currentDB, currentCollection, currentQuery)
+		documents = docs
 		if err != nil {
 			widgets.QMessageBox_Information(nil, "Error", "wrong query", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 			return
@@ -144,7 +148,12 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 		subwin := widgets.NewQDialog(nil, 0)
 		subwin.SetWindowTitle(fmt.Sprintf("Edit: %d", selected))
 		subwin.SetLayout(widgets.NewQHBoxLayout())
-		editLayout := NewEditLayout()
+		docStr := ""
+		if selected < len(documents) && selected >= 0 {
+			doc, _ := bson.MarshalExtJSON(documents[selected], true, true)
+			docStr = string(doc[:])
+		}
+		editLayout := NewEditLayout(docStr)
 		subwin.Layout().AddWidget(editLayout)
 		RegisterEditLayoutBtn(editLayout, subwin)
 		subwin.SetModal(true)
@@ -155,10 +164,9 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 }
 
 func findRow(treeView *widgets.QTreeView, current *core.QModelIndex) int {
-	// parent := current.Parent()
-	// if parent != current {
-	// 	return findRow(treeView, parent)
-	// }
+	parent := current.Parent()
+	if parent.IsValid() {
+		return findRow(treeView, parent)
+	}
 	return current.Row()
-
 }

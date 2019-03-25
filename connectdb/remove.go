@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/globalsign/mgo/bson"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -15,7 +15,7 @@ func removeExtractor(query string) (filter interface{}, justOne bool, err error)
 	}
 	query = fmt.Sprintf("[%s]", query)
 	var fields []interface{}
-	err = bson.UnmarshalJSON([]byte(query), &fields)
+	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
 	filter = fields[0]
 	if len(fields) > 1 {
 		rawOption, ok := fields[1].(map[string]interface{})

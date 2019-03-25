@@ -3,7 +3,7 @@ package connectdb
 import (
 	"strings"
 
-	"github.com/globalsign/mgo/bson"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func Query(mongoURI, db, collectionName, query string) (results []bson.M, err error) {
