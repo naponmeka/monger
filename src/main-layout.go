@@ -1,6 +1,8 @@
 package src
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -150,12 +152,15 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 		subwin.SetLayout(widgets.NewQHBoxLayout())
 		docStr := ""
 		if selected < len(documents) && selected >= 0 {
-			doc, _ := bson.MarshalExtJSON(documents[selected], true, true)
-			docStr = string(doc[:])
+			doc, _ := bson.MarshalExtJSON(documents[selected], false, true)
+			var out bytes.Buffer
+			json.Indent(&out, doc, "", "    ")
+			docStr = out.String()
 		}
 		editLayout := NewEditLayout(docStr)
 		subwin.Layout().AddWidget(editLayout)
-		RegisterEditLayoutBtn(editLayout, subwin)
+		dbCollection := connectdb.GetCollection(mongoURI, currentDB, currentCollection)
+		RegisterEditLayoutBtn(editLayout, subwin, dbCollection)
 		subwin.SetModal(true)
 		subwin.SetMinimumSize2(640, 480)
 		subwin.Exec()
