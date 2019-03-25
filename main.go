@@ -65,6 +65,12 @@ func newWindow() {
 				tab := src.NewConnectLayout(tabsHolder)
 				tabsHolder.AddTab(tab, "Connect")
 				tabsHolder.SetCurrentIndex(tabsHolder.Count() - 1)
+			} else if event.Key() == 87 { // W
+				CurrentIndex := tabsHolder.CurrentIndex()
+				tabsHolder.SetCurrentIndex(CurrentIndex - 1)
+				tabsHolder.RemoveTab(CurrentIndex)
+			} else if event.Key() == 16777220 {
+				widgets.QMessageBox_Information(nil, "OK", "going to query", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 			}
 		} else if event.Modifiers() == (core.Qt__ControlModifier | core.Qt__ShiftModifier) {
 			if event.Key() == 91 { // [

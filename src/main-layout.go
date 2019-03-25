@@ -10,65 +10,45 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
-func registerTemplateBtn(widget *widgets.QWidget, queryPlainTextEdit *widgets.QPlainTextEdit, currentCollection *string) {
-	findBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("findBtn", core.Qt__FindChildrenRecursively).Pointer())
-	insertBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("insertBtn", core.Qt__FindChildrenRecursively).Pointer())
-	updateBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("updateBtn", core.Qt__FindChildrenRecursively).Pointer())
-	deleteBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("deleteBtn", core.Qt__FindChildrenRecursively).Pointer())
-	aggBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("aggBtn", core.Qt__FindChildrenRecursively).Pointer())
+func registerTemplateBtn(mainWidget *widgets.QWidget, queryPlainTextEdit *widgets.QPlainTextEdit) {
+	findBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("findBtn", core.Qt__FindChildrenRecursively).Pointer())
+	insertBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("insertBtn", core.Qt__FindChildrenRecursively).Pointer())
+	updateBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("updateBtn", core.Qt__FindChildrenRecursively).Pointer())
+	deleteBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("deleteBtn", core.Qt__FindChildrenRecursively).Pointer())
+	aggBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("aggBtn", core.Qt__FindChildrenRecursively).Pointer())
 	findBtn.ConnectClicked(func(bool) {
-		text := ""
-		if currentCollection != nil {
-			text = *currentCollection
-		}
-		queryPlainTextEdit.SetPlainText(fmt.Sprintf("db.getCollection('%s').find({})", text))
+		queryPlainTextEdit.SetPlainText(".find({})")
 	})
 	insertBtn.ConnectClicked(func(bool) {
-		text := ""
-		if currentCollection != nil {
-			text = *currentCollection
-		}
-		queryPlainTextEdit.SetPlainText(fmt.Sprintf("db.getCollection('%s').insert([\n{}\n])", text))
+		queryPlainTextEdit.SetPlainText(".insert([\n{}\n])")
 	})
 	updateBtn.ConnectClicked(func(bool) {
-		text := ""
-		if currentCollection != nil {
-			text = *currentCollection
-		}
-		template := `db.getCollection('%s').update(
+		txt := `.update(
   {query},
   {update}
 )`
-		queryPlainTextEdit.SetPlainText(fmt.Sprintf(template, text))
+		queryPlainTextEdit.SetPlainText(txt)
 	})
 	deleteBtn.ConnectClicked(func(bool) {
-		text := ""
-		if currentCollection != nil {
-			text = *currentCollection
-		}
-		template := `db.getCollection('%s').remove(
+		txt := `.remove(
   {query},
   {
     justOne: true
-   }
+  }
 )`
-		queryPlainTextEdit.SetPlainText(fmt.Sprintf(template, text))
+		queryPlainTextEdit.SetPlainText(txt)
 	})
 	aggBtn.ConnectClicked(func(bool) {
-		text := ""
-		if currentCollection != nil {
-			text = *currentCollection
-		}
-		template := `db.getCollection('%s').aggregate([
+		txt := `.aggregate([
   {},
 ])`
-		queryPlainTextEdit.SetPlainText(fmt.Sprintf(template, text))
+		queryPlainTextEdit.SetPlainText(txt)
 	})
 }
 
-func registerActionBtn(widget *widgets.QWidget, queryPlainTextEdit *widgets.QPlainTextEdit, currentCollection *string) {
-	countBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("countBtn", core.Qt__FindChildrenRecursively).Pointer())
-	explainBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("explainBtn", core.Qt__FindChildrenRecursively).Pointer())
+func registerActionBtn(mainWidget *widgets.QWidget, queryPlainTextEdit *widgets.QPlainTextEdit) {
+	countBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("countBtn", core.Qt__FindChildrenRecursively).Pointer())
+	explainBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("explainBtn", core.Qt__FindChildrenRecursively).Pointer())
 
 	countBtn.ConnectClicked(func(bool) {
 		currentText := queryPlainTextEdit.ToPlainText()
@@ -100,8 +80,8 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 
 	currentDB := ""
 	currentCollection := ""
-	registerTemplateBtn(widget, queryPlainTextEdit, &currentCollection)
-	registerActionBtn(widget, queryPlainTextEdit, &currentCollection)
+	registerTemplateBtn(mainWidget, queryPlainTextEdit)
+	registerActionBtn(mainWidget, queryPlainTextEdit)
 	dbs := connectdb.ListDB(mongoURI)
 	collections := []string{}
 	databaseComboBox.AddItems(dbs)
@@ -117,13 +97,14 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 		currentCollection = collections[0]
 		collectionComboBox.Clear()
 		collectionComboBox.AddItems(collections)
-		queryPlainTextEdit.SetPlainText(fmt.Sprintf("db.getCollection('%s).find({})", currentCollection))
+		queryPlainTextEdit.SetPlainText(".find({})")
 	}
 
 	collectionComboBox.ConnectCurrentIndexChanged(func(idx int) {
 		if idx >= 0 && idx < len(collections) {
 			currentCollection = collections[idx]
-			queryPlainTextEdit.SetPlainText(fmt.Sprintf("db.getCollection('%s').find({})", currentCollection))
+			// queryPlainTextEdit.SetPlainText(fmt.Sprintf("db.getCollection('%s').find({})", currentCollection))
+			queryPlainTextEdit.SetPlainText(".find({})")
 		}
 	})
 

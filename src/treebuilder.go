@@ -3,6 +3,7 @@ package src
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	"github.com/globalsign/mgo/bson"
 	"github.com/naponmeka/robone/connectdb"
@@ -10,7 +11,13 @@ import (
 )
 
 func createItems(mongoURI, db, collectionName, query string) (items []*TreeItem) {
-	documents := connectdb.ListDocuments(mongoURI, db, collectionName)
+	var documents []bson.M
+	if strings.HasPrefix(query, ".find") {
+		findCondition := connectdb.GetStringInBetween(query, ".find(", ")")
+		documents = connectdb.FindDocuments(mongoURI, db, collectionName, findCondition)
+	} else {
+		documents = connectdb.ListDocuments(mongoURI, db, collectionName)
+	}
 	for _, doc := range documents {
 		item := traverse(doc, doc, 0, nil)
 		items = append(items, item)
