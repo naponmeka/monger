@@ -119,7 +119,6 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 	collectionComboBox.ConnectCurrentIndexChanged(func(idx int) {
 		if idx >= 0 && idx < len(collections) {
 			currentCollection = collections[idx]
-			// queryPlainTextEdit.SetPlainText(fmt.Sprintf("db.getCollection('%s').find({})", currentCollection))
 			queryPlainTextEdit.SetPlainText(".find({})")
 		}
 	})
@@ -163,6 +162,54 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 		RegisterEditLayoutBtn(editLayout, subwin, dbCollection)
 		subwin.SetModal(true)
 		subwin.SetMinimumSize2(640, 480)
+		subwin.Exec()
+	})
+	viewDocBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("viewDocBtn", core.Qt__FindChildrenRecursively).Pointer())
+	viewDocBtn.ConnectClicked(func(bool) {
+		selected := findRow(resultTreeview, resultTreeview.CurrentIndex())
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle(fmt.Sprintf("View: %d", selected))
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		docStr := ""
+		if selected < len(documents) && selected >= 0 {
+			doc, _ := bson.MarshalExtJSON(documents[selected], false, true)
+			var out bytes.Buffer
+			json.Indent(&out, doc, "", "    ")
+			docStr = out.String()
+		}
+		viewLayout := NewViewLayout(docStr)
+		subwin.Layout().AddWidget(viewLayout)
+		RegisterViewLayoutBtn(viewLayout, subwin)
+		subwin.SetModal(true)
+		subwin.SetMinimumSize2(640, 480)
+		subwin.Exec()
+	})
+	insertDocBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("insertDocBtn", core.Qt__FindChildrenRecursively).Pointer())
+	insertDocBtn.ConnectClicked(func(bool) {
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle("Insert documents")
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		insertLayout := NewInsertLayout()
+		subwin.Layout().AddWidget(insertLayout)
+		dbCollection := connectdb.GetCollection(mongoURI, currentDB, currentCollection)
+		RegisterInsertLayoutBtn(insertLayout, subwin, dbCollection)
+		subwin.SetModal(true)
+		subwin.SetMinimumSize2(640, 480)
+		subwin.Exec()
+	})
+
+	deleteDocBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("deleteDocBtn", core.Qt__FindChildrenRecursively).Pointer())
+	deleteDocBtn.ConnectClicked(func(bool) {
+		selected := findRow(resultTreeview, resultTreeview.CurrentIndex())
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle(fmt.Sprintf("Delete: %d", selected))
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		deleteConfirmLayout := NewConfirmLayout("Confirm delete?")
+		subwin.Layout().AddWidget(deleteConfirmLayout)
+		dbCollection := connectdb.GetCollection(mongoURI, currentDB, currentCollection)
+		RegisterConfirmDeleteLayoutBtn(deleteConfirmLayout, subwin, dbCollection, documents[selected])
+		subwin.SetModal(true)
+		subwin.SetMinimumSize2(100, 100)
 		subwin.Exec()
 	})
 	return mainWidget

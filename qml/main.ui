@@ -96,9 +96,16 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_6">
+        <widget class="QPushButton" name="insertDocBtn">
          <property name="text">
           <string>Insert documents</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="viewDocBtn">
+         <property name="text">
+          <string>View document</string>
          </property>
         </widget>
        </item>
@@ -110,7 +117,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="deleteDocBtn">
          <property name="text">
           <string>Delete document</string>
          </property>
