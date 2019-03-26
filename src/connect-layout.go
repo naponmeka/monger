@@ -1,6 +1,9 @@
 package src
 
 import (
+	"fmt"
+
+	"github.com/naponmeka/robone/list"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
@@ -13,11 +16,15 @@ func NewConnectLayout(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBi
 	file.Open(core.QIODevice__ReadOnly)
 	connectWidget := loader.Load(file, widget)
 	file.Close()
+	listView := widgets.NewQListViewFromPointer(widget.FindChild("listView", core.Qt__FindChildrenRecursively).Pointer())
+	model := list.NewCustomListModel(nil)
+	listView.SetModel(model)
+
 	testBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("testBtn", core.Qt__FindChildrenRecursively).Pointer())
 	testBtn.ConnectClicked(func(bool) {
 		widgets.QMessageBox_Information(nil, "OK", "Success", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 	})
-
+	nameLineEdit := widgets.NewQLineEditFromPointer(widget.FindChild("nameLineEdit", core.Qt__FindChildrenRecursively).Pointer())
 	URILineEdit := widgets.NewQLineEditFromPointer(widget.FindChild("mylineedit", core.Qt__FindChildrenRecursively).Pointer())
 	URILineEdit.SetText("mongodb://root:root@localhost:27017/admin")
 	connectBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("connectBtn", core.Qt__FindChildrenRecursively).Pointer())
@@ -26,5 +33,26 @@ func NewConnectLayout(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBi
 		mainQueryWidget := NewMainLayout(URI, keyboardBinder)
 		ReplaceTabContent(tabsHolder, mainQueryWidget, "Query")
 	})
+	saveBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("saveBtn", core.Qt__FindChildrenRecursively).Pointer())
+	saveBtn.ConnectClicked(func(bool) {
+		name := nameLineEdit.Text()
+		URI := URILineEdit.Text()
+		model.Add(list.ListItem{Name: name, URI: URI})
+	})
+
+	deleteBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("deleteBtn", core.Qt__FindChildrenRecursively).Pointer())
+	deleteBtn.ConnectClicked(func(bool) {
+		idx := listView.CurrentIndex().Row()
+		widgets.QMessageBox_Information(nil, "OK", fmt.Sprintln(idx), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		// model.removeAt(idx)
+	})
+	createBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("createBtn", core.Qt__FindChildrenRecursively).Pointer())
+	createBtn.ConnectClicked(func(bool) {
+		index := core.NewQModelIndex()
+		listView.SetCurrentIndex(index)
+		nameLineEdit.SetText("")
+		URILineEdit.SetText("")
+	})
+
 	return connectWidget
 }
