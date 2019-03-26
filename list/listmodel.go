@@ -2,6 +2,7 @@ package list
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/therecipe/qt/core"
 )
@@ -14,6 +15,7 @@ type CustomListModel struct {
 	_ func()                                  `signal:"remove,auto"`
 	_ func(item ListItem)                     `signal:"add,auto"`
 	_ func(firstName string, lastName string) `signal:"edit,auto"`
+	_ func(iStr string)                       `signal:"removeAt,auto"`
 
 	modelData []ListItem
 }
@@ -47,12 +49,13 @@ func (m *CustomListModel) remove() {
 	m.EndRemoveRows()
 }
 
-func (m *CustomListModel) removeAt(idx int) {
-	if len(m.modelData) == 0 || idx > len(m.modelData) {
+func (m *CustomListModel) removeAt(iStr string) {
+	i, _ := strconv.Atoi(iStr)
+	if len(m.modelData) == 0 || i > len(m.modelData) {
 		return
 	}
-	m.BeginRemoveRows(core.NewQModelIndex(), idx, idx)
-	m.modelData = append(m.modelData[:idx], m.modelData[idx+1:]...)
+	m.BeginRemoveRows(core.NewQModelIndex(), i, i)
+	m.modelData = append(m.modelData[:i], m.modelData[i+1:]...)
 	m.EndRemoveRows()
 }
 

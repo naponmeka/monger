@@ -20,8 +20,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_CustomListModela13491_t {
-    QByteArrayData data[9];
-    char stringdata0[72];
+    QByteArrayData data[11];
+    char stringdata0[86];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -38,11 +38,13 @@ QT_MOC_LITERAL(4, 34, 8), // "quintptr"
 QT_MOC_LITERAL(5, 43, 4), // "item"
 QT_MOC_LITERAL(6, 48, 4), // "edit"
 QT_MOC_LITERAL(7, 53, 9), // "firstName"
-QT_MOC_LITERAL(8, 63, 8) // "lastName"
+QT_MOC_LITERAL(8, 63, 8), // "lastName"
+QT_MOC_LITERAL(9, 72, 8), // "removeAt"
+QT_MOC_LITERAL(10, 81, 4) // "iStr"
 
     },
     "CustomListModela13491\0remove\0\0add\0"
-    "quintptr\0item\0edit\0firstName\0lastName"
+    "quintptr\0item\0edit\0firstName\0lastName\0removeAt\0iStr"
 };
 #undef QT_MOC_LITERAL
 
@@ -81,6 +83,7 @@ void CustomListModela13491::qt_static_metacall(QObject *_o, QMetaObject::Call _c
         case 0: _t->remove(); break;
         case 1: _t->add((*reinterpret_cast< quintptr(*)>(_a[1]))); break;
         case 2: _t->edit((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 3: _t->removeAt((*reinterpret_cast< QString(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -103,6 +106,13 @@ void CustomListModela13491::qt_static_metacall(QObject *_o, QMetaObject::Call _c
             using _t = void (CustomListModela13491::*)(QString , QString );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomListModela13491::edit)) {
                 *result = 2;
+                return;
+            }
+        }
+        {
+            using _t = void (CustomListModela13491::*)(QString );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomListModela13491::removeAt)) {
+                *result = 3;
                 return;
             }
         }
@@ -167,6 +177,12 @@ void CustomListModela13491::edit(QString _t1, QString _t2)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
+}
+// SIGNAL 3
+void CustomListModela13491::removeAt(QString _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

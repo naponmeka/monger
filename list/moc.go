@@ -83,6 +83,7 @@ func callbackCustomListModela13491_Constructor(ptr unsafe.Pointer) {
 	this.ConnectRemove(this.remove)
 	this.ConnectAdd(this.add)
 	this.ConnectEdit(this.edit)
+	this.ConnectRemoveAt(this.removeAt)
 	this.init()
 }
 
@@ -170,6 +171,51 @@ func (ptr *CustomListModel) Add(item ListItem) {
 	}
 }
 
+//=====begin======
+//export callbackCustomListModela13491_RemoveAt
+func callbackCustomListModela13491_RemoveAt(ptr unsafe.Pointer, iStr C.struct_Moc_PackedString) {
+	if signal := qt.GetSignal(ptr, "removeAt"); signal != nil {
+		signal.(func(string))(cGoUnpackString(iStr))
+	}
+}
+
+func (ptr *CustomListModel) ConnectRemoveAt(f func(iStr string)) {
+	if ptr.Pointer() != nil {
+
+		if !qt.ExistsSignal(ptr.Pointer(), "removeAt") {
+			C.CustomListModela13491_ConnectRemoveAt(ptr.Pointer())
+		}
+
+		if signal := qt.LendSignal(ptr.Pointer(), "removeAt"); signal != nil {
+			qt.ConnectSignal(ptr.Pointer(), "removeAt", func(iStr string) {
+				signal.(func(string))(iStr)
+				f(iStr)
+			})
+		} else {
+			qt.ConnectSignal(ptr.Pointer(), "removeAt", f)
+		}
+	}
+}
+
+func (ptr *CustomListModel) DisconnectRemoveAt() {
+	if ptr.Pointer() != nil {
+		C.CustomListModela13491_DisconnectRemoveAt(ptr.Pointer())
+		qt.DisconnectSignal(ptr.Pointer(), "removeAt")
+	}
+}
+
+func (ptr *CustomListModel) RemoveAt(iStr string) {
+	if ptr.Pointer() != nil {
+		var iStrC *C.char
+		if iStr != "" {
+			iStrC = C.CString(iStr)
+			defer C.free(unsafe.Pointer(iStrC))
+		}
+		C.CustomListModela13491_RemoveAt(ptr.Pointer(), C.struct_Moc_PackedString{data: iStrC, len: C.longlong(len(iStr))})
+	}
+}
+
+//======end============
 //export callbackCustomListModela13491_Edit
 func callbackCustomListModela13491_Edit(ptr unsafe.Pointer, firstName C.struct_Moc_PackedString, lastName C.struct_Moc_PackedString) {
 	if signal := qt.GetSignal(ptr, "edit"); signal != nil {

@@ -1,7 +1,7 @@
 package src
 
 import (
-	"fmt"
+	"strconv"
 
 	"github.com/naponmeka/robone/list"
 	"github.com/therecipe/qt/core"
@@ -43,8 +43,9 @@ func NewConnectLayout(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBi
 	deleteBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("deleteBtn", core.Qt__FindChildrenRecursively).Pointer())
 	deleteBtn.ConnectClicked(func(bool) {
 		idx := listView.CurrentIndex().Row()
-		widgets.QMessageBox_Information(nil, "OK", fmt.Sprintln(idx), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
-		// model.removeAt(idx)
+		idxStr := strconv.Itoa(idx)
+		// widgets.QMessageBox_Information(nil, "OK", fmt.Sprintln(idx), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		model.RemoveAt(idxStr)
 	})
 	createBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("createBtn", core.Qt__FindChildrenRecursively).Pointer())
 	createBtn.ConnectClicked(func(bool) {

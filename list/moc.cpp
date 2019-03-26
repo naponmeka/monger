@@ -49,6 +49,7 @@ public:
 	void Signal_Remove() { callbackCustomListModela13491_Remove(this); };
 	void Signal_Add(quintptr item) { callbackCustomListModela13491_Add(this, item); };
 	void Signal_Edit(QString firstName, QString lastName) { QByteArray te57915 = firstName.toUtf8(); Moc_PackedString firstNamePacked = { const_cast<char*>(te57915.prepend("WHITESPACE").constData()+10), te57915.size()-10 };QByteArray t9b831e = lastName.toUtf8(); Moc_PackedString lastNamePacked = { const_cast<char*>(t9b831e.prepend("WHITESPACE").constData()+10), t9b831e.size()-10 };callbackCustomListModela13491_Edit(this, firstNamePacked, lastNamePacked); };
+	void Signal_RemoveAt(QString iStr) { QByteArray te57915 = iStr.toUtf8(); Moc_PackedString iStrPacked = { const_cast<char*>(te57915.prepend("WHITESPACE").constData()+10), te57915.size()-10 };callbackCustomListModela13491_RemoveAt(this, iStrPacked); };
 	 ~CustomListModela13491() { callbackCustomListModela13491_DestroyCustomListModel(this); };
 	bool dropMimeData(const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent) { return callbackCustomListModela13491_DropMimeData(this, const_cast<QMimeData*>(data), action, row, column, const_cast<QModelIndex*>(&parent)) != 0; };
 	QModelIndex index(int row, int column, const QModelIndex & parent) const { return *static_cast<QModelIndex*>(callbackCustomListModela13491_Index(const_cast<void*>(static_cast<const void*>(this)), row, column, const_cast<QModelIndex*>(&parent))); };
@@ -117,6 +118,7 @@ signals:
 	void remove();
 	void add(quintptr item);
 	void edit(QString firstName, QString lastName);
+	void removeAt(QString iStr);
 public slots:
 private:
 };
@@ -170,6 +172,21 @@ void CustomListModela13491_DisconnectEdit(void* ptr)
 void CustomListModela13491_Edit(void* ptr, struct Moc_PackedString firstName, struct Moc_PackedString lastName)
 {
 	static_cast<CustomListModela13491*>(ptr)->edit(QString::fromUtf8(firstName.data, firstName.len), QString::fromUtf8(lastName.data, lastName.len));
+}
+
+void CustomListModela13491_ConnectRemoveAt(void* ptr)
+{
+	QObject::connect(static_cast<CustomListModela13491*>(ptr), static_cast<void (CustomListModela13491::*)(QString)>(&CustomListModela13491::removeAt), static_cast<CustomListModela13491*>(ptr), static_cast<void (CustomListModela13491::*)(QString)>(&CustomListModela13491::Signal_RemoveAt));
+}
+
+void CustomListModela13491_DisconnectRemoveAt(void* ptr)
+{
+	QObject::disconnect(static_cast<CustomListModela13491*>(ptr), static_cast<void (CustomListModela13491::*)(QString)>(&CustomListModela13491::removeAt), static_cast<CustomListModela13491*>(ptr), static_cast<void (CustomListModela13491::*)(QString)>(&CustomListModela13491::Signal_RemoveAt));
+}
+
+void CustomListModela13491_RemoveAt(void* ptr, struct Moc_PackedString iStr)
+{
+	static_cast<CustomListModela13491*>(ptr)->removeAt(QString::fromUtf8(iStr.data, iStr.len));
 }
 
 int CustomListModela13491_CustomListModela13491_QRegisterMetaType()
