@@ -19,7 +19,6 @@ func CreateMenuBar(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBinde
 	})
 	fileMenuBar.AddSeparator()
 	exportBtn := fileMenuBar.AddAction("Export")
-	// exportBtn.SetDisabled(true)
 	exportBtn.ConnectTriggered(func(bool) {
 		subwin := widgets.NewQDialog(nil, 0)
 		subwin.SetWindowTitle("Export")
@@ -33,6 +32,13 @@ func CreateMenuBar(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBinde
 	})
 	importBtn := fileMenuBar.AddAction("Import")
 	importBtn.SetDisabled(true)
+
+	settingMenuBar := widgets.NewQMenu(nil)
+	settingMenuBar.SetTitle("Setting")
+	timeoutBtn := settingMenuBar.AddAction("Timeout")
+	timeoutBtn.SetDisabled(true)
+
 	menuBar.AddMenu(fileMenuBar)
+	menuBar.AddMenu(settingMenuBar)
 	return menuBar
 }

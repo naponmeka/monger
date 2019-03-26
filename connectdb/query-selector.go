@@ -39,6 +39,13 @@ func Query(mongoURI, db, collectionName, query string) (results []bson.M, err er
 			return results, err
 		}
 		results, err = Remove(collection, filter, justOne)
+	} else if strings.HasPrefix(query, ".aggregate(") {
+		raw := GetStringInBetween(query, ".aggregate(", ")")
+		steps, err := aggregateExtractor(raw)
+		if err != nil {
+			return results, err
+		}
+		results, err = Aggregate(collection, steps)
 	} else {
 		results = ListDocuments(mongoURI, db, collectionName)
 	}
