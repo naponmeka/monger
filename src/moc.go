@@ -27,6 +27,421 @@ func cGoUnpackBytes(s C.struct_Moc_PackedString) []byte {
 	return C.GoBytes(unsafe.Pointer(s.data), C.int(s.len))
 }
 
+type TreeItem_ITF interface {
+	std_core.QObject_ITF
+	TreeItem_PTR() *TreeItem
+}
+
+func (ptr *TreeItem) TreeItem_PTR() *TreeItem {
+	return ptr
+}
+
+func (ptr *TreeItem) Pointer() unsafe.Pointer {
+	if ptr != nil {
+		return ptr.QObject_PTR().Pointer()
+	}
+	return nil
+}
+
+func (ptr *TreeItem) SetPointer(p unsafe.Pointer) {
+	if ptr != nil {
+		ptr.QObject_PTR().SetPointer(p)
+	}
+}
+
+func PointerFromTreeItem(ptr TreeItem_ITF) unsafe.Pointer {
+	if ptr != nil {
+		return ptr.TreeItem_PTR().Pointer()
+	}
+	return nil
+}
+
+func NewTreeItemFromPointer(ptr unsafe.Pointer) (n *TreeItem) {
+	if gPtr, ok := qt.Receive(ptr); !ok {
+		n = new(TreeItem)
+		n.SetPointer(ptr)
+	} else {
+		switch deduced := gPtr.(type) {
+		case *TreeItem:
+			n = deduced
+
+		case *std_core.QObject:
+			n = &TreeItem{QObject: *deduced}
+
+		default:
+			n = new(TreeItem)
+			n.SetPointer(ptr)
+		}
+	}
+	return
+}
+
+//export callbackTreeItem92ca9a_Constructor
+func callbackTreeItem92ca9a_Constructor(ptr unsafe.Pointer) {
+	this := NewTreeItemFromPointer(ptr)
+	qt.Register(ptr, this)
+	this.init()
+}
+
+func TreeItem_QRegisterMetaType() int {
+	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QRegisterMetaType()))
+}
+
+func (ptr *TreeItem) QRegisterMetaType() int {
+	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QRegisterMetaType()))
+}
+
+func TreeItem_QRegisterMetaType2(typeName string) int {
+	var typeNameC *C.char
+	if typeName != "" {
+		typeNameC = C.CString(typeName)
+		defer C.free(unsafe.Pointer(typeNameC))
+	}
+	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QRegisterMetaType2(typeNameC)))
+}
+
+func (ptr *TreeItem) QRegisterMetaType2(typeName string) int {
+	var typeNameC *C.char
+	if typeName != "" {
+		typeNameC = C.CString(typeName)
+		defer C.free(unsafe.Pointer(typeNameC))
+	}
+	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QRegisterMetaType2(typeNameC)))
+}
+
+func TreeItem_QmlRegisterType() int {
+	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QmlRegisterType()))
+}
+
+func (ptr *TreeItem) QmlRegisterType() int {
+	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QmlRegisterType()))
+}
+
+func TreeItem_QmlRegisterType2(uri string, versionMajor int, versionMinor int, qmlName string) int {
+	var uriC *C.char
+	if uri != "" {
+		uriC = C.CString(uri)
+		defer C.free(unsafe.Pointer(uriC))
+	}
+	var qmlNameC *C.char
+	if qmlName != "" {
+		qmlNameC = C.CString(qmlName)
+		defer C.free(unsafe.Pointer(qmlNameC))
+	}
+	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
+}
+
+func (ptr *TreeItem) QmlRegisterType2(uri string, versionMajor int, versionMinor int, qmlName string) int {
+	var uriC *C.char
+	if uri != "" {
+		uriC = C.CString(uri)
+		defer C.free(unsafe.Pointer(uriC))
+	}
+	var qmlNameC *C.char
+	if qmlName != "" {
+		qmlNameC = C.CString(qmlName)
+		defer C.free(unsafe.Pointer(qmlNameC))
+	}
+	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
+}
+
+func (ptr *TreeItem) __dynamicPropertyNames_atList(i int) *std_core.QByteArray {
+	if ptr.Pointer() != nil {
+		tmpValue := std_core.NewQByteArrayFromPointer(C.TreeItem92ca9a___dynamicPropertyNames_atList(ptr.Pointer(), C.int(int32(i))))
+		runtime.SetFinalizer(tmpValue, (*std_core.QByteArray).DestroyQByteArray)
+		return tmpValue
+	}
+	return nil
+}
+
+func (ptr *TreeItem) __dynamicPropertyNames_setList(i std_core.QByteArray_ITF) {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a___dynamicPropertyNames_setList(ptr.Pointer(), std_core.PointerFromQByteArray(i))
+	}
+}
+
+func (ptr *TreeItem) __dynamicPropertyNames_newList() unsafe.Pointer {
+	return C.TreeItem92ca9a___dynamicPropertyNames_newList(ptr.Pointer())
+}
+
+func (ptr *TreeItem) __findChildren_atList2(i int) *std_core.QObject {
+	if ptr.Pointer() != nil {
+		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem92ca9a___findChildren_atList2(ptr.Pointer(), C.int(int32(i))))
+		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
+			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
+		}
+		return tmpValue
+	}
+	return nil
+}
+
+func (ptr *TreeItem) __findChildren_setList2(i std_core.QObject_ITF) {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a___findChildren_setList2(ptr.Pointer(), std_core.PointerFromQObject(i))
+	}
+}
+
+func (ptr *TreeItem) __findChildren_newList2() unsafe.Pointer {
+	return C.TreeItem92ca9a___findChildren_newList2(ptr.Pointer())
+}
+
+func (ptr *TreeItem) __findChildren_atList3(i int) *std_core.QObject {
+	if ptr.Pointer() != nil {
+		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem92ca9a___findChildren_atList3(ptr.Pointer(), C.int(int32(i))))
+		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
+			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
+		}
+		return tmpValue
+	}
+	return nil
+}
+
+func (ptr *TreeItem) __findChildren_setList3(i std_core.QObject_ITF) {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a___findChildren_setList3(ptr.Pointer(), std_core.PointerFromQObject(i))
+	}
+}
+
+func (ptr *TreeItem) __findChildren_newList3() unsafe.Pointer {
+	return C.TreeItem92ca9a___findChildren_newList3(ptr.Pointer())
+}
+
+func (ptr *TreeItem) __findChildren_atList(i int) *std_core.QObject {
+	if ptr.Pointer() != nil {
+		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem92ca9a___findChildren_atList(ptr.Pointer(), C.int(int32(i))))
+		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
+			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
+		}
+		return tmpValue
+	}
+	return nil
+}
+
+func (ptr *TreeItem) __findChildren_setList(i std_core.QObject_ITF) {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a___findChildren_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
+	}
+}
+
+func (ptr *TreeItem) __findChildren_newList() unsafe.Pointer {
+	return C.TreeItem92ca9a___findChildren_newList(ptr.Pointer())
+}
+
+func (ptr *TreeItem) __children_atList(i int) *std_core.QObject {
+	if ptr.Pointer() != nil {
+		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem92ca9a___children_atList(ptr.Pointer(), C.int(int32(i))))
+		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
+			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
+		}
+		return tmpValue
+	}
+	return nil
+}
+
+func (ptr *TreeItem) __children_setList(i std_core.QObject_ITF) {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a___children_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
+	}
+}
+
+func (ptr *TreeItem) __children_newList() unsafe.Pointer {
+	return C.TreeItem92ca9a___children_newList(ptr.Pointer())
+}
+
+func NewTreeItem(parent std_core.QObject_ITF) *TreeItem {
+	tmpValue := NewTreeItemFromPointer(C.TreeItem92ca9a_NewTreeItem(std_core.PointerFromQObject(parent)))
+	if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
+		tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
+	}
+	return tmpValue
+}
+
+//export callbackTreeItem92ca9a_DestroyTreeItem
+func callbackTreeItem92ca9a_DestroyTreeItem(ptr unsafe.Pointer) {
+	if signal := qt.GetSignal(ptr, "~TreeItem"); signal != nil {
+		signal.(func())()
+	} else {
+		NewTreeItemFromPointer(ptr).DestroyTreeItemDefault()
+	}
+}
+
+func (ptr *TreeItem) ConnectDestroyTreeItem(f func()) {
+	if ptr.Pointer() != nil {
+
+		if signal := qt.LendSignal(ptr.Pointer(), "~TreeItem"); signal != nil {
+			qt.ConnectSignal(ptr.Pointer(), "~TreeItem", func() {
+				signal.(func())()
+				f()
+			})
+		} else {
+			qt.ConnectSignal(ptr.Pointer(), "~TreeItem", f)
+		}
+	}
+}
+
+func (ptr *TreeItem) DisconnectDestroyTreeItem() {
+	if ptr.Pointer() != nil {
+
+		qt.DisconnectSignal(ptr.Pointer(), "~TreeItem")
+	}
+}
+
+func (ptr *TreeItem) DestroyTreeItem() {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a_DestroyTreeItem(ptr.Pointer())
+		ptr.SetPointer(nil)
+		runtime.SetFinalizer(ptr, nil)
+	}
+}
+
+func (ptr *TreeItem) DestroyTreeItemDefault() {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a_DestroyTreeItemDefault(ptr.Pointer())
+		ptr.SetPointer(nil)
+		runtime.SetFinalizer(ptr, nil)
+	}
+}
+
+//export callbackTreeItem92ca9a_Event
+func callbackTreeItem92ca9a_Event(ptr unsafe.Pointer, e unsafe.Pointer) C.char {
+	if signal := qt.GetSignal(ptr, "event"); signal != nil {
+		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QEvent) bool)(std_core.NewQEventFromPointer(e)))))
+	}
+
+	return C.char(int8(qt.GoBoolToInt(NewTreeItemFromPointer(ptr).EventDefault(std_core.NewQEventFromPointer(e)))))
+}
+
+func (ptr *TreeItem) EventDefault(e std_core.QEvent_ITF) bool {
+	if ptr.Pointer() != nil {
+		return int8(C.TreeItem92ca9a_EventDefault(ptr.Pointer(), std_core.PointerFromQEvent(e))) != 0
+	}
+	return false
+}
+
+//export callbackTreeItem92ca9a_EventFilter
+func callbackTreeItem92ca9a_EventFilter(ptr unsafe.Pointer, watched unsafe.Pointer, event unsafe.Pointer) C.char {
+	if signal := qt.GetSignal(ptr, "eventFilter"); signal != nil {
+		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QObject, *std_core.QEvent) bool)(std_core.NewQObjectFromPointer(watched), std_core.NewQEventFromPointer(event)))))
+	}
+
+	return C.char(int8(qt.GoBoolToInt(NewTreeItemFromPointer(ptr).EventFilterDefault(std_core.NewQObjectFromPointer(watched), std_core.NewQEventFromPointer(event)))))
+}
+
+func (ptr *TreeItem) EventFilterDefault(watched std_core.QObject_ITF, event std_core.QEvent_ITF) bool {
+	if ptr.Pointer() != nil {
+		return int8(C.TreeItem92ca9a_EventFilterDefault(ptr.Pointer(), std_core.PointerFromQObject(watched), std_core.PointerFromQEvent(event))) != 0
+	}
+	return false
+}
+
+//export callbackTreeItem92ca9a_ChildEvent
+func callbackTreeItem92ca9a_ChildEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
+	if signal := qt.GetSignal(ptr, "childEvent"); signal != nil {
+		signal.(func(*std_core.QChildEvent))(std_core.NewQChildEventFromPointer(event))
+	} else {
+		NewTreeItemFromPointer(ptr).ChildEventDefault(std_core.NewQChildEventFromPointer(event))
+	}
+}
+
+func (ptr *TreeItem) ChildEventDefault(event std_core.QChildEvent_ITF) {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a_ChildEventDefault(ptr.Pointer(), std_core.PointerFromQChildEvent(event))
+	}
+}
+
+//export callbackTreeItem92ca9a_ConnectNotify
+func callbackTreeItem92ca9a_ConnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
+	if signal := qt.GetSignal(ptr, "connectNotify"); signal != nil {
+		signal.(func(*std_core.QMetaMethod))(std_core.NewQMetaMethodFromPointer(sign))
+	} else {
+		NewTreeItemFromPointer(ptr).ConnectNotifyDefault(std_core.NewQMetaMethodFromPointer(sign))
+	}
+}
+
+func (ptr *TreeItem) ConnectNotifyDefault(sign std_core.QMetaMethod_ITF) {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a_ConnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
+	}
+}
+
+//export callbackTreeItem92ca9a_CustomEvent
+func callbackTreeItem92ca9a_CustomEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
+	if signal := qt.GetSignal(ptr, "customEvent"); signal != nil {
+		signal.(func(*std_core.QEvent))(std_core.NewQEventFromPointer(event))
+	} else {
+		NewTreeItemFromPointer(ptr).CustomEventDefault(std_core.NewQEventFromPointer(event))
+	}
+}
+
+func (ptr *TreeItem) CustomEventDefault(event std_core.QEvent_ITF) {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a_CustomEventDefault(ptr.Pointer(), std_core.PointerFromQEvent(event))
+	}
+}
+
+//export callbackTreeItem92ca9a_DeleteLater
+func callbackTreeItem92ca9a_DeleteLater(ptr unsafe.Pointer) {
+	if signal := qt.GetSignal(ptr, "deleteLater"); signal != nil {
+		signal.(func())()
+	} else {
+		NewTreeItemFromPointer(ptr).DeleteLaterDefault()
+	}
+}
+
+func (ptr *TreeItem) DeleteLaterDefault() {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a_DeleteLaterDefault(ptr.Pointer())
+		ptr.SetPointer(nil)
+		runtime.SetFinalizer(ptr, nil)
+	}
+}
+
+//export callbackTreeItem92ca9a_Destroyed
+func callbackTreeItem92ca9a_Destroyed(ptr unsafe.Pointer, obj unsafe.Pointer) {
+	if signal := qt.GetSignal(ptr, "destroyed"); signal != nil {
+		signal.(func(*std_core.QObject))(std_core.NewQObjectFromPointer(obj))
+	}
+
+}
+
+//export callbackTreeItem92ca9a_DisconnectNotify
+func callbackTreeItem92ca9a_DisconnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
+	if signal := qt.GetSignal(ptr, "disconnectNotify"); signal != nil {
+		signal.(func(*std_core.QMetaMethod))(std_core.NewQMetaMethodFromPointer(sign))
+	} else {
+		NewTreeItemFromPointer(ptr).DisconnectNotifyDefault(std_core.NewQMetaMethodFromPointer(sign))
+	}
+}
+
+func (ptr *TreeItem) DisconnectNotifyDefault(sign std_core.QMetaMethod_ITF) {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a_DisconnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
+	}
+}
+
+//export callbackTreeItem92ca9a_ObjectNameChanged
+func callbackTreeItem92ca9a_ObjectNameChanged(ptr unsafe.Pointer, objectName C.struct_Moc_PackedString) {
+	if signal := qt.GetSignal(ptr, "objectNameChanged"); signal != nil {
+		signal.(func(string))(cGoUnpackString(objectName))
+	}
+
+}
+
+//export callbackTreeItem92ca9a_TimerEvent
+func callbackTreeItem92ca9a_TimerEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
+	if signal := qt.GetSignal(ptr, "timerEvent"); signal != nil {
+		signal.(func(*std_core.QTimerEvent))(std_core.NewQTimerEventFromPointer(event))
+	} else {
+		NewTreeItemFromPointer(ptr).TimerEventDefault(std_core.NewQTimerEventFromPointer(event))
+	}
+}
+
+func (ptr *TreeItem) TimerEventDefault(event std_core.QTimerEvent_ITF) {
+	if ptr.Pointer() != nil {
+		C.TreeItem92ca9a_TimerEventDefault(ptr.Pointer(), std_core.PointerFromQTimerEvent(event))
+	}
+}
+
 type CustomTreeModel_ITF interface {
 	std_core.QAbstractItemModel_ITF
 	CustomTreeModel_PTR() *CustomTreeModel
@@ -1781,420 +2196,5 @@ func callbackCustomTreeModel92ca9a_TimerEvent(ptr unsafe.Pointer, event unsafe.P
 func (ptr *CustomTreeModel) TimerEventDefault(event std_core.QTimerEvent_ITF) {
 	if ptr.Pointer() != nil {
 		C.CustomTreeModel92ca9a_TimerEventDefault(ptr.Pointer(), std_core.PointerFromQTimerEvent(event))
-	}
-}
-
-type TreeItem_ITF interface {
-	std_core.QObject_ITF
-	TreeItem_PTR() *TreeItem
-}
-
-func (ptr *TreeItem) TreeItem_PTR() *TreeItem {
-	return ptr
-}
-
-func (ptr *TreeItem) Pointer() unsafe.Pointer {
-	if ptr != nil {
-		return ptr.QObject_PTR().Pointer()
-	}
-	return nil
-}
-
-func (ptr *TreeItem) SetPointer(p unsafe.Pointer) {
-	if ptr != nil {
-		ptr.QObject_PTR().SetPointer(p)
-	}
-}
-
-func PointerFromTreeItem(ptr TreeItem_ITF) unsafe.Pointer {
-	if ptr != nil {
-		return ptr.TreeItem_PTR().Pointer()
-	}
-	return nil
-}
-
-func NewTreeItemFromPointer(ptr unsafe.Pointer) (n *TreeItem) {
-	if gPtr, ok := qt.Receive(ptr); !ok {
-		n = new(TreeItem)
-		n.SetPointer(ptr)
-	} else {
-		switch deduced := gPtr.(type) {
-		case *TreeItem:
-			n = deduced
-
-		case *std_core.QObject:
-			n = &TreeItem{QObject: *deduced}
-
-		default:
-			n = new(TreeItem)
-			n.SetPointer(ptr)
-		}
-	}
-	return
-}
-
-//export callbackTreeItem92ca9a_Constructor
-func callbackTreeItem92ca9a_Constructor(ptr unsafe.Pointer) {
-	this := NewTreeItemFromPointer(ptr)
-	qt.Register(ptr, this)
-	this.init()
-}
-
-func TreeItem_QRegisterMetaType() int {
-	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QRegisterMetaType()))
-}
-
-func (ptr *TreeItem) QRegisterMetaType() int {
-	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QRegisterMetaType()))
-}
-
-func TreeItem_QRegisterMetaType2(typeName string) int {
-	var typeNameC *C.char
-	if typeName != "" {
-		typeNameC = C.CString(typeName)
-		defer C.free(unsafe.Pointer(typeNameC))
-	}
-	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QRegisterMetaType2(typeNameC)))
-}
-
-func (ptr *TreeItem) QRegisterMetaType2(typeName string) int {
-	var typeNameC *C.char
-	if typeName != "" {
-		typeNameC = C.CString(typeName)
-		defer C.free(unsafe.Pointer(typeNameC))
-	}
-	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QRegisterMetaType2(typeNameC)))
-}
-
-func TreeItem_QmlRegisterType() int {
-	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QmlRegisterType()))
-}
-
-func (ptr *TreeItem) QmlRegisterType() int {
-	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QmlRegisterType()))
-}
-
-func TreeItem_QmlRegisterType2(uri string, versionMajor int, versionMinor int, qmlName string) int {
-	var uriC *C.char
-	if uri != "" {
-		uriC = C.CString(uri)
-		defer C.free(unsafe.Pointer(uriC))
-	}
-	var qmlNameC *C.char
-	if qmlName != "" {
-		qmlNameC = C.CString(qmlName)
-		defer C.free(unsafe.Pointer(qmlNameC))
-	}
-	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
-}
-
-func (ptr *TreeItem) QmlRegisterType2(uri string, versionMajor int, versionMinor int, qmlName string) int {
-	var uriC *C.char
-	if uri != "" {
-		uriC = C.CString(uri)
-		defer C.free(unsafe.Pointer(uriC))
-	}
-	var qmlNameC *C.char
-	if qmlName != "" {
-		qmlNameC = C.CString(qmlName)
-		defer C.free(unsafe.Pointer(qmlNameC))
-	}
-	return int(int32(C.TreeItem92ca9a_TreeItem92ca9a_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
-}
-
-func (ptr *TreeItem) __dynamicPropertyNames_atList(i int) *std_core.QByteArray {
-	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQByteArrayFromPointer(C.TreeItem92ca9a___dynamicPropertyNames_atList(ptr.Pointer(), C.int(int32(i))))
-		runtime.SetFinalizer(tmpValue, (*std_core.QByteArray).DestroyQByteArray)
-		return tmpValue
-	}
-	return nil
-}
-
-func (ptr *TreeItem) __dynamicPropertyNames_setList(i std_core.QByteArray_ITF) {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a___dynamicPropertyNames_setList(ptr.Pointer(), std_core.PointerFromQByteArray(i))
-	}
-}
-
-func (ptr *TreeItem) __dynamicPropertyNames_newList() unsafe.Pointer {
-	return C.TreeItem92ca9a___dynamicPropertyNames_newList(ptr.Pointer())
-}
-
-func (ptr *TreeItem) __findChildren_atList2(i int) *std_core.QObject {
-	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem92ca9a___findChildren_atList2(ptr.Pointer(), C.int(int32(i))))
-		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
-			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
-		}
-		return tmpValue
-	}
-	return nil
-}
-
-func (ptr *TreeItem) __findChildren_setList2(i std_core.QObject_ITF) {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a___findChildren_setList2(ptr.Pointer(), std_core.PointerFromQObject(i))
-	}
-}
-
-func (ptr *TreeItem) __findChildren_newList2() unsafe.Pointer {
-	return C.TreeItem92ca9a___findChildren_newList2(ptr.Pointer())
-}
-
-func (ptr *TreeItem) __findChildren_atList3(i int) *std_core.QObject {
-	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem92ca9a___findChildren_atList3(ptr.Pointer(), C.int(int32(i))))
-		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
-			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
-		}
-		return tmpValue
-	}
-	return nil
-}
-
-func (ptr *TreeItem) __findChildren_setList3(i std_core.QObject_ITF) {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a___findChildren_setList3(ptr.Pointer(), std_core.PointerFromQObject(i))
-	}
-}
-
-func (ptr *TreeItem) __findChildren_newList3() unsafe.Pointer {
-	return C.TreeItem92ca9a___findChildren_newList3(ptr.Pointer())
-}
-
-func (ptr *TreeItem) __findChildren_atList(i int) *std_core.QObject {
-	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem92ca9a___findChildren_atList(ptr.Pointer(), C.int(int32(i))))
-		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
-			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
-		}
-		return tmpValue
-	}
-	return nil
-}
-
-func (ptr *TreeItem) __findChildren_setList(i std_core.QObject_ITF) {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a___findChildren_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
-	}
-}
-
-func (ptr *TreeItem) __findChildren_newList() unsafe.Pointer {
-	return C.TreeItem92ca9a___findChildren_newList(ptr.Pointer())
-}
-
-func (ptr *TreeItem) __children_atList(i int) *std_core.QObject {
-	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem92ca9a___children_atList(ptr.Pointer(), C.int(int32(i))))
-		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
-			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
-		}
-		return tmpValue
-	}
-	return nil
-}
-
-func (ptr *TreeItem) __children_setList(i std_core.QObject_ITF) {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a___children_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
-	}
-}
-
-func (ptr *TreeItem) __children_newList() unsafe.Pointer {
-	return C.TreeItem92ca9a___children_newList(ptr.Pointer())
-}
-
-func NewTreeItem(parent std_core.QObject_ITF) *TreeItem {
-	tmpValue := NewTreeItemFromPointer(C.TreeItem92ca9a_NewTreeItem(std_core.PointerFromQObject(parent)))
-	if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
-		tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
-	}
-	return tmpValue
-}
-
-//export callbackTreeItem92ca9a_DestroyTreeItem
-func callbackTreeItem92ca9a_DestroyTreeItem(ptr unsafe.Pointer) {
-	if signal := qt.GetSignal(ptr, "~TreeItem"); signal != nil {
-		signal.(func())()
-	} else {
-		NewTreeItemFromPointer(ptr).DestroyTreeItemDefault()
-	}
-}
-
-func (ptr *TreeItem) ConnectDestroyTreeItem(f func()) {
-	if ptr.Pointer() != nil {
-
-		if signal := qt.LendSignal(ptr.Pointer(), "~TreeItem"); signal != nil {
-			qt.ConnectSignal(ptr.Pointer(), "~TreeItem", func() {
-				signal.(func())()
-				f()
-			})
-		} else {
-			qt.ConnectSignal(ptr.Pointer(), "~TreeItem", f)
-		}
-	}
-}
-
-func (ptr *TreeItem) DisconnectDestroyTreeItem() {
-	if ptr.Pointer() != nil {
-
-		qt.DisconnectSignal(ptr.Pointer(), "~TreeItem")
-	}
-}
-
-func (ptr *TreeItem) DestroyTreeItem() {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a_DestroyTreeItem(ptr.Pointer())
-		ptr.SetPointer(nil)
-		runtime.SetFinalizer(ptr, nil)
-	}
-}
-
-func (ptr *TreeItem) DestroyTreeItemDefault() {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a_DestroyTreeItemDefault(ptr.Pointer())
-		ptr.SetPointer(nil)
-		runtime.SetFinalizer(ptr, nil)
-	}
-}
-
-//export callbackTreeItem92ca9a_Event
-func callbackTreeItem92ca9a_Event(ptr unsafe.Pointer, e unsafe.Pointer) C.char {
-	if signal := qt.GetSignal(ptr, "event"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QEvent) bool)(std_core.NewQEventFromPointer(e)))))
-	}
-
-	return C.char(int8(qt.GoBoolToInt(NewTreeItemFromPointer(ptr).EventDefault(std_core.NewQEventFromPointer(e)))))
-}
-
-func (ptr *TreeItem) EventDefault(e std_core.QEvent_ITF) bool {
-	if ptr.Pointer() != nil {
-		return int8(C.TreeItem92ca9a_EventDefault(ptr.Pointer(), std_core.PointerFromQEvent(e))) != 0
-	}
-	return false
-}
-
-//export callbackTreeItem92ca9a_EventFilter
-func callbackTreeItem92ca9a_EventFilter(ptr unsafe.Pointer, watched unsafe.Pointer, event unsafe.Pointer) C.char {
-	if signal := qt.GetSignal(ptr, "eventFilter"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QObject, *std_core.QEvent) bool)(std_core.NewQObjectFromPointer(watched), std_core.NewQEventFromPointer(event)))))
-	}
-
-	return C.char(int8(qt.GoBoolToInt(NewTreeItemFromPointer(ptr).EventFilterDefault(std_core.NewQObjectFromPointer(watched), std_core.NewQEventFromPointer(event)))))
-}
-
-func (ptr *TreeItem) EventFilterDefault(watched std_core.QObject_ITF, event std_core.QEvent_ITF) bool {
-	if ptr.Pointer() != nil {
-		return int8(C.TreeItem92ca9a_EventFilterDefault(ptr.Pointer(), std_core.PointerFromQObject(watched), std_core.PointerFromQEvent(event))) != 0
-	}
-	return false
-}
-
-//export callbackTreeItem92ca9a_ChildEvent
-func callbackTreeItem92ca9a_ChildEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
-	if signal := qt.GetSignal(ptr, "childEvent"); signal != nil {
-		signal.(func(*std_core.QChildEvent))(std_core.NewQChildEventFromPointer(event))
-	} else {
-		NewTreeItemFromPointer(ptr).ChildEventDefault(std_core.NewQChildEventFromPointer(event))
-	}
-}
-
-func (ptr *TreeItem) ChildEventDefault(event std_core.QChildEvent_ITF) {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a_ChildEventDefault(ptr.Pointer(), std_core.PointerFromQChildEvent(event))
-	}
-}
-
-//export callbackTreeItem92ca9a_ConnectNotify
-func callbackTreeItem92ca9a_ConnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
-	if signal := qt.GetSignal(ptr, "connectNotify"); signal != nil {
-		signal.(func(*std_core.QMetaMethod))(std_core.NewQMetaMethodFromPointer(sign))
-	} else {
-		NewTreeItemFromPointer(ptr).ConnectNotifyDefault(std_core.NewQMetaMethodFromPointer(sign))
-	}
-}
-
-func (ptr *TreeItem) ConnectNotifyDefault(sign std_core.QMetaMethod_ITF) {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a_ConnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
-	}
-}
-
-//export callbackTreeItem92ca9a_CustomEvent
-func callbackTreeItem92ca9a_CustomEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
-	if signal := qt.GetSignal(ptr, "customEvent"); signal != nil {
-		signal.(func(*std_core.QEvent))(std_core.NewQEventFromPointer(event))
-	} else {
-		NewTreeItemFromPointer(ptr).CustomEventDefault(std_core.NewQEventFromPointer(event))
-	}
-}
-
-func (ptr *TreeItem) CustomEventDefault(event std_core.QEvent_ITF) {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a_CustomEventDefault(ptr.Pointer(), std_core.PointerFromQEvent(event))
-	}
-}
-
-//export callbackTreeItem92ca9a_DeleteLater
-func callbackTreeItem92ca9a_DeleteLater(ptr unsafe.Pointer) {
-	if signal := qt.GetSignal(ptr, "deleteLater"); signal != nil {
-		signal.(func())()
-	} else {
-		NewTreeItemFromPointer(ptr).DeleteLaterDefault()
-	}
-}
-
-func (ptr *TreeItem) DeleteLaterDefault() {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a_DeleteLaterDefault(ptr.Pointer())
-		ptr.SetPointer(nil)
-		runtime.SetFinalizer(ptr, nil)
-	}
-}
-
-//export callbackTreeItem92ca9a_Destroyed
-func callbackTreeItem92ca9a_Destroyed(ptr unsafe.Pointer, obj unsafe.Pointer) {
-	if signal := qt.GetSignal(ptr, "destroyed"); signal != nil {
-		signal.(func(*std_core.QObject))(std_core.NewQObjectFromPointer(obj))
-	}
-
-}
-
-//export callbackTreeItem92ca9a_DisconnectNotify
-func callbackTreeItem92ca9a_DisconnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
-	if signal := qt.GetSignal(ptr, "disconnectNotify"); signal != nil {
-		signal.(func(*std_core.QMetaMethod))(std_core.NewQMetaMethodFromPointer(sign))
-	} else {
-		NewTreeItemFromPointer(ptr).DisconnectNotifyDefault(std_core.NewQMetaMethodFromPointer(sign))
-	}
-}
-
-func (ptr *TreeItem) DisconnectNotifyDefault(sign std_core.QMetaMethod_ITF) {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a_DisconnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
-	}
-}
-
-//export callbackTreeItem92ca9a_ObjectNameChanged
-func callbackTreeItem92ca9a_ObjectNameChanged(ptr unsafe.Pointer, objectName C.struct_Moc_PackedString) {
-	if signal := qt.GetSignal(ptr, "objectNameChanged"); signal != nil {
-		signal.(func(string))(cGoUnpackString(objectName))
-	}
-
-}
-
-//export callbackTreeItem92ca9a_TimerEvent
-func callbackTreeItem92ca9a_TimerEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
-	if signal := qt.GetSignal(ptr, "timerEvent"); signal != nil {
-		signal.(func(*std_core.QTimerEvent))(std_core.NewQTimerEventFromPointer(event))
-	} else {
-		NewTreeItemFromPointer(ptr).TimerEventDefault(std_core.NewQTimerEventFromPointer(event))
-	}
-}
-
-func (ptr *TreeItem) TimerEventDefault(event std_core.QTimerEvent_ITF) {
-	if ptr.Pointer() != nil {
-		C.TreeItem92ca9a_TimerEventDefault(ptr.Pointer(), std_core.PointerFromQTimerEvent(event))
 	}
 }

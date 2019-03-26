@@ -15,11 +15,11 @@ func NewEditLayout(docStr string) *widgets.QWidget {
 	var loader = uitools.NewQUiLoader(nil)
 	var file = core.NewQFile2(":/qml/edit.ui")
 	file.Open(core.QIODevice__ReadOnly)
-	exportDialogWidget := loader.Load(file, widget)
+	dialogWidget := loader.Load(file, widget)
 	file.Close()
-	plainTextEdit := widgets.NewQPlainTextEditFromPointer(widget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
+	plainTextEdit := widgets.NewQPlainTextEditFromPointer(dialogWidget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 	plainTextEdit.SetPlainText(docStr)
-	return exportDialogWidget
+	return dialogWidget
 }
 
 func RegisterEditLayoutBtn(widget *widgets.QWidget, subwin *widgets.QDialog, collection *mongo.Collection) {
