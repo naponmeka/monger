@@ -4,7 +4,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
-func CreateMenuBar(tabsHolder *widgets.QTabWidget) *widgets.QMenuBar {
+func CreateMenuBar(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBinder) *widgets.QMenuBar {
 	menuBar := widgets.NewQMenuBar(nil)
 	fileMenuBar := widgets.NewQMenu(nil)
 	fileMenuBar.SetTitle("File")
@@ -14,7 +14,7 @@ func CreateMenuBar(tabsHolder *widgets.QTabWidget) *widgets.QMenuBar {
 	})
 	newTabBtn := fileMenuBar.AddAction("New tab")
 	newTabBtn.ConnectTriggered(func(bool) {
-		tab := NewConnectLayout(tabsHolder)
+		tab := NewConnectLayout(tabsHolder, keyboardBinder)
 		tabsHolder.AddTab(tab, "Connect")
 	})
 	fileMenuBar.AddSeparator()

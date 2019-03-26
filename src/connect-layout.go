@@ -6,7 +6,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
-func NewConnectLayout(tabsHolder *widgets.QTabWidget) *widgets.QWidget {
+func NewConnectLayout(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBinder) *widgets.QWidget {
 	var widget = widgets.NewQWidget(nil, 0)
 	var loader = uitools.NewQUiLoader(nil)
 	var file = core.NewQFile2(":/qml/connect.ui")
@@ -23,7 +23,7 @@ func NewConnectLayout(tabsHolder *widgets.QTabWidget) *widgets.QWidget {
 	connectBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("connectBtn", core.Qt__FindChildrenRecursively).Pointer())
 	connectBtn.ConnectClicked(func(bool) {
 		URI := URILineEdit.Text()
-		mainQueryWidget := NewMainLayout(URI)
+		mainQueryWidget := NewMainLayout(URI, keyboardBinder)
 		ReplaceTabContent(tabsHolder, mainQueryWidget, "Query")
 	})
 	return connectWidget

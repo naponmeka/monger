@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func NewMainLayout(mongoURI string) *widgets.QWidget {
+func NewMainLayout(mongoURI string, keyboardBinder *KeyboardBinder) *widgets.QWidget {
 	var widget = widgets.NewQWidget(nil, 0)
 	var loader = uitools.NewQUiLoader(nil)
 	var file = core.NewQFile2(":/qml/main.ui")
@@ -55,6 +55,14 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 	resultTreeview := widgets.NewQTreeViewFromPointer(widget.FindChild("resultTreeView", core.Qt__FindChildrenRecursively).Pointer())
 	model := NewCustomTreeModel(nil)
 	resultTreeview.SetModel(model)
+	maxPossibleDocCount := &[]int{50}[0]
+	keyboardBinder.queryPlainTextEdit = queryPlainTextEdit
+	keyboardBinder.mongoURI = &mongoURI
+	keyboardBinder.currentDB = &currentDB
+	keyboardBinder.currentCollection = &currentCollection
+	keyboardBinder.model = model
+	keyboardBinder.documents = &documents
+	keyboardBinder.maxPossibleDocCount = maxPossibleDocCount
 
 	registerTemplateBtn(mainWidget, queryPlainTextEdit)
 	registerActionBtn(
@@ -67,6 +75,7 @@ func NewMainLayout(mongoURI string) *widgets.QWidget {
 		&currentCollection,
 		model,
 		&documents,
+		maxPossibleDocCount,
 	)
 	registerDocOperationBtn(
 		mainWidget,
