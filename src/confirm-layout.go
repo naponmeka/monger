@@ -22,7 +22,13 @@ func NewConfirmLayout(confirmText string) *widgets.QWidget {
 	return dialogWidget
 }
 
-func RegisterConfirmDeleteLayoutBtn(widget *widgets.QWidget, subwin *widgets.QDialog, collection *mongo.Collection, document bson.M) {
+func RegisterConfirmDeleteLayoutBtn(
+	widget *widgets.QWidget,
+	subwin *widgets.QDialog,
+	collection *mongo.Collection,
+	document bson.M,
+	keyboardBinder *KeyboardBinder,
+) {
 
 	buttonBox := widgets.NewQDialogButtonBoxFromPointer(widget.FindChild("buttonBox", core.Qt__FindChildrenRecursively).Pointer())
 	buttonBox.ConnectAccepted(func() {
@@ -34,6 +40,7 @@ func RegisterConfirmDeleteLayoutBtn(widget *widgets.QWidget, subwin *widgets.QDi
 		}
 		connectdb.Remove(collection, filter, true)
 		subwin.Close()
+		keyboardBinder.ExecuteQuery()
 	})
 	buttonBox.ConnectRejected(func() {
 		subwin.Close()

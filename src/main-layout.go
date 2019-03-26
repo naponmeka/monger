@@ -84,6 +84,7 @@ func NewMainLayout(mongoURI string, keyboardBinder *KeyboardBinder) *widgets.QWi
 		&mongoURI,
 		&currentDB,
 		&currentCollection,
+		keyboardBinder,
 	)
 
 	return mainWidget

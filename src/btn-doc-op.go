@@ -18,6 +18,7 @@ func registerDocOperationBtn(
 	mongoURI *string,
 	currentDB *string,
 	currentCollection *string,
+	keyboardBinder *KeyboardBinder,
 ) {
 	editDocBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("editDocBtn", core.Qt__FindChildrenRecursively).Pointer())
 	editDocBtn.ConnectClicked(func(bool) {
@@ -35,7 +36,7 @@ func registerDocOperationBtn(
 		editLayout := NewEditLayout(docStr)
 		subwin.Layout().AddWidget(editLayout)
 		dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
-		RegisterEditLayoutBtn(editLayout, subwin, dbCollection)
+		RegisterEditLayoutBtn(editLayout, subwin, dbCollection, keyboardBinder)
 		subwin.SetModal(true)
 		subwin.SetMinimumSize2(640, 480)
 		subwin.Exec()
@@ -68,7 +69,7 @@ func registerDocOperationBtn(
 		insertLayout := NewInsertLayout()
 		subwin.Layout().AddWidget(insertLayout)
 		dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
-		RegisterInsertLayoutBtn(insertLayout, subwin, dbCollection)
+		RegisterInsertLayoutBtn(insertLayout, subwin, dbCollection, keyboardBinder)
 		subwin.SetModal(true)
 		subwin.SetMinimumSize2(640, 480)
 		subwin.Exec()
@@ -83,7 +84,13 @@ func registerDocOperationBtn(
 		deleteConfirmLayout := NewConfirmLayout("Confirm delete?")
 		subwin.Layout().AddWidget(deleteConfirmLayout)
 		dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
-		RegisterConfirmDeleteLayoutBtn(deleteConfirmLayout, subwin, dbCollection, (*documents)[selected])
+		RegisterConfirmDeleteLayoutBtn(
+			deleteConfirmLayout,
+			subwin,
+			dbCollection,
+			(*documents)[selected],
+			keyboardBinder,
+		)
 		subwin.SetModal(true)
 		subwin.SetMinimumSize2(100, 100)
 		subwin.Exec()

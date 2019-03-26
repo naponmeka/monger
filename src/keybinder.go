@@ -35,6 +35,20 @@ func (kbBinder *KeyboardBinder) BindExecuteQuery(event *gui.QKeyEvent) {
 	}
 }
 
+func (kbBinder *KeyboardBinder) ExecuteQuery() {
+	if kbBinder.mongoURI != nil {
+		executeQuery(
+			kbBinder.maxPossibleDocCount,
+			kbBinder.queryPlainTextEdit,
+			kbBinder.mongoURI,
+			kbBinder.currentDB,
+			kbBinder.currentCollection,
+			kbBinder.model,
+			kbBinder.documents,
+		)
+	}
+}
+
 func (kbBinder *KeyboardBinder) BindKeyboardTabControl(event *gui.QKeyEvent, tabsHolder *widgets.QTabWidget, window *widgets.QMainWindow) {
 	if event.Modifiers() == core.Qt__ControlModifier {
 		if event.Key() == 84 { // T
