@@ -1,6 +1,6 @@
 package list
 
 type ListItem struct {
-	Name string
-	URI  string
+	Name string `json:"name"`
+	URI  string `json:"uri"`
 }
