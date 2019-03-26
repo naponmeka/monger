@@ -2,6 +2,7 @@ package src
 
 import (
 	"github.com/naponmeka/robone/connectdb"
+	"github.com/naponmeka/robone/tree"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
@@ -53,7 +54,7 @@ func NewMainLayout(mongoURI string, keyboardBinder *KeyboardBinder) *widgets.QWi
 	})
 
 	resultTreeview := widgets.NewQTreeViewFromPointer(widget.FindChild("resultTreeView", core.Qt__FindChildrenRecursively).Pointer())
-	model := NewCustomTreeModel(nil)
+	model := tree.NewCustomTreeModel(nil)
 	resultTreeview.SetModel(model)
 	maxPossibleDocCount := &[]int{50}[0]
 	keyboardBinder.queryPlainTextEdit = queryPlainTextEdit

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/naponmeka/robone/tree"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
 	"go.mongodb.org/mongo-driver/bson"
@@ -17,7 +18,7 @@ func registerActionBtn(
 	mongoURI *string,
 	currentDB *string,
 	currentCollection *string,
-	model *CustomTreeModel,
+	model *tree.CustomTreeModel,
 	documents *[]bson.M,
 	maxPossibleDocCount *int,
 ) {
@@ -55,14 +56,14 @@ func executeQuery(
 	mongoURI *string,
 	currentDB *string,
 	currentCollection *string,
-	model *CustomTreeModel,
+	model *tree.CustomTreeModel,
 	documents *[]bson.M,
 ) {
 	currentQuery := queryPlainTextEdit.ToPlainText()
 	for i := 0; i < *maxPossibleDocCount; i++ {
 		model.Remove()
 	}
-	items, docs, err := createItems(*mongoURI, *currentDB, *currentCollection, currentQuery)
+	items, docs, err := tree.CreateItems(*mongoURI, *currentDB, *currentCollection, currentQuery)
 	*documents = docs
 	if err != nil {
 		widgets.QMessageBox_Information(nil, "Error", "wrong query", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)

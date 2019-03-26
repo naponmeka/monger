@@ -1,4 +1,4 @@
-package src
+package tree
 
 import "github.com/therecipe/qt/core"
 

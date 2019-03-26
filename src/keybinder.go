@@ -1,6 +1,7 @@
 package src
 
 import (
+	"github.com/naponmeka/robone/tree"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
@@ -13,7 +14,7 @@ type KeyboardBinder struct {
 	mongoURI            *string
 	currentDB           *string
 	currentCollection   *string
-	model               *CustomTreeModel
+	model               *tree.CustomTreeModel
 	documents           *[]bson.M
 }
 
