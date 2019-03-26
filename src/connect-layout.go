@@ -16,9 +16,16 @@ func NewConnectLayout(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBi
 	file.Open(core.QIODevice__ReadOnly)
 	connectWidget := loader.Load(file, widget)
 	file.Close()
+	savedConnections := []list.ListItem{
+		list.ListItem{Name: "local", URI: "mongodb://root:root@localhost:27017"},
+		list.ListItem{Name: "production", URI: "mongodb://...."},
+	}
 	listView := widgets.NewQListViewFromPointer(widget.FindChild("listView", core.Qt__FindChildrenRecursively).Pointer())
 	model := list.NewCustomListModel(nil)
 	listView.SetModel(model)
+	for _, savedConnection := range savedConnections {
+		model.Add(savedConnection)
+	}
 
 	testBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("testBtn", core.Qt__FindChildrenRecursively).Pointer())
 	testBtn.ConnectClicked(func(bool) {
@@ -26,7 +33,7 @@ func NewConnectLayout(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBi
 	})
 	nameLineEdit := widgets.NewQLineEditFromPointer(widget.FindChild("nameLineEdit", core.Qt__FindChildrenRecursively).Pointer())
 	URILineEdit := widgets.NewQLineEditFromPointer(widget.FindChild("mylineedit", core.Qt__FindChildrenRecursively).Pointer())
-	URILineEdit.SetText("mongodb://root:root@localhost:27017/admin")
+	// URILineEdit.SetText("mongodb://root:root@localhost:27017/admin")
 	connectBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("connectBtn", core.Qt__FindChildrenRecursively).Pointer())
 	connectBtn.ConnectClicked(func(bool) {
 		URI := URILineEdit.Text()
@@ -37,15 +44,17 @@ func NewConnectLayout(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBi
 	saveBtn.ConnectClicked(func(bool) {
 		name := nameLineEdit.Text()
 		URI := URILineEdit.Text()
-		model.Add(list.ListItem{Name: name, URI: URI})
+		newItem := list.ListItem{Name: name, URI: URI}
+		model.Add(newItem)
+		savedConnections = append(savedConnections, newItem)
 	})
 
 	deleteBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("deleteBtn", core.Qt__FindChildrenRecursively).Pointer())
 	deleteBtn.ConnectClicked(func(bool) {
 		idx := listView.CurrentIndex().Row()
 		idxStr := strconv.Itoa(idx)
-		// widgets.QMessageBox_Information(nil, "OK", fmt.Sprintln(idx), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 		model.RemoveAt(idxStr)
+		savedConnections = append(savedConnections[:idx], savedConnections[idx+1:]...)
 	})
 	createBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("createBtn", core.Qt__FindChildrenRecursively).Pointer())
 	createBtn.ConnectClicked(func(bool) {
@@ -53,6 +62,13 @@ func NewConnectLayout(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBi
 		listView.SetCurrentIndex(index)
 		nameLineEdit.SetText("")
 		URILineEdit.SetText("")
+	})
+
+	listView.ConnectClicked(func(index *core.QModelIndex) {
+		idx := index.Row()
+		item := savedConnections[idx]
+		nameLineEdit.SetText(item.Name)
+		URILineEdit.SetText(item.URI)
 	})
 
 	return connectWidget
