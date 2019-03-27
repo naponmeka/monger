@@ -25,7 +25,7 @@ func CreateMenuBar(tabsHolder *widgets.QTabWidget, keyboardBinder *KeyboardBinde
 		subwin.SetLayout(widgets.NewQHBoxLayout())
 		exportLayout := NewExportLayout()
 		subwin.Layout().AddWidget(exportLayout)
-		subwin.SetModal(true)
+		// subwin.SetModal(true)
 		subwin.SetMinimumSize2(640, 480)
 		RegisterExportLayoutBtn(exportLayout, subwin)
 		subwin.Show()
