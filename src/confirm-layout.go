@@ -27,7 +27,7 @@ func RegisterConfirmDeleteLayoutBtn(
 	subwin *widgets.QDialog,
 	collection *mongo.Collection,
 	document bson.M,
-	keyboardBinder *KeyboardBinder,
+	globalState *GlobalState,
 ) {
 
 	buttonBox := widgets.NewQDialogButtonBoxFromPointer(widget.FindChild("buttonBox", core.Qt__FindChildrenRecursively).Pointer())
@@ -40,7 +40,7 @@ func RegisterConfirmDeleteLayoutBtn(
 		}
 		connectdb.Remove(collection, filter, true)
 		subwin.Close()
-		keyboardBinder.ExecuteQuery()
+		globalState.ExecuteQuery()
 	})
 	buttonBox.ConnectRejected(func() {
 		subwin.Close()

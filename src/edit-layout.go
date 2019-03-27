@@ -26,7 +26,7 @@ func RegisterEditLayoutBtn(
 	widget *widgets.QWidget,
 	subwin *widgets.QDialog,
 	collection *mongo.Collection,
-	keyboardBinder *KeyboardBinder,
+	globalState *GlobalState,
 ) {
 	cancelBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("cancelBtn", core.Qt__FindChildrenRecursively).Pointer())
 	cancelBtn.ConnectClicked(func(bool) {
@@ -47,6 +47,6 @@ func RegisterEditLayoutBtn(
 		}
 		connectdb.Replace(collection, filter, originalDoc, nil)
 		subwin.Close()
-		keyboardBinder.ExecuteQuery()
+		globalState.ExecuteQuery()
 	})
 }

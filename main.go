@@ -10,5 +10,6 @@ import (
 func main() {
 	app := widgets.NewQApplication(len(os.Args), os.Args)
 	src.NewWindow()
+	// app.SetStyleSheet(``)
 	app.Exec()
 }

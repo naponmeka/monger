@@ -18,7 +18,7 @@ func registerDocOperationBtn(
 	mongoURI *string,
 	currentDB *string,
 	currentCollection *string,
-	keyboardBinder *KeyboardBinder,
+	globalState *GlobalState,
 ) {
 	editDocBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("editDocBtn", core.Qt__FindChildrenRecursively).Pointer())
 	editDocBtn.ConnectClicked(func(bool) {
@@ -36,7 +36,7 @@ func registerDocOperationBtn(
 		editLayout := NewEditLayout(docStr)
 		subwin.Layout().AddWidget(editLayout)
 		dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
-		RegisterEditLayoutBtn(editLayout, subwin, dbCollection, keyboardBinder)
+		RegisterEditLayoutBtn(editLayout, subwin, dbCollection, globalState)
 		subwin.SetModal(true)
 		subwin.SetMinimumSize2(640, 480)
 		subwin.Exec()
@@ -69,7 +69,7 @@ func registerDocOperationBtn(
 		insertLayout := NewInsertLayout()
 		subwin.Layout().AddWidget(insertLayout)
 		dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
-		RegisterInsertLayoutBtn(insertLayout, subwin, dbCollection, keyboardBinder)
+		RegisterInsertLayoutBtn(insertLayout, subwin, dbCollection, globalState)
 		subwin.SetModal(true)
 		subwin.SetMinimumSize2(640, 480)
 		subwin.Exec()
@@ -89,7 +89,7 @@ func registerDocOperationBtn(
 			subwin,
 			dbCollection,
 			(*documents)[selected],
-			keyboardBinder,
+			globalState,
 		)
 		subwin.SetModal(true)
 		subwin.SetMinimumSize2(100, 100)

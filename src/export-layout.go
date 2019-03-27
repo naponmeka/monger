@@ -48,15 +48,22 @@ func NewExportLayout() *widgets.QWidget {
 		subwin.Exec()
 	})
 
-	// csvExportBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("csvExportBtn", core.Qt__FindChildrenRecursively).Pointer())
-	// csvExportBtn.ConnectClicked(func(bool) {
+	csvExportBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("csvExportBtn", core.Qt__FindChildrenRecursively).Pointer())
+	csvExportBtn.ConnectClicked(func(bool) {
+		// for _, colSetting := range tableData {
+		// 	csvField := colSetting.CSVField
+		// 	fromField := colSetting.FromField
+
+
+		// }
+
 		// go func(widget *widgets.QWidget) {
 		// 	time.Sleep(5 * time.Second)
 		// 	csvExportBtn.SetText("Done")
 		// 	// widgets.QMessageBox_Information(widget, "OK", "Export done", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 		// }(widget)
 
-	// })
+	})
 
 	return exportDialogWidget
 }

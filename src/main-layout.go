@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func NewMainLayout(mongoURI string, keyboardBinder *KeyboardBinder) *widgets.QWidget {
+func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 	var widget = widgets.NewQWidget(nil, 0)
 	var loader = uitools.NewQUiLoader(nil)
 	var file = core.NewQFile2(":/qml/main.ui")
@@ -57,13 +57,13 @@ func NewMainLayout(mongoURI string, keyboardBinder *KeyboardBinder) *widgets.QWi
 	model := tree.NewCustomTreeModel(nil)
 	resultTreeview.SetModel(model)
 	maxPossibleDocCount := &[]int{50}[0]
-	keyboardBinder.queryPlainTextEdit = queryPlainTextEdit
-	keyboardBinder.mongoURI = &mongoURI
-	keyboardBinder.currentDB = &currentDB
-	keyboardBinder.currentCollection = &currentCollection
-	keyboardBinder.model = model
-	keyboardBinder.documents = &documents
-	keyboardBinder.maxPossibleDocCount = maxPossibleDocCount
+	globalState.queryPlainTextEdit = queryPlainTextEdit
+	globalState.mongoURI = &mongoURI
+	globalState.currentDB = &currentDB
+	globalState.currentCollection = &currentCollection
+	globalState.model = model
+	globalState.documents = &documents
+	globalState.maxPossibleDocCount = maxPossibleDocCount
 
 	registerTemplateBtn(mainWidget, queryPlainTextEdit)
 	registerActionBtn(
@@ -85,7 +85,7 @@ func NewMainLayout(mongoURI string, keyboardBinder *KeyboardBinder) *widgets.QWi
 		&mongoURI,
 		&currentDB,
 		&currentCollection,
-		keyboardBinder,
+		globalState,
 	)
 
 	return mainWidget

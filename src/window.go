@@ -8,29 +8,33 @@ import (
 
 func NewWindow() {
 	window := widgets.NewQMainWindow(nil, 0)
-	keyboardBinder := KeyboardBinder{}
 	tabsLayout := NewTabLayout()
 	tabsHolder := widgets.NewQTabWidgetFromPointer(tabsLayout.FindChild("tabWidget", core.Qt__FindChildrenRecursively).Pointer())
+	globalState := GlobalState{
+		tabsHolder: tabsHolder,
+		window:     window,
+	}
 	tabsHolder.ConnectTabCloseRequested(func(idx int) {
 		tabsHolder.RemoveTab(idx)
 	})
 	tabsHolder.ConnectTabBarDoubleClicked(func(idx int) {
 		if idx == -1 {
-			tab := NewConnectLayout(tabsHolder, &keyboardBinder)
+			tab := NewConnectLayout(tabsHolder, &globalState)
 			tabsHolder.AddTab(tab, "Connect")
 			tabsHolder.SetCurrentIndex(tabsHolder.Count() - 1)
 		}
 	})
-	connectLayout := NewConnectLayout(tabsHolder, &keyboardBinder)
+	connectLayout := NewConnectLayout(tabsHolder, &globalState)
 	tabsHolder.AddTab(connectLayout, "Connect")
-	menuBar := CreateMenuBar(tabsHolder, &keyboardBinder)
+	menuBar := CreateMenuBar(tabsHolder, &globalState)
 	window.SetMenuBar(menuBar)
 	window.SetMinimumSize2(720, 480)
 	window.SetWindowTitle("Robone")
 	window.SetCentralWidget(tabsLayout)
+
 	window.ConnectKeyPressEvent(func(event *gui.QKeyEvent) {
-		keyboardBinder.BindKeyboardTabControl(event, tabsHolder, window)
-		keyboardBinder.BindExecuteQuery(event)
+		globalState.BindKeyboardTabControl(event)
+		globalState.BindExecuteQuery(event)
 	})
 	window.Show()
 }
