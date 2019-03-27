@@ -93,6 +93,8 @@ func NewExportLayout(globalState *GlobalState) *widgets.QWidget {
 			*globalState.currentDB,
 			*globalState.currentCollection,
 			*globalState.currentQuery,
+			-1,
+			-1,
 		)
 		if err != nil {
 			widgets.QMessageBox_Information(widget, "Error", "Cannot Query", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)

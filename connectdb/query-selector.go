@@ -4,17 +4,36 @@ import (
 	"strings"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func Query(mongoURI, db, collectionName, query string) (results []bson.M, err error) {
+func Query(
+	mongoURI string,
+	db string,
+	collectionName string,
+	query string,
+	skip int,
+	limit int,
+) (results []bson.M, err error) {
 	collection := GetCollection(mongoURI, db, collectionName)
 	if strings.HasPrefix(query, ".find(") {
 		raw := GetStringInBetween(query, ".find(", ")")
-		filter, option, err := findExtractor(raw)
+		filter, fOptions, err := findExtractor(raw)
+		if skip >= 0 {
+			fOptions = append(fOptions, &options.FindOptions{
+				Skip: &[]int64{int64(skip)}[0],
+			})
+		}
+		if limit >= 0 {
+			fOptions = append(fOptions, &options.FindOptions{
+				Limit: &[]int64{int64(limit)}[0],
+			})
+
+		}
 		if err != nil {
 			return results, err
 		}
-		results, err = Find(collection, filter, option)
+		results, err = Find(collection, filter, fOptions)
 		if err != nil {
 			return results, err
 		}

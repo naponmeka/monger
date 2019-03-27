@@ -9,8 +9,15 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func CreateItems(mongoURI, db, collectionName, query string) (items []*TreeItem, documents []bson.M, err error) {
-	documents, err = connectdb.Query(mongoURI, db, collectionName, query)
+func CreateItems(
+	mongoURI string,
+	db string,
+	collectionName string,
+	query string,
+	skip int,
+	limit int,
+) (items []*TreeItem, documents []bson.M, err error) {
+	documents, err = connectdb.Query(mongoURI, db, collectionName, query, skip, limit)
 	if err != nil {
 		return nil, nil, err
 	}

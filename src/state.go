@@ -20,21 +20,15 @@ type GlobalState struct {
 	model               *tree.CustomTreeModel
 	documents           *[]bson.M
 	exportMenuBar       *widgets.QAction
+	skip                *int
+	limit               *int
 }
 
 func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {
 	if event.Modifiers() == core.Qt__ControlModifier {
 		if event.Key() == 16777220 {
 			if gs.mongoURI != nil {
-				executeQuery(
-					gs.maxPossibleDocCount,
-					gs.queryPlainTextEdit,
-					gs.mongoURI,
-					gs.currentDB,
-					gs.currentCollection,
-					gs.model,
-					gs.documents,
-				)
+				gs.ExecuteQuery()
 			}
 		}
 	}
@@ -43,13 +37,14 @@ func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {
 func (gs *GlobalState) ExecuteQuery() {
 	if gs.mongoURI != nil {
 		executeQuery(
-			gs.maxPossibleDocCount,
 			gs.queryPlainTextEdit,
 			gs.mongoURI,
 			gs.currentDB,
 			gs.currentCollection,
 			gs.model,
 			gs.documents,
+			gs.skip,
+			gs.limit,
 		)
 	}
 }

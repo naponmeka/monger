@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func findExtractor(query string) (filter interface{}, option *options.FindOptions, err error) {
+func findExtractor(query string) (filter interface{}, returnOptions []*options.FindOptions, err error) {
 	if query == "" {
 		query = "[{}]"
 	}
@@ -20,16 +20,17 @@ func findExtractor(query string) (filter interface{}, option *options.FindOption
 	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
 	filter = fields[0]
 	if len(fields) == 2 {
-		option = &options.FindOptions{
+		option := &options.FindOptions{
 			Projection: fields[1],
 		}
+		returnOptions = append(returnOptions, option)
 	}
-	return filter, option, err
+	return filter, returnOptions, err
 }
 
-func Find(collection *mongo.Collection, filter interface{}, option *options.FindOptions) (results []bson.M, err error) {
+func Find(collection *mongo.Collection, filter interface{}, option []*options.FindOptions) (results []bson.M, err error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	cur, err := collection.Find(ctx, filter, option)
+	cur, err := collection.Find(ctx, filter, option...)
 	defer cur.Close(ctx)
 	for cur.Next(ctx) {
 		elem := &bson.M{}

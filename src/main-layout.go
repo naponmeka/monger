@@ -20,8 +20,32 @@ func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 	databaseComboBox := widgets.NewQFontComboBoxFromPointer(mainWidget.FindChild("databaseComboBox", core.Qt__FindChildrenRecursively).Pointer())
 	collectionComboBox := widgets.NewQFontComboBoxFromPointer(mainWidget.FindChild("collectionComboBox", core.Qt__FindChildrenRecursively).Pointer())
 	queryPlainTextEdit := widgets.NewQPlainTextEditFromPointer(mainWidget.FindChild("queryPlainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
-	beginSpinBox := widgets.NewQSpinBoxFromPointer(mainWidget.FindChild("beginSpinBox", core.Qt__FindChildrenRecursively).Pointer())
-	endSpinBox := widgets.NewQSpinBoxFromPointer(mainWidget.FindChild("endSpinBox", core.Qt__FindChildrenRecursively).Pointer())
+
+	skipSpinBox := widgets.NewQSpinBoxFromPointer(mainWidget.FindChild("skipSpinBox", core.Qt__FindChildrenRecursively).Pointer())
+	skip := skipSpinBox.Value()
+	skipSpinBox.ConnectValueChanged(func(i int) {
+		skip = i
+	})
+	limitSpinBox := widgets.NewQSpinBoxFromPointer(mainWidget.FindChild("limitSpinBox", core.Qt__FindChildrenRecursively).Pointer())
+	limit := limitSpinBox.Value()
+	limitSpinBox.ConnectValueChanged(func(i int) {
+		limit = i
+	})
+	pageLeftBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("pageLeftBtn", core.Qt__FindChildrenRecursively).Pointer())
+	pageLeftBtn.ConnectClicked(func(bool) {
+		skip -= limit
+		if skip < 0 {
+			skip = 0
+		}
+		skipSpinBox.SetValue(skip)
+		globalState.ExecuteQuery()
+	})
+	pageRightBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("pageRightBtn", core.Qt__FindChildrenRecursively).Pointer())
+	pageRightBtn.ConnectClicked(func(bool) {
+		skip += limit
+		skipSpinBox.SetValue(skip)
+		globalState.ExecuteQuery()
+	})
 
 	currentDB := ""
 	currentCollection := ""
@@ -56,6 +80,7 @@ func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 	queryPlainTextEdit.ConnectTextChanged(func() {
 		currentQuery = queryPlainTextEdit.ToPlainText()
 	})
+
 	resultTreeview := widgets.NewQTreeViewFromPointer(widget.FindChild("resultTreeView", core.Qt__FindChildrenRecursively).Pointer())
 	model := tree.NewCustomTreeModel(nil)
 	resultTreeview.SetModel(model)
@@ -68,19 +93,19 @@ func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 	globalState.model = model
 	globalState.documents = &documents
 	globalState.maxPossibleDocCount = maxPossibleDocCount
+	globalState.skip = &skip
+	globalState.limit = &limit
 
 	registerTemplateBtn(mainWidget, queryPlainTextEdit)
 	registerActionBtn(
 		mainWidget,
 		queryPlainTextEdit,
-		endSpinBox,
-		beginSpinBox,
 		&mongoURI,
 		&currentDB,
 		&currentCollection,
 		model,
 		&documents,
-		maxPossibleDocCount,
+		globalState,
 	)
 	registerDocOperationBtn(
 		mainWidget,

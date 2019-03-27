@@ -125,6 +125,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_9">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Manage index</string>
          </property>
@@ -132,6 +135,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_15">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Manage user</string>
          </property>
@@ -283,6 +289,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="countBtn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Count</string>
             </property>
@@ -290,6 +299,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="explainBtn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Explain</string>
             </property>
@@ -363,24 +375,41 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>&lt;</string>
+           <string>Skip</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="beginSpinBox"/>
+         <widget class="QSpinBox" name="skipSpinBox"/>
         </item>
         <item>
-         <widget class="QSpinBox" name="endSpinBox">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Limit</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="limitSpinBox">
+          <property name="maximum">
+           <number>100</number>
+          </property>
           <property name="value">
            <number>50</number>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="pageLeftBtn">
+          <property name="text">
+           <string>&lt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pageRightBtn">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
             <horstretch>0</horstretch>
