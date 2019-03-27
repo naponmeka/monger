@@ -23,13 +23,15 @@ func CreateMenuBar(tabsHolder *widgets.QTabWidget, globalState *GlobalState) *wi
 		subwin := widgets.NewQDialog(nil, 0)
 		subwin.SetWindowTitle("Export")
 		subwin.SetLayout(widgets.NewQHBoxLayout())
-		exportLayout := NewExportLayout()
+		exportLayout := NewExportLayout(globalState)
 		subwin.Layout().AddWidget(exportLayout)
 		// subwin.SetModal(true)
 		subwin.SetMinimumSize2(640, 480)
 		RegisterExportLayoutBtn(exportLayout, subwin)
 		subwin.Show()
 	})
+	exportBtn.SetDisabled(true)
+	globalState.exportMenuBar = exportBtn
 	importBtn := fileMenuBar.AddAction("Import")
 	importBtn.SetDisabled(true)
 

@@ -25,6 +25,13 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
+        <widget class="QLabel" name="detailLabel">
+         <property name="text">
+          <string>DB: Collection: Query:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QLabel" name="label">
@@ -55,7 +62,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit"/>
+          <widget class="QLineEdit" name="csvFilenameLineEdit"/>
          </item>
          <item>
           <widget class="QLabel" name="label_4">

@@ -16,8 +16,10 @@ type GlobalState struct {
 	mongoURI            *string
 	currentDB           *string
 	currentCollection   *string
+	currentQuery        *string
 	model               *tree.CustomTreeModel
 	documents           *[]bson.M
+	exportMenuBar       *widgets.QAction
 }
 
 func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {

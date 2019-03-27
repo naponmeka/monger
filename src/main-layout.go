@@ -52,7 +52,10 @@ func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 			queryPlainTextEdit.SetPlainText(".find({})")
 		}
 	})
-
+	currentQuery := queryPlainTextEdit.ToPlainText()
+	queryPlainTextEdit.ConnectTextChanged(func() {
+		currentQuery = queryPlainTextEdit.ToPlainText()
+	})
 	resultTreeview := widgets.NewQTreeViewFromPointer(widget.FindChild("resultTreeView", core.Qt__FindChildrenRecursively).Pointer())
 	model := tree.NewCustomTreeModel(nil)
 	resultTreeview.SetModel(model)
@@ -61,6 +64,7 @@ func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 	globalState.mongoURI = &mongoURI
 	globalState.currentDB = &currentDB
 	globalState.currentCollection = &currentCollection
+	globalState.currentQuery = &currentQuery
 	globalState.model = model
 	globalState.documents = &documents
 	globalState.maxPossibleDocCount = maxPossibleDocCount

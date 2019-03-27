@@ -39,6 +39,7 @@ func NewConnectLayout(tabsHolder *widgets.QTabWidget, globalState *GlobalState) 
 		URI := URILineEdit.Text()
 		mainQueryWidget := NewMainLayout(URI, globalState)
 		ReplaceTabContent(tabsHolder, mainQueryWidget, "Query")
+		globalState.exportMenuBar.SetDisabled(false)
 	})
 	saveBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("saveBtn", core.Qt__FindChildrenRecursively).Pointer())
 	saveBtn.ConnectClicked(func(bool) {
