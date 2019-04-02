@@ -98,7 +98,7 @@
        <item>
         <widget class="QPushButton" name="insertDocBtn">
          <property name="text">
-          <string>Insert documents</string>
+          <string>Insert document</string>
          </property>
         </widget>
        </item>

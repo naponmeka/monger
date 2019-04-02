@@ -1,6 +1,7 @@
 package src
 
 import (
+	"github.com/naponmeka/bsonparser"
 	"github.com/naponmeka/robone/connectdb"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/uitools"
@@ -36,9 +37,9 @@ func RegisterEditLayoutBtn(
 	saveBtn.ConnectClicked(func(bool) {
 		plainTextEdit := widgets.NewQPlainTextEditFromPointer(widget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 		raw := plainTextEdit.ToPlainText()
+		jsonStr, _ := bsonparser.BsonToJson(raw)
 		originalDoc := bson.M{}
-		bson.UnmarshalExtJSON([]byte(raw), false, &originalDoc)
-
+		bson.UnmarshalExtJSON([]byte(jsonStr), true, &originalDoc)
 		objID := originalDoc["_id"].(primitive.ObjectID)
 		objIDStr := objID.Hex()
 		oid, _ := primitive.ObjectIDFromHex(objIDStr)

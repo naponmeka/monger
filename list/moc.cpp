@@ -48,7 +48,7 @@ public:
 	CustomListModel75cd65(QObject *parent = Q_NULLPTR) : QAbstractListModel(parent) {qRegisterMetaType<quintptr>("quintptr");CustomListModel75cd65_CustomListModel75cd65_QRegisterMetaType();CustomListModel75cd65_CustomListModel75cd65_QRegisterMetaTypes();callbackCustomListModel75cd65_Constructor(this);};
 	void Signal_Remove() { callbackCustomListModel75cd65_Remove(this); };
 	void Signal_Add(quintptr item) { callbackCustomListModel75cd65_Add(this, item); };
-	void Signal_Edit(QString firstName, QString lastName) { QByteArray te57915 = firstName.toUtf8(); Moc_PackedString firstNamePacked = { const_cast<char*>(te57915.prepend("WHITESPACE").constData()+10), te57915.size()-10 };QByteArray t9b831e = lastName.toUtf8(); Moc_PackedString lastNamePacked = { const_cast<char*>(t9b831e.prepend("WHITESPACE").constData()+10), t9b831e.size()-10 };callbackCustomListModel75cd65_Edit(this, firstNamePacked, lastNamePacked); };
+	void Signal_Edit(QString Name, QString URI) { QByteArray t709a23 = Name.toUtf8(); Moc_PackedString NamePacked = { const_cast<char*>(t709a23.prepend("WHITESPACE").constData()+10), t709a23.size()-10 };QByteArray tcb371c = URI.toUtf8(); Moc_PackedString URIPacked = { const_cast<char*>(tcb371c.prepend("WHITESPACE").constData()+10), tcb371c.size()-10 };callbackCustomListModel75cd65_Edit(this, NamePacked, URIPacked); };
 	void Signal_RemoveAt(QString iStr) { QByteArray tb2c797 = iStr.toUtf8(); Moc_PackedString iStrPacked = { const_cast<char*>(tb2c797.prepend("WHITESPACE").constData()+10), tb2c797.size()-10 };callbackCustomListModel75cd65_RemoveAt(this, iStrPacked); };
 	 ~CustomListModel75cd65() { callbackCustomListModel75cd65_DestroyCustomListModel(this); };
 	bool dropMimeData(const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent) { return callbackCustomListModel75cd65_DropMimeData(this, const_cast<QMimeData*>(data), action, row, column, const_cast<QModelIndex*>(&parent)) != 0; };
@@ -117,7 +117,7 @@ public:
 signals:
 	void remove();
 	void add(quintptr item);
-	void edit(QString firstName, QString lastName);
+	void edit(QString Name, QString URI);
 	void removeAt(QString iStr);
 public slots:
 private:
@@ -169,9 +169,9 @@ void CustomListModel75cd65_DisconnectEdit(void* ptr)
 	QObject::disconnect(static_cast<CustomListModel75cd65*>(ptr), static_cast<void (CustomListModel75cd65::*)(QString, QString)>(&CustomListModel75cd65::edit), static_cast<CustomListModel75cd65*>(ptr), static_cast<void (CustomListModel75cd65::*)(QString, QString)>(&CustomListModel75cd65::Signal_Edit));
 }
 
-void CustomListModel75cd65_Edit(void* ptr, struct Moc_PackedString firstName, struct Moc_PackedString lastName)
+void CustomListModel75cd65_Edit(void* ptr, struct Moc_PackedString Name, struct Moc_PackedString URI)
 {
-	static_cast<CustomListModel75cd65*>(ptr)->edit(QString::fromUtf8(firstName.data, firstName.len), QString::fromUtf8(lastName.data, lastName.len));
+	static_cast<CustomListModel75cd65*>(ptr)->edit(QString::fromUtf8(Name.data, Name.len), QString::fromUtf8(URI.data, URI.len));
 }
 
 void CustomListModel75cd65_ConnectRemoveAt(void* ptr)

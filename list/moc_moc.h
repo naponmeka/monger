@@ -21,7 +21,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_CustomListModel75cd65_t {
     QByteArrayData data[11];
-    char stringdata0[86];
+    char stringdata0[76];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,15 +37,15 @@ QT_MOC_LITERAL(3, 30, 3), // "add"
 QT_MOC_LITERAL(4, 34, 8), // "quintptr"
 QT_MOC_LITERAL(5, 43, 4), // "item"
 QT_MOC_LITERAL(6, 48, 4), // "edit"
-QT_MOC_LITERAL(7, 53, 9), // "firstName"
-QT_MOC_LITERAL(8, 63, 8), // "lastName"
-QT_MOC_LITERAL(9, 72, 8), // "removeAt"
-QT_MOC_LITERAL(10, 81, 4) // "iStr"
+QT_MOC_LITERAL(7, 53, 4), // "Name"
+QT_MOC_LITERAL(8, 58, 3), // "URI"
+QT_MOC_LITERAL(9, 62, 8), // "removeAt"
+QT_MOC_LITERAL(10, 71, 4) // "iStr"
 
     },
     "CustomListModel75cd65\0remove\0\0add\0"
-    "quintptr\0item\0edit\0firstName\0lastName\0"
-    "removeAt\0iStr"
+    "quintptr\0item\0edit\0Name\0URI\0removeAt\0"
+    "iStr"
 };
 #undef QT_MOC_LITERAL
 

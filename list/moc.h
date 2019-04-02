@@ -23,7 +23,7 @@ void CustomListModel75cd65_DisconnectAdd(void* ptr);
 void CustomListModel75cd65_Add(void* ptr, uintptr_t item);
 void CustomListModel75cd65_ConnectEdit(void* ptr);
 void CustomListModel75cd65_DisconnectEdit(void* ptr);
-void CustomListModel75cd65_Edit(void* ptr, struct Moc_PackedString firstName, struct Moc_PackedString lastName);
+void CustomListModel75cd65_Edit(void* ptr, struct Moc_PackedString Name, struct Moc_PackedString URI);
 void CustomListModel75cd65_ConnectRemoveAt(void* ptr);
 void CustomListModel75cd65_DisconnectRemoveAt(void* ptr);
 void CustomListModel75cd65_RemoveAt(void* ptr, struct Moc_PackedString iStr);

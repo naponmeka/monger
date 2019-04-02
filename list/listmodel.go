@@ -12,10 +12,10 @@ type CustomListModel struct {
 
 	_ func() `constructor:"init"`
 
-	_ func()                                  `signal:"remove,auto"`
-	_ func(item ListItem)                     `signal:"add,auto"`
-	_ func(firstName string, lastName string) `signal:"edit,auto"`
-	_ func(iStr string)                       `signal:"removeAt,auto"`
+	_ func()                        `signal:"remove,auto"`
+	_ func(item ListItem)           `signal:"add,auto"`
+	_ func(Name string, URI string) `signal:"edit,auto"`
+	_ func(iStr string)             `signal:"removeAt,auto"`
 
 	modelData []ListItem
 }

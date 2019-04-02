@@ -1,10 +1,9 @@
 package src
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 
+	"github.com/naponmeka/bsonparser"
 	"github.com/naponmeka/robone/connectdb"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
@@ -28,10 +27,8 @@ func registerDocOperationBtn(
 		subwin.SetLayout(widgets.NewQHBoxLayout())
 		docStr := ""
 		if selected < len(*documents) && selected >= 0 {
-			doc, _ := bson.MarshalExtJSON((*documents)[selected], false, true)
-			var out bytes.Buffer
-			json.Indent(&out, doc, "", "    ")
-			docStr = out.String()
+			docByte, _ := bson.MarshalExtJSON((*documents)[selected], false, true)
+			docStr, _ = bsonparser.JsonToBson(string(docByte[:]))
 		}
 		editLayout := NewEditLayout(docStr)
 		subwin.Layout().AddWidget(editLayout)
@@ -49,10 +46,8 @@ func registerDocOperationBtn(
 		subwin.SetLayout(widgets.NewQHBoxLayout())
 		docStr := ""
 		if selected < len(*documents) && selected >= 0 {
-			doc, _ := bson.MarshalExtJSON((*documents)[selected], false, true)
-			var out bytes.Buffer
-			json.Indent(&out, doc, "", "    ")
-			docStr = out.String()
+			docByte, _ := bson.MarshalExtJSON((*documents)[selected], false, true)
+			docStr, _ = bsonparser.JsonToBson(string(docByte[:]))
 		}
 		viewLayout := NewViewLayout(docStr)
 		subwin.Layout().AddWidget(viewLayout)

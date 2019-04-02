@@ -172,14 +172,14 @@ func (ptr *CustomListModel) Add(item ListItem) {
 }
 
 //export callbackCustomListModel75cd65_Edit
-func callbackCustomListModel75cd65_Edit(ptr unsafe.Pointer, firstName C.struct_Moc_PackedString, lastName C.struct_Moc_PackedString) {
+func callbackCustomListModel75cd65_Edit(ptr unsafe.Pointer, Name C.struct_Moc_PackedString, URI C.struct_Moc_PackedString) {
 	if signal := qt.GetSignal(ptr, "edit"); signal != nil {
-		signal.(func(string, string))(cGoUnpackString(firstName), cGoUnpackString(lastName))
+		signal.(func(string, string))(cGoUnpackString(Name), cGoUnpackString(URI))
 	}
 
 }
 
-func (ptr *CustomListModel) ConnectEdit(f func(firstName string, lastName string)) {
+func (ptr *CustomListModel) ConnectEdit(f func(Name string, URI string)) {
 	if ptr.Pointer() != nil {
 
 		if !qt.ExistsSignal(ptr.Pointer(), "edit") {
@@ -187,9 +187,9 @@ func (ptr *CustomListModel) ConnectEdit(f func(firstName string, lastName string
 		}
 
 		if signal := qt.LendSignal(ptr.Pointer(), "edit"); signal != nil {
-			qt.ConnectSignal(ptr.Pointer(), "edit", func(firstName string, lastName string) {
-				signal.(func(string, string))(firstName, lastName)
-				f(firstName, lastName)
+			qt.ConnectSignal(ptr.Pointer(), "edit", func(Name string, URI string) {
+				signal.(func(string, string))(Name, URI)
+				f(Name, URI)
 			})
 		} else {
 			qt.ConnectSignal(ptr.Pointer(), "edit", f)
@@ -204,19 +204,19 @@ func (ptr *CustomListModel) DisconnectEdit() {
 	}
 }
 
-func (ptr *CustomListModel) Edit(firstName string, lastName string) {
+func (ptr *CustomListModel) Edit(Name string, URI string) {
 	if ptr.Pointer() != nil {
-		var firstNameC *C.char
-		if firstName != "" {
-			firstNameC = C.CString(firstName)
-			defer C.free(unsafe.Pointer(firstNameC))
+		var NameC *C.char
+		if Name != "" {
+			NameC = C.CString(Name)
+			defer C.free(unsafe.Pointer(NameC))
 		}
-		var lastNameC *C.char
-		if lastName != "" {
-			lastNameC = C.CString(lastName)
-			defer C.free(unsafe.Pointer(lastNameC))
+		var URIC *C.char
+		if URI != "" {
+			URIC = C.CString(URI)
+			defer C.free(unsafe.Pointer(URIC))
 		}
-		C.CustomListModel75cd65_Edit(ptr.Pointer(), C.struct_Moc_PackedString{data: firstNameC, len: C.longlong(len(firstName))}, C.struct_Moc_PackedString{data: lastNameC, len: C.longlong(len(lastName))})
+		C.CustomListModel75cd65_Edit(ptr.Pointer(), C.struct_Moc_PackedString{data: NameC, len: C.longlong(len(Name))}, C.struct_Moc_PackedString{data: URIC, len: C.longlong(len(URI))})
 	}
 }
 
