@@ -18,26 +18,35 @@ func Query(
 	query = strings.TrimSpace(query)
 	collection := GetCollection(mongoURI, db, collectionName)
 	if strings.HasPrefix(query, ".find(") {
-		raw := GetStringInBetween(query, ".find(", ")")
-		filter, fOptions, err := findExtractor(raw)
-		if skip >= 0 {
-			fOptions = append(fOptions, &options.FindOptions{
-				Skip: &[]int64{int64(skip)}[0],
-			})
-		}
-		if limit >= 0 {
-			fOptions = append(fOptions, &options.FindOptions{
-				Limit: &[]int64{int64(limit)}[0],
-			})
+		if strings.HasSuffix(query, ".count()") {
+			raw := GetStringInBetween(strings.TrimSuffix(query, ".count()"), ".find(", ")")
+			filter, _, _ := findExtractor(raw)
+			c, err := Count(collection, filter, nil)
+			results = append(results, bson.M{"count": c})
+			return results, err
+		} else {
+			raw := GetStringInBetween(query, ".find(", ")")
+			filter, fOptions, err := findExtractor(raw)
+			if skip >= 0 {
+				fOptions = append(fOptions, &options.FindOptions{
+					Skip: &[]int64{int64(skip)}[0],
+				})
+			}
+			if limit >= 0 {
+				fOptions = append(fOptions, &options.FindOptions{
+					Limit: &[]int64{int64(limit)}[0],
+				})
 
+			}
+			if err != nil {
+				return results, err
+			}
+			results, err = Find(collection, filter, fOptions)
+			if err != nil {
+				return results, err
+			}
 		}
-		if err != nil {
-			return results, err
-		}
-		results, err = Find(collection, filter, fOptions)
-		if err != nil {
-			return results, err
-		}
+
 	} else if strings.HasPrefix(query, ".insert(") {
 		raw := GetStringInBetween(query, ".insert(", ")")
 		documents, option, err := insertExtractor(raw)

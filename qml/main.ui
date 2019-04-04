@@ -289,9 +289,6 @@
           </item>
           <item>
            <widget class="QPushButton" name="countBtn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
             <property name="text">
              <string>Count</string>
             </property>

@@ -43,3 +43,8 @@ func Find(collection *mongo.Collection, filter interface{}, option []*options.Fi
 	}
 	return
 }
+
+func Count(collection *mongo.Collection, filter interface{}, option []*options.CountOptions) (int64, error) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	return collection.CountDocuments(ctx, filter, option...)
+}
