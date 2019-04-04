@@ -1,6 +1,8 @@
 package src
 
 import (
+	"strings"
+
 	"github.com/naponmeka/bsonparser"
 	"github.com/naponmeka/robone/connectdb"
 	"github.com/therecipe/qt/core"
@@ -18,16 +20,11 @@ func NewInsertLayout() *widgets.QWidget {
 	dialogWidget := loader.Load(file, widget)
 	file.Close()
 	plainTextEdit := widgets.NewQPlainTextEditFromPointer(dialogWidget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
-	// 	plainTextEdit.SetPlainText(`[
-	//   {
+	plainTextEdit.SetPlainText(`[
+  {
 
-	//   }
-	// ]`)
-	plainTextEdit.SetPlainText(`
-{
-
-}
-`)
+  }
+]`)
 	return dialogWidget
 }
 
@@ -47,12 +44,17 @@ func RegisterInsertLayoutBtn(
 		plainTextEdit := widgets.NewQPlainTextEditFromPointer(widget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 		raw := plainTextEdit.ToPlainText()
 		jsonStr, _ := bsonparser.BsonToJson(raw)
-		// var documents []interface{}
-		// bson.UnmarshalExtJSON([]byte(jsonStr), false, &documents)
-		// connectdb.Insert(collection, documents, nil)
-		document := bson.M{}
-		bson.UnmarshalExtJSON([]byte(jsonStr), false, &document)
-		connectdb.Insert(collection, []interface{}{document}, nil)
+		jsonStr = strings.TrimSpace(jsonStr)
+		isArray := strings.HasPrefix(jsonStr, "[")
+		if isArray {
+			var documents []interface{}
+			bson.UnmarshalExtJSON([]byte(jsonStr), false, &documents)
+			connectdb.Insert(collection, documents, nil)
+		} else {
+			document := bson.M{}
+			bson.UnmarshalExtJSON([]byte(jsonStr), false, &document)
+			connectdb.Insert(collection, []interface{}{document}, nil)
+		}
 		subwin.Close()
 		globalState.ExecuteQuery()
 	})
