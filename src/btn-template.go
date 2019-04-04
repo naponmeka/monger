@@ -22,7 +22,7 @@ func registerTemplateBtn(mainWidget *widgets.QWidget, queryPlainTextEdit *widget
   {
     "ordered": true
   }
-])`)
+)`)
 	})
 	updateBtn.ConnectClicked(func(bool) {
 		txt := `.update(
@@ -39,7 +39,7 @@ func registerTemplateBtn(mainWidget *widgets.QWidget, queryPlainTextEdit *widget
 		txt := `.remove(
   {query},
   {
-    justOne: true
+    "justOne": true
   }
 )`
 		queryPlainTextEdit.SetPlainText(txt)

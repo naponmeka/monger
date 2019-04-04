@@ -15,6 +15,7 @@ func Query(
 	skip int,
 	limit int,
 ) (results []bson.M, err error) {
+	query = strings.TrimSpace(query)
 	collection := GetCollection(mongoURI, db, collectionName)
 	if strings.HasPrefix(query, ".find(") {
 		raw := GetStringInBetween(query, ".find(", ")")

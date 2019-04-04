@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/naponmeka/bsonparser"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -14,6 +15,7 @@ func removeExtractor(query string) (filter interface{}, justOne bool, err error)
 		query = "[{},{}]"
 	}
 	query = fmt.Sprintf("[%s]", query)
+	query, err = bsonparser.BsonToJson(query)
 	var fields []interface{}
 	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
 	filter = fields[0]

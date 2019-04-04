@@ -5,19 +5,22 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/naponmeka/bsonparser"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func insertExtractor(query string) (documents []interface{}, option *options.InsertManyOptions, err error) {
 	if query == "" {
-		query = "[{},{}]"
+		query = "[[],{}]"
 	}
 	query = fmt.Sprintf("[%s]", query)
+	query, err = bsonparser.BsonToJson(query)
 	var fields []interface{}
 	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
-	documents = fields[0].([]interface{})
+	documents = fields[0].(primitive.A)
 	ordered := true
 	if len(fields) > 1 {
 		rawOption, ok := fields[1].(map[string]bool)

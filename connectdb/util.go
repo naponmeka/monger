@@ -8,6 +8,6 @@ func GetStringInBetween(str string, start string, end string) (result string) {
 		return
 	}
 	s += len(start)
-	e := strings.Index(str, end)
+	e := strings.LastIndex(str, end)
 	return str[s:e]
 }
