@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
+func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widgets.QWidget {
 	var widget = widgets.NewQWidget(nil, 0)
 	var loader = uitools.NewQUiLoader(nil)
 	var file = core.NewQFile2(":/qml/main.ui")
@@ -18,11 +18,13 @@ func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 	mainWidget := loader.Load(file, widget)
 	file.Close()
 	URIText := widgets.NewQLabelFromPointer(mainWidget.FindChild("URI", core.Qt__FindChildrenRecursively).Pointer())
+	NameText := widgets.NewQLabelFromPointer(mainWidget.FindChild("name", core.Qt__FindChildrenRecursively).Pointer())
 	databaseComboBox := widgets.NewQFontComboBoxFromPointer(mainWidget.FindChild("databaseComboBox", core.Qt__FindChildrenRecursively).Pointer())
 	collectionComboBox := widgets.NewQFontComboBoxFromPointer(mainWidget.FindChild("collectionComboBox", core.Qt__FindChildrenRecursively).Pointer())
 	queryPlainTextEdit := widgets.NewQPlainTextEditFromPointer(mainWidget.FindChild("queryPlainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 
 	URIText.SetText(mongoURI)
+	NameText.SetText(name)
 
 	skipSpinBox := widgets.NewQSpinBoxFromPointer(mainWidget.FindChild("skipSpinBox", core.Qt__FindChildrenRecursively).Pointer())
 	skip := skipSpinBox.Value()
@@ -92,6 +94,7 @@ func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 	resultTreeview.SetModel(model)
 	maxPossibleDocCount := &[]int{50}[0]
 	globalState.queryPlainTextEdit = queryPlainTextEdit
+	globalState.currentName = &name
 	globalState.mongoURI = &mongoURI
 	globalState.currentDB = &currentDB
 	globalState.currentCollection = &currentCollection

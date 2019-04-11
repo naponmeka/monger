@@ -1,6 +1,8 @@
 package src
 
 import (
+	"fmt"
+
 	"github.com/naponmeka/robone/tree"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/gui"
@@ -19,6 +21,7 @@ type GlobalState struct {
 	window              *widgets.QMainWindow
 	maxPossibleDocCount *int
 	queryPlainTextEdit  *widgets.QPlainTextEdit
+	currentName         *string
 	mongoURI            *string
 	currentDB           *string
 	currentCollection   *string
@@ -42,6 +45,7 @@ func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {
 
 func (gs *GlobalState) ExecuteQuery() {
 	if gs.mongoURI != nil {
+		widgets.QMessageBox_Information(nil, "OK", fmt.Sprintf("%s %s %s", *gs.mongoURI, *gs.currentDB, *gs.currentCollection), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 		executeQuery(
 			gs.queryPlainTextEdit,
 			gs.mongoURI,
@@ -58,10 +62,14 @@ func (gs *GlobalState) ExecuteQuery() {
 func (gs *GlobalState) BindKeyboardTabControl(event *gui.QKeyEvent) {
 	tabChanged := false
 	if event.Modifiers() == core.Qt__ControlModifier {
-		if event.Key() == 84 { // T
-			tabChanged = true
+		if event.Key() == 78 { // N
 			tab := NewConnectLayout(gs.tabsHolder, gs)
 			gs.tabsHolder.AddTab(tab, "Connect")
+			gs.tabsHolder.SetCurrentIndex(gs.tabsHolder.Count() - 1)
+		} else if event.Key() == 84 { // T
+			tabChanged = true
+			mainQueryWidget := NewMainLayout(*gs.mongoURI, gs, *gs.currentName)
+			gs.tabsHolder.AddTab(mainQueryWidget, *gs.currentName)
 			gs.tabsHolder.SetCurrentIndex(gs.tabsHolder.Count() - 1)
 		} else if event.Key() == 87 { // W
 			tabChanged = true
@@ -91,12 +99,23 @@ func (gs *GlobalState) BindKeyboardTabControl(event *gui.QKeyEvent) {
 	}
 
 	if tabChanged {
+		// 	gs.documents,
+		// 	gs.skip,
+		// 	gs.limit,
 		mainLayout := gs.tabsHolder.CurrentWidget()
+		name := widgets.NewQLabelFromPointer(mainLayout.FindChild("name", core.Qt__FindChildrenRecursively).Pointer()).Text()
 		mongoURI := widgets.NewQLabelFromPointer(mainLayout.FindChild("URI", core.Qt__FindChildrenRecursively).Pointer()).Text()
 		database := widgets.NewQFontComboBoxFromPointer(mainLayout.FindChild("databaseComboBox", core.Qt__FindChildrenRecursively).Pointer()).CurrentText()
 		collection := widgets.NewQFontComboBoxFromPointer(mainLayout.FindChild("collectionComboBox", core.Qt__FindChildrenRecursively).Pointer()).CurrentText()
+		gs.currentName = &name
 		gs.mongoURI = &mongoURI
 		gs.currentDB = &database
 		gs.currentCollection = &collection
+		gs.queryPlainTextEdit = widgets.NewQPlainTextEditFromPointer(mainLayout.FindChild("queryPlainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
+		resultTreeview := widgets.NewQTreeViewFromPointer(mainLayout.FindChild("resultTreeView", core.Qt__FindChildrenRecursively).Pointer())
+		oldModel := resultTreeview.Model()
+		n := new(tree.CustomTreeModel)
+		n = &tree.CustomTreeModel{QAbstractItemModel: *oldModel}
+		gs.model = n
 	}
 }
