@@ -17,9 +17,12 @@ func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 	file.Open(core.QIODevice__ReadOnly)
 	mainWidget := loader.Load(file, widget)
 	file.Close()
+	URIText := widgets.NewQLabelFromPointer(mainWidget.FindChild("URI", core.Qt__FindChildrenRecursively).Pointer())
 	databaseComboBox := widgets.NewQFontComboBoxFromPointer(mainWidget.FindChild("databaseComboBox", core.Qt__FindChildrenRecursively).Pointer())
 	collectionComboBox := widgets.NewQFontComboBoxFromPointer(mainWidget.FindChild("collectionComboBox", core.Qt__FindChildrenRecursively).Pointer())
 	queryPlainTextEdit := widgets.NewQPlainTextEditFromPointer(mainWidget.FindChild("queryPlainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
+
+	URIText.SetText(mongoURI)
 
 	skipSpinBox := widgets.NewQSpinBoxFromPointer(mainWidget.FindChild("skipSpinBox", core.Qt__FindChildrenRecursively).Pointer())
 	skip := skipSpinBox.Value()
@@ -57,6 +60,7 @@ func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 	databaseComboBox.AddItems(dbs)
 	databaseComboBox.ConnectCurrentIndexChanged(func(idx int) {
 		currentDB = dbs[idx]
+		globalState.currentDB = &currentDB
 		collections = connectdb.ListCollection(mongoURI, currentDB)
 		collectionComboBox.Clear()
 		collectionComboBox.AddItems(collections)
@@ -73,12 +77,14 @@ func NewMainLayout(mongoURI string, globalState *GlobalState) *widgets.QWidget {
 	collectionComboBox.ConnectCurrentIndexChanged(func(idx int) {
 		if idx >= 0 && idx < len(collections) {
 			currentCollection = collections[idx]
+			globalState.currentCollection = &currentCollection
 			queryPlainTextEdit.SetPlainText(".find({})")
 		}
 	})
 	currentQuery := queryPlainTextEdit.ToPlainText()
 	queryPlainTextEdit.ConnectTextChanged(func() {
 		currentQuery = queryPlainTextEdit.ToPlainText()
+		globalState.currentQuery = &currentQuery
 	})
 
 	resultTreeview := widgets.NewQTreeViewFromPointer(widget.FindChild("resultTreeView", core.Qt__FindChildrenRecursively).Pointer())
