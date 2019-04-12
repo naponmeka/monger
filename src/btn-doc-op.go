@@ -108,7 +108,7 @@ func registerDocOperationBtn(
 		docID := fmt.Sprint((*documents)[selected]["_id"])
 		subwin.SetWindowTitle(fmt.Sprintf("Delete: %s", docID))
 		subwin.SetLayout(widgets.NewQHBoxLayout())
-		deleteConfirmLayout := NewConfirmLayout("Confirm delete?")
+		deleteConfirmLayout := NewConfirmLayout("Confirm delete?\n" + docID)
 		subwin.Layout().AddWidget(deleteConfirmLayout)
 		dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
 		RegisterConfirmDeleteLayoutBtn(
