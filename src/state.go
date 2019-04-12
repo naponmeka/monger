@@ -31,6 +31,7 @@ type GlobalState struct {
 	skip                *int
 	limit               *int
 	timeLabel           *widgets.QLabel
+	resultTextEdit      *widgets.QPlainTextEdit
 }
 
 func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {
@@ -111,6 +112,7 @@ func (gs *GlobalState) TabChangeUpdateState() {
 		if val, ok := gs.tabStates[fmt.Sprintf("%v", mainLayout)]; ok {
 			gs.documents = val.documents
 		}
+		gs.resultTextEdit = widgets.NewQPlainTextEditFromPointer(mainLayout.FindChild("resultTextView", core.Qt__FindChildrenRecursively).Pointer())
 	}
 
 }

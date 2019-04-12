@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/naponmeka/bsonparser"
 	"github.com/naponmeka/robone/tree"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
@@ -59,6 +60,17 @@ func executeQuery(gs *GlobalState) {
 	for _, item := range items {
 		gs.model.Add(item)
 	}
+	resultText := "[\n"
+	docTexts := []string{}
+	for _, doc := range docs {
+		docByte, _ := bson.MarshalExtJSON(doc, false, true)
+		docStr, _ := bsonparser.JsonToBson(string(docByte[:]))
+		docTexts = append(docTexts, docStr)
+	}
+	resultText += strings.Join(docTexts, ",\n")
+	resultText += "\n]"
+	gs.resultTextEdit.SetPlainText(resultText)
+
 	t := time.Now()
 	elapsed := t.Sub(start)
 	gs.timeLabel.SetText(fmt.Sprintf("Took: %.3f sec.", elapsed.Seconds()))

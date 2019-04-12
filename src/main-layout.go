@@ -100,6 +100,11 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 	model := tree.NewCustomTreeModel(nil)
 	resultTreeview.SetModel(model)
 	maxPossibleDocCount := &[]int{50}[0]
+
+	resultTextView := widgets.NewQPlainTextEditFromPointer(widget.FindChild("resultTextView", core.Qt__FindChildrenRecursively).Pointer())
+	resultTextView.SetTextInteractionFlags(resultTextView.TextInteractionFlags() | core.Qt__TextSelectableByKeyboard)
+	resultTextView.Hide()
+
 	globalState.queryPlainTextEdit = queryPlainTextEdit
 	globalState.currentName = &name
 	globalState.mongoURI = &mongoURI
@@ -115,6 +120,18 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 	globalState.skip = &skip
 	globalState.limit = &limit
 	globalState.timeLabel = timeLabel
+	globalState.resultTextEdit = resultTextView
+
+	switchViewComboBox := widgets.NewQComboBoxFromPointer(mainWidget.FindChild("switchViewComboBox", core.Qt__FindChildrenRecursively).Pointer())
+	switchViewComboBox.ConnectCurrentIndexChanged(func(idx int) {
+		if idx == 0 { // table
+			resultTextView.Hide()
+			resultTreeview.Show()
+		} else if idx == 1 { // text
+			resultTreeview.Hide()
+			resultTextView.Show()
+		}
+	})
 
 	registerTemplateBtn(mainWidget, queryPlainTextEdit)
 	registerActionBtn(

@@ -40,6 +40,9 @@ func registerDocOperationBtn(
 	})
 	viewDocBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("viewDocBtn", core.Qt__FindChildrenRecursively).Pointer())
 	viewDocBtn.ConnectClicked(func(bool) {
+		// x := globalState.resultTextEdit.TextCursor().Position()
+		// debug := fmt.Sprintln(x)
+		// widgets.QMessageBox_Information(nil, "OK", debug, widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 		selected := findRow(resultTreeview, resultTreeview.CurrentIndex())
 		subwin := widgets.NewQDialog(nil, 0)
 		subwin.SetWindowTitle(fmt.Sprintf("View: %d", selected))

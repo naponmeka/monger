@@ -352,6 +352,17 @@
         <enum>QAbstractScrollArea::AdjustToContents</enum>
        </property>
       </widget>
+      <widget class="QPlainTextEdit" name="resultTextView">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="maximumSize">
         <size>
@@ -384,7 +395,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_4">
+         <widget class="QComboBox" name="switchViewComboBox">
           <item>
            <property name="text">
             <string>Table view</string>
