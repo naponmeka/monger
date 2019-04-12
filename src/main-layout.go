@@ -1,6 +1,8 @@
 package src
 
 import (
+	"fmt"
+
 	"github.com/naponmeka/robone/connectdb"
 	"github.com/naponmeka/robone/tree"
 	"github.com/therecipe/qt/core"
@@ -101,6 +103,9 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 	globalState.currentQuery = &currentQuery
 	globalState.model = model
 	globalState.documents = &documents
+	globalState.tabStates[fmt.Sprintf("%v", mainWidget)] = TabState{
+		documents: &documents,
+	}
 	globalState.maxPossibleDocCount = maxPossibleDocCount
 	globalState.skip = &skip
 	globalState.limit = &limit

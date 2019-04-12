@@ -11,13 +11,12 @@ import (
 )
 
 type TabState struct {
-	mongoURI           string
-	databaseComboBox   *widgets.QFontComboBox
-	collectionComboBox *widgets.QFontComboBox
+	documents *[]bson.M
 }
 
 type GlobalState struct {
 	tabsHolder          *widgets.QTabWidget
+	tabStates           map[string]TabState
 	window              *widgets.QMainWindow
 	maxPossibleDocCount *int
 	queryPlainTextEdit  *widgets.QPlainTextEdit
@@ -60,19 +59,16 @@ func (gs *GlobalState) ExecuteQuery() {
 }
 
 func (gs *GlobalState) BindKeyboardTabControl(event *gui.QKeyEvent) {
-	tabChanged := false
 	if event.Modifiers() == core.Qt__ControlModifier {
 		if event.Key() == 78 { // N
 			tab := NewConnectLayout(gs.tabsHolder, gs)
 			gs.tabsHolder.AddTab(tab, "Connect")
 			gs.tabsHolder.SetCurrentIndex(gs.tabsHolder.Count() - 1)
 		} else if event.Key() == 84 { // T
-			tabChanged = true
 			mainQueryWidget := NewMainLayout(*gs.mongoURI, gs, *gs.currentName)
 			gs.tabsHolder.AddTab(mainQueryWidget, *gs.currentName)
 			gs.tabsHolder.SetCurrentIndex(gs.tabsHolder.Count() - 1)
 		} else if event.Key() == 87 { // W
-			tabChanged = true
 			CurrentIndex := gs.tabsHolder.CurrentIndex()
 			gs.tabsHolder.SetCurrentIndex(CurrentIndex - 1)
 			gs.tabsHolder.RemoveTab(CurrentIndex)
@@ -82,14 +78,12 @@ func (gs *GlobalState) BindKeyboardTabControl(event *gui.QKeyEvent) {
 		}
 	} else if event.Modifiers() == (core.Qt__ControlModifier | core.Qt__ShiftModifier) {
 		if event.Key() == 91 { // [
-			tabChanged = true
 			if gs.tabsHolder.CurrentIndex() > 0 {
 				gs.tabsHolder.SetCurrentIndex(gs.tabsHolder.CurrentIndex() - 1)
 			} else {
 				gs.tabsHolder.SetCurrentIndex(gs.tabsHolder.Count() - 1)
 			}
 		} else if event.Key() == 93 { // ]
-			tabChanged = true
 			if gs.tabsHolder.CurrentIndex() < gs.tabsHolder.Count()-1 {
 				gs.tabsHolder.SetCurrentIndex(gs.tabsHolder.CurrentIndex() + 1)
 			} else {
@@ -97,25 +91,33 @@ func (gs *GlobalState) BindKeyboardTabControl(event *gui.QKeyEvent) {
 			}
 		}
 	}
+}
 
-	if tabChanged {
-		// 	gs.documents,
-		// 	gs.skip,
-		// 	gs.limit,
-		mainLayout := gs.tabsHolder.CurrentWidget()
-		name := widgets.NewQLabelFromPointer(mainLayout.FindChild("name", core.Qt__FindChildrenRecursively).Pointer()).Text()
+func (gs *GlobalState) TabChangeUpdateState() {
+	mainLayout := gs.tabsHolder.CurrentWidget()
+	hiddenNameLabel := mainLayout.FindChild("name", core.Qt__FindChildrenRecursively)
+	if hiddenNameLabel.IsWidgetType() {
+		name := widgets.NewQLabelFromPointer(hiddenNameLabel.Pointer()).Text()
 		mongoURI := widgets.NewQLabelFromPointer(mainLayout.FindChild("URI", core.Qt__FindChildrenRecursively).Pointer()).Text()
 		database := widgets.NewQFontComboBoxFromPointer(mainLayout.FindChild("databaseComboBox", core.Qt__FindChildrenRecursively).Pointer()).CurrentText()
 		collection := widgets.NewQFontComboBoxFromPointer(mainLayout.FindChild("collectionComboBox", core.Qt__FindChildrenRecursively).Pointer()).CurrentText()
+		skip := widgets.NewQSpinBoxFromPointer(mainLayout.FindChild("skipSpinBox", core.Qt__FindChildrenRecursively).Pointer()).Value()
+		limit := widgets.NewQSpinBoxFromPointer(mainLayout.FindChild("limitSpinBox", core.Qt__FindChildrenRecursively).Pointer()).Value()
 		gs.currentName = &name
 		gs.mongoURI = &mongoURI
 		gs.currentDB = &database
 		gs.currentCollection = &collection
+		gs.skip = &skip
+		gs.limit = &limit
 		gs.queryPlainTextEdit = widgets.NewQPlainTextEditFromPointer(mainLayout.FindChild("queryPlainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 		resultTreeview := widgets.NewQTreeViewFromPointer(mainLayout.FindChild("resultTreeView", core.Qt__FindChildrenRecursively).Pointer())
 		oldModel := resultTreeview.Model()
 		n := new(tree.CustomTreeModel)
 		n = &tree.CustomTreeModel{QAbstractItemModel: *oldModel}
 		gs.model = n
+		if val, ok := gs.tabStates[fmt.Sprintf("%v", mainLayout)]; ok {
+			gs.documents = val.documents
+		}
 	}
+
 }
