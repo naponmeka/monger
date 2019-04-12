@@ -38,15 +38,26 @@ func RegisterEditLayoutBtn(
 		plainTextEdit := widgets.NewQPlainTextEditFromPointer(widget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 		raw := plainTextEdit.ToPlainText()
 		jsonStr, _ := bsonparser.BsonToJson(raw)
-		originalDoc := bson.M{}
-		bson.UnmarshalExtJSON([]byte(jsonStr), true, &originalDoc)
-		objID := originalDoc["_id"].(primitive.ObjectID)
-		objIDStr := objID.Hex()
-		oid, _ := primitive.ObjectIDFromHex(objIDStr)
-		filter := bson.D{
-			{"_id", oid},
+		document := bson.M{}
+		err := bson.UnmarshalExtJSON([]byte(jsonStr), true, &document)
+		if err != nil {
+			widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+			return
 		}
-		connectdb.Replace(collection, filter, originalDoc, nil)
+		filter := bson.D{}
+		switch v := document["_id"].(type) {
+		case primitive.ObjectID:
+			objIDStr := v.Hex()
+			oid, _ := primitive.ObjectIDFromHex(objIDStr)
+			filter = bson.D{
+				{"_id", oid},
+			}
+		default:
+			filter = bson.D{
+				{"_id", v},
+			}
+		}
+		connectdb.Replace(collection, filter, document, nil)
 		subwin.Close()
 		globalState.ExecuteQuery()
 	})

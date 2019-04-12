@@ -43,16 +43,28 @@ func RegisterInsertLayoutBtn(
 	saveBtn.ConnectClicked(func(bool) {
 		plainTextEdit := widgets.NewQPlainTextEditFromPointer(widget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 		raw := plainTextEdit.ToPlainText()
-		jsonStr, _ := bsonparser.BsonToJson(raw)
+		jsonStr, err := bsonparser.BsonToJson(raw)
+		if err != nil {
+			widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+			return
+		}
 		jsonStr = strings.TrimSpace(jsonStr)
 		isArray := strings.HasPrefix(jsonStr, "[")
 		if isArray {
 			var documents []interface{}
-			bson.UnmarshalExtJSON([]byte(jsonStr), false, &documents)
+			err := bson.UnmarshalExtJSON([]byte(jsonStr), false, &documents)
+			if err != nil {
+				widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+				return
+			}
 			connectdb.Insert(collection, documents, nil)
 		} else {
 			document := bson.M{}
-			bson.UnmarshalExtJSON([]byte(jsonStr), false, &document)
+			err := bson.UnmarshalExtJSON([]byte(jsonStr), false, &document)
+			if err != nil {
+				widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+				return
+			}
 			connectdb.Insert(collection, []interface{}{document}, nil)
 		}
 		subwin.Close()
