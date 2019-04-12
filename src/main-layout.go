@@ -32,11 +32,13 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 	skip := skipSpinBox.Value()
 	skipSpinBox.ConnectValueChanged(func(i int) {
 		skip = i
+		globalState.skip = &skip
 	})
 	limitSpinBox := widgets.NewQSpinBoxFromPointer(mainWidget.FindChild("limitSpinBox", core.Qt__FindChildrenRecursively).Pointer())
 	limit := limitSpinBox.Value()
 	limitSpinBox.ConnectValueChanged(func(i int) {
 		limit = i
+		globalState.limit = &limit
 	})
 	pageLeftBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("pageLeftBtn", core.Qt__FindChildrenRecursively).Pointer())
 	pageLeftBtn.ConnectClicked(func(bool) {
@@ -44,12 +46,14 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 		if skip < 0 {
 			skip = 0
 		}
+		globalState.skip = &skip
 		skipSpinBox.SetValue(skip)
 		globalState.ExecuteQuery()
 	})
 	pageRightBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("pageRightBtn", core.Qt__FindChildrenRecursively).Pointer())
 	pageRightBtn.ConnectClicked(func(bool) {
 		skip += limit
+		globalState.skip = &skip
 		skipSpinBox.SetValue(skip)
 		globalState.ExecuteQuery()
 	})
