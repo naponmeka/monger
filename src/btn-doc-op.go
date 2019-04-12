@@ -2,6 +2,7 @@ package src
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/naponmeka/bsonparser"
 	"github.com/naponmeka/robone/connectdb"
@@ -9,6 +10,44 @@ import (
 	"github.com/therecipe/qt/widgets"
 	"go.mongodb.org/mongo-driver/bson"
 )
+
+func getSelectedDoc(
+	gs *GlobalState,
+	resultTreeview *widgets.QTreeView,
+	documents *[]bson.M,
+) (string, int) {
+	docStr := ""
+	selected := 0
+	if gs.resultTextEdit.IsHidden() {
+		selected = findRow(resultTreeview, resultTreeview.CurrentIndex())
+	} else {
+		text := gs.resultTextEdit.ToPlainText()
+		pos := gs.resultTextEdit.TextCursor().Position()
+
+		starter := `"_id": `
+		objIDpos := strings.LastIndex(text[:pos], starter)
+		if objIDpos == -1 {
+			objIDpos = strings.Index(text, starter)
+		}
+		closer := strings.Index(text[objIDpos:], "\n")
+		id := text[objIDpos+len(starter) : closer+objIDpos]
+		id = strings.TrimRight(id, ",")
+		id = strings.Replace(id, "ObjectId", "ObjectID", -1)
+		selected = 0
+		for idx, doc := range *documents {
+			docID := fmt.Sprint(doc["_id"])
+			if docID == id {
+				selected = idx
+				break
+			}
+		}
+	}
+	if selected < len(*documents) && selected >= 0 {
+		docByte, _ := bson.MarshalExtJSON((*documents)[selected], false, true)
+		docStr, _ = bsonparser.JsonToBson(string(docByte[:]))
+	}
+	return docStr, selected
+}
 
 func registerDocOperationBtn(
 	mainWidget *widgets.QWidget,
@@ -21,15 +60,11 @@ func registerDocOperationBtn(
 ) {
 	editDocBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("editDocBtn", core.Qt__FindChildrenRecursively).Pointer())
 	editDocBtn.ConnectClicked(func(bool) {
-		selected := findRow(resultTreeview, resultTreeview.CurrentIndex())
+		docStr, selected := getSelectedDoc(globalState, resultTreeview, documents)
+		docID := fmt.Sprint((*documents)[selected]["_id"])
 		subwin := widgets.NewQDialog(nil, 0)
-		subwin.SetWindowTitle(fmt.Sprintf("Edit: %d", selected))
+		subwin.SetWindowTitle(fmt.Sprintf("Edit: %s", docID))
 		subwin.SetLayout(widgets.NewQHBoxLayout())
-		docStr := ""
-		if selected < len(*documents) && selected >= 0 {
-			docByte, _ := bson.MarshalExtJSON((*documents)[selected], false, true)
-			docStr, _ = bsonparser.JsonToBson(string(docByte[:]))
-		}
 		editLayout := NewEditLayout(docStr)
 		subwin.Layout().AddWidget(editLayout)
 		dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
@@ -40,18 +75,11 @@ func registerDocOperationBtn(
 	})
 	viewDocBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("viewDocBtn", core.Qt__FindChildrenRecursively).Pointer())
 	viewDocBtn.ConnectClicked(func(bool) {
-		// x := globalState.resultTextEdit.TextCursor().Position()
-		// debug := fmt.Sprintln(x)
-		// widgets.QMessageBox_Information(nil, "OK", debug, widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
-		selected := findRow(resultTreeview, resultTreeview.CurrentIndex())
+		docStr, selected := getSelectedDoc(globalState, resultTreeview, documents)
+		docID := fmt.Sprint((*documents)[selected]["_id"])
 		subwin := widgets.NewQDialog(nil, 0)
-		subwin.SetWindowTitle(fmt.Sprintf("View: %d", selected))
+		subwin.SetWindowTitle(fmt.Sprintf("View: %s", docID))
 		subwin.SetLayout(widgets.NewQHBoxLayout())
-		docStr := ""
-		if selected < len(*documents) && selected >= 0 {
-			docByte, _ := bson.MarshalExtJSON((*documents)[selected], false, true)
-			docStr, _ = bsonparser.JsonToBson(string(docByte[:]))
-		}
 		viewLayout := NewViewLayout(docStr)
 		subwin.Layout().AddWidget(viewLayout)
 		RegisterViewLayoutBtn(viewLayout, subwin)
@@ -75,9 +103,10 @@ func registerDocOperationBtn(
 
 	deleteDocBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("deleteDocBtn", core.Qt__FindChildrenRecursively).Pointer())
 	deleteDocBtn.ConnectClicked(func(bool) {
-		selected := findRow(resultTreeview, resultTreeview.CurrentIndex())
+		_, selected := getSelectedDoc(globalState, resultTreeview, documents)
 		subwin := widgets.NewQDialog(nil, 0)
-		subwin.SetWindowTitle(fmt.Sprintf("Delete: %d", selected))
+		docID := fmt.Sprint((*documents)[selected]["_id"])
+		subwin.SetWindowTitle(fmt.Sprintf("Delete: %s", docID))
 		subwin.SetLayout(widgets.NewQHBoxLayout())
 		deleteConfirmLayout := NewConfirmLayout("Confirm delete?")
 		subwin.Layout().AddWidget(deleteConfirmLayout)

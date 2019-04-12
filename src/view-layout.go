@@ -27,9 +27,7 @@ func RegisterViewLayoutBtn(widget *widgets.QWidget, subwin *widgets.QDialog) {
 	bsonRadioButton.ConnectClicked(func(bool) {
 		currentStr := plainTextEdit.ToPlainText()
 		docStr, err := bsonparser.JsonToBson(currentStr)
-		if err != nil {
-			widgets.QMessageBox_Critical(nil, "Error", "Error parsing", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
-		} else {
+		if err == nil {
 			plainTextEdit.SetPlainText(docStr)
 		}
 	})
@@ -38,9 +36,7 @@ func RegisterViewLayoutBtn(widget *widgets.QWidget, subwin *widgets.QDialog) {
 	jsonRadioButton.ConnectClicked(func(bool) {
 		currentStr := plainTextEdit.ToPlainText()
 		docStr, err := bsonparser.BsonToJson(currentStr)
-		if err != nil {
-			widgets.QMessageBox_Critical(nil, "Error", "Error parsing", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
-		} else {
+		if err == nil {
 			plainTextEdit.SetPlainText(docStr)
 		}
 	})
