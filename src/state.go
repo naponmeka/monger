@@ -44,7 +44,7 @@ func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {
 
 func (gs *GlobalState) ExecuteQuery() {
 	if gs.mongoURI != nil {
-		widgets.QMessageBox_Information(nil, "OK", fmt.Sprintf("%s %s %s", *gs.mongoURI, *gs.currentDB, *gs.currentCollection), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		// widgets.QMessageBox_Information(nil, "OK", fmt.Sprintf("%s %s %s", *gs.mongoURI, *gs.currentDB, *gs.currentCollection), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 		executeQuery(
 			gs.queryPlainTextEdit,
 			gs.mongoURI,

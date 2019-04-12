@@ -18,6 +18,9 @@ func insertExtractor(query string) (documents []interface{}, option *options.Ins
 	}
 	query = fmt.Sprintf("[%s]", query)
 	query, err = bsonparser.BsonToJson(query)
+	if err != nil {
+		return nil, nil, err
+	}
 	var fields []interface{}
 	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
 	documents = fields[0].(primitive.A)

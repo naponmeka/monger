@@ -18,10 +18,18 @@ func findExtractor(query string) (filter interface{}, returnOptions []*options.F
 	}
 	query = fmt.Sprintf("[%s]", query)
 	query, err = bsonparser.BsonToJson(query)
+	if err != nil {
+		return nil, nil, err
+	}
 	var fields []interface{}
 	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
-	filter = fields[0]
-	if len(fields) == 2 {
+	if err != nil {
+		return nil, nil, err
+	}
+	if len(fields) > 0 {
+		filter = fields[0]
+	}
+	if len(fields) > 1 {
 		option := &options.FindOptions{
 			Projection: fields[1],
 		}

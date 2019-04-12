@@ -56,11 +56,11 @@ func executeQuery(
 		model.Remove()
 	}
 	items, docs, err := tree.CreateItems(*mongoURI, *currentDB, *currentCollection, currentQuery, *skip, *limit)
-	*documents = docs
 	if err != nil {
-		widgets.QMessageBox_Information(nil, "Error", "wrong query", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 		return
 	}
+	*documents = docs
 	for _, item := range items {
 		model.Add(item)
 	}

@@ -27,6 +27,9 @@ func Query(
 		} else {
 			raw := GetStringInBetween(query, ".find(", ")")
 			filter, fOptions, err := findExtractor(raw)
+			if err != nil {
+				return results, err
+			}
 			if skip >= 0 {
 				fOptions = append(fOptions, &options.FindOptions{
 					Skip: &[]int64{int64(skip)}[0],
@@ -38,13 +41,7 @@ func Query(
 				})
 
 			}
-			if err != nil {
-				return results, err
-			}
 			results, err = Find(collection, filter, fOptions)
-			if err != nil {
-				return results, err
-			}
 		}
 
 	} else if strings.HasPrefix(query, ".insert(") {

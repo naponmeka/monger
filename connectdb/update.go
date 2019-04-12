@@ -2,6 +2,7 @@ package connectdb
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -17,8 +18,14 @@ func updateExtractor(query string) (filter interface{}, update interface{}, opti
 	}
 	query = fmt.Sprintf("[%s]", query)
 	query, err = bsonparser.BsonToJson(query)
+	if err != nil {
+		return nil, nil, nil, false, err
+	}
 	var fields []interface{}
 	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
+	if len(fields) < 2 {
+		return nil, nil, nil, false, errors.New("filter & update required")
+	}
 	filter = fields[0]
 	update = fields[1]
 	option = &options.UpdateOptions{}

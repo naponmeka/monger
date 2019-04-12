@@ -16,6 +16,9 @@ func removeExtractor(query string) (filter interface{}, justOne bool, err error)
 	}
 	query = fmt.Sprintf("[%s]", query)
 	query, err = bsonparser.BsonToJson(query)
+	if err != nil {
+		return nil, false, err
+	}
 	var fields []interface{}
 	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
 	filter = fields[0]
