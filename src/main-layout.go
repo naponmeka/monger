@@ -28,6 +28,7 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 	URIText.SetText(mongoURI)
 	NameText.SetText(name)
 
+	timeLabel := widgets.NewQLabelFromPointer(mainWidget.FindChild("timeLabel", core.Qt__FindChildrenRecursively).Pointer())
 	skipSpinBox := widgets.NewQSpinBoxFromPointer(mainWidget.FindChild("skipSpinBox", core.Qt__FindChildrenRecursively).Pointer())
 	skip := skipSpinBox.Value()
 	skipSpinBox.ConnectValueChanged(func(i int) {
@@ -113,6 +114,7 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 	globalState.maxPossibleDocCount = maxPossibleDocCount
 	globalState.skip = &skip
 	globalState.limit = &limit
+	globalState.timeLabel = timeLabel
 
 	registerTemplateBtn(mainWidget, queryPlainTextEdit)
 	registerActionBtn(

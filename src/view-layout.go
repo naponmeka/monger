@@ -1,6 +1,7 @@
 package src
 
 import (
+	"github.com/naponmeka/bsonparser"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
@@ -19,6 +20,29 @@ func NewViewLayout(docStr string) *widgets.QWidget {
 }
 
 func RegisterViewLayoutBtn(widget *widgets.QWidget, subwin *widgets.QDialog) {
+	plainTextEdit := widgets.NewQPlainTextEditFromPointer(widget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
+
+	bsonRadioButton := widgets.NewQRadioButtonFromPointer(widget.FindChild("bsonRadioButton", core.Qt__FindChildrenRecursively).Pointer())
+	bsonRadioButton.ConnectClicked(func(bool) {
+		currentStr := plainTextEdit.ToPlainText()
+		docStr, err := bsonparser.JsonToBson(currentStr)
+		if err != nil {
+			widgets.QMessageBox_Critical(nil, "Error", "Error parsing", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		} else {
+			plainTextEdit.SetPlainText(docStr)
+		}
+	})
+
+	jsonRadioButton := widgets.NewQRadioButtonFromPointer(widget.FindChild("jsonRadioButton", core.Qt__FindChildrenRecursively).Pointer())
+	jsonRadioButton.ConnectClicked(func(bool) {
+		currentStr := plainTextEdit.ToPlainText()
+		docStr, err := bsonparser.BsonToJson(currentStr)
+		if err != nil {
+			widgets.QMessageBox_Critical(nil, "Error", "Error parsing", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		} else {
+			plainTextEdit.SetPlainText(docStr)
+		}
+	})
 	cancelBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("cancelBtn", core.Qt__FindChildrenRecursively).Pointer())
 	cancelBtn.ConnectClicked(func(bool) {
 		subwin.Close()

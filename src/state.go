@@ -30,6 +30,7 @@ type GlobalState struct {
 	exportMenuBar       *widgets.QAction
 	skip                *int
 	limit               *int
+	timeLabel           *widgets.QLabel
 }
 
 func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {
@@ -44,17 +45,7 @@ func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {
 
 func (gs *GlobalState) ExecuteQuery() {
 	if gs.mongoURI != nil {
-		// widgets.QMessageBox_Information(nil, "OK", fmt.Sprintf("%s %s %s", *gs.mongoURI, *gs.currentDB, *gs.currentCollection), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
-		executeQuery(
-			gs.queryPlainTextEdit,
-			gs.mongoURI,
-			gs.currentDB,
-			gs.currentCollection,
-			gs.model,
-			gs.documents,
-			gs.skip,
-			gs.limit,
-		)
+		executeQuery(gs)
 	}
 }
 
@@ -103,12 +94,14 @@ func (gs *GlobalState) TabChangeUpdateState() {
 		collection := widgets.NewQFontComboBoxFromPointer(mainLayout.FindChild("collectionComboBox", core.Qt__FindChildrenRecursively).Pointer()).CurrentText()
 		skip := widgets.NewQSpinBoxFromPointer(mainLayout.FindChild("skipSpinBox", core.Qt__FindChildrenRecursively).Pointer()).Value()
 		limit := widgets.NewQSpinBoxFromPointer(mainLayout.FindChild("limitSpinBox", core.Qt__FindChildrenRecursively).Pointer()).Value()
+		timeLabel := widgets.NewQLabelFromPointer(mainLayout.FindChild("timeLabel", core.Qt__FindChildrenRecursively).Pointer())
 		gs.currentName = &name
 		gs.mongoURI = &mongoURI
 		gs.currentDB = &database
 		gs.currentCollection = &collection
 		gs.skip = &skip
 		gs.limit = &limit
+		gs.timeLabel = timeLabel
 		gs.queryPlainTextEdit = widgets.NewQPlainTextEditFromPointer(mainLayout.FindChild("queryPlainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 		resultTreeview := widgets.NewQTreeViewFromPointer(mainLayout.FindChild("resultTreeView", core.Qt__FindChildrenRecursively).Pointer())
 		oldModel := resultTreeview.Model()

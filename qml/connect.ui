@@ -79,11 +79,14 @@
       </layout>
      </widget>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="tabShape">
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
@@ -158,6 +161,9 @@
               <height>0</height>
              </size>
             </property>
+            <property name="placeholderText">
+             <string>mongodb://user:pass@host:port</string>
+            </property>
            </widget>
           </item>
          </layout>
@@ -230,16 +236,6 @@
          </spacer>
         </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="tab_4">
-       <attribute name="title">
-        <string>SSH</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tab_5">
-       <attribute name="title">
-        <string>SSL</string>
-       </attribute>
       </widget>
      </widget>
     </widget>

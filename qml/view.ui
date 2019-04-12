@@ -40,6 +40,23 @@
       </spacer>
      </item>
      <item>
+      <widget class="QRadioButton" name="bsonRadioButton">
+       <property name="text">
+        <string>bson</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="jsonRadioButton">
+       <property name="text">
+        <string>json</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="cancelBtn">
        <property name="text">
         <string>Close</string>

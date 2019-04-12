@@ -3,6 +3,7 @@ package src
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/naponmeka/robone/tree"
 	"github.com/therecipe/qt/core"
@@ -37,31 +38,28 @@ func registerActionBtn(
 	})
 	executeBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("executeBtn", core.Qt__FindChildrenRecursively).Pointer())
 	executeBtn.ConnectClicked(func(bool) {
-		executeQuery(queryPlainTextEdit, mongoURI, currentDB, currentCollection, model, documents, globalState.skip, globalState.limit)
+		executeQuery(globalState)
 	})
 }
 
-func executeQuery(
-	queryPlainTextEdit *widgets.QPlainTextEdit,
-	mongoURI *string,
-	currentDB *string,
-	currentCollection *string,
-	model *tree.CustomTreeModel,
-	documents *[]bson.M,
-	skip *int,
-	limit *int,
-) {
-	currentQuery := queryPlainTextEdit.ToPlainText()
+func executeQuery(gs *GlobalState) {
+	gs.timeLabel.SetText("Loading..")
+	start := time.Now()
+
+	currentQuery := gs.queryPlainTextEdit.ToPlainText()
 	for i := 0; i < 100; i++ {
-		model.Remove()
+		gs.model.Remove()
 	}
-	items, docs, err := tree.CreateItems(*mongoURI, *currentDB, *currentCollection, currentQuery, *skip, *limit)
+	items, docs, err := tree.CreateItems(*gs.mongoURI, *gs.currentDB, *gs.currentCollection, currentQuery, *gs.skip, *gs.limit)
 	if err != nil {
 		widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 		return
 	}
-	*documents = docs
+	*gs.documents = docs
 	for _, item := range items {
-		model.Add(item)
+		gs.model.Add(item)
 	}
+	t := time.Now()
+	elapsed := t.Sub(start)
+	gs.timeLabel.SetText(fmt.Sprintf("Took: %.3f sec.", elapsed.Seconds()))
 }
