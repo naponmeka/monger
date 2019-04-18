@@ -97,8 +97,24 @@ func NewExportLayout(globalState *GlobalState) *widgets.QWidget {
 			-1,
 		)
 		if err != nil {
-			widgets.QMessageBox_Information(widget, "Error", "Cannot Query", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+			widgets.QMessageBox_Information(exportDialogWidget, "Error", "Cannot Query", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+			return
 		}
+		countResult, err := connectdb.Query(
+			*globalState.mongoURI,
+			*globalState.currentDB,
+			*globalState.currentCollection,
+			*globalState.currentQuery+".count()",
+			-1,
+			-1,
+		)
+		total := countResult[0]["count"].(int64)
+		totalDocuments := int(total)
+		if err != nil {
+			widgets.QMessageBox_Information(exportDialogWidget, "Error", "Cannot Count", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+			return
+		}
+
 		csvData := [][]string{}
 		firstLine := []string{}
 		for _, colSetting := range tableData {
@@ -117,19 +133,29 @@ func NewExportLayout(globalState *GlobalState) *widgets.QWidget {
 		path := fmt.Sprintf("%s/%s.csv", csvLineEdit.Text(), csvFilenameLineEdit.Text())
 		file, err := os.Create(path)
 		if err != nil {
-			widgets.QMessageBox_Information(widget, "Error", "Cannot create file", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+			widgets.QMessageBox_Information(exportDialogWidget, "Error", "Cannot create file", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+			return
 		}
 		defer file.Close()
 
 		writer := csv.NewWriter(file)
 		defer writer.Flush()
-		for _, value := range csvData {
+
+		p := widgets.NewQProgressDialog(nil, core.Qt__Dialog)
+		p.SetModal(true)
+		p.SetLabelText(fmt.Sprintf("Exporting (%d documents)", totalDocuments))
+		p.SetMaximum(totalDocuments)
+		for i, value := range csvData {
 			err := writer.Write(value)
+			p.SetValue(i)
 			if err != nil {
-				widgets.QMessageBox_Information(widget, "Error", "Cannot write file", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+				widgets.QMessageBox_Information(exportDialogWidget, "Error", "Cannot write file", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+				return
 			}
 		}
-		widgets.QMessageBox_Information(widget, "Success", "Exported", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		p.SetValue(totalDocuments)
+		p.Close()
+		widgets.QMessageBox_Information(exportDialogWidget, "Status", "Exported", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 	})
 
 	return exportDialogWidget
