@@ -62,7 +62,7 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 	currentDB := ""
 	currentCollection := ""
 
-	dbs := connectdb.ListDB(mongoURI)
+	dbs, _ := connectdb.ListDB(mongoURI)
 	collections := []string{}
 	documents := []bson.M{}
 

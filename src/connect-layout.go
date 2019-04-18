@@ -3,6 +3,7 @@ package src
 import (
 	"strconv"
 
+	"github.com/naponmeka/robone/connectdb"
 	"github.com/naponmeka/robone/list"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/uitools"
@@ -27,20 +28,31 @@ func NewConnectLayout(tabsHolder *widgets.QTabWidget, globalState *GlobalState) 
 	for _, savedConnection := range config.SavedConnections {
 		model.Add(savedConnection)
 	}
-
-	testBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("testBtn", core.Qt__FindChildrenRecursively).Pointer())
-	testBtn.ConnectClicked(func(bool) {
-		widgets.QMessageBox_Information(nil, "OK", "Success", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
-	})
 	nameLineEdit := widgets.NewQLineEditFromPointer(widget.FindChild("nameLineEdit", core.Qt__FindChildrenRecursively).Pointer())
 	URILineEdit := widgets.NewQLineEditFromPointer(widget.FindChild("mylineedit", core.Qt__FindChildrenRecursively).Pointer())
+	testBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("testBtn", core.Qt__FindChildrenRecursively).Pointer())
+	testBtn.ConnectClicked(func(bool) {
+		URI := URILineEdit.Text()
+		_, err := connectdb.ListDB(URI)
+		if err != nil {
+			widgets.QMessageBox_Critical(nil, "Fail", "Fail to connect", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		} else {
+			widgets.QMessageBox_Information(nil, "OK", "Success", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		}
+	})
+
 	connectBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("connectBtn", core.Qt__FindChildrenRecursively).Pointer())
 	connectBtn.ConnectClicked(func(bool) {
 		URI := URILineEdit.Text()
 		name := nameLineEdit.Text()
-		mainQueryWidget := NewMainLayout(URI, globalState, name)
-		ReplaceTabContent(tabsHolder, mainQueryWidget, name)
-		globalState.exportMenuBar.SetDisabled(false)
+		_, err := connectdb.ListDB(URI)
+		if err != nil {
+			widgets.QMessageBox_Critical(nil, "Error", "Cannot list database", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		} else {
+			mainQueryWidget := NewMainLayout(URI, globalState, name)
+			ReplaceTabContent(tabsHolder, mainQueryWidget, name)
+			globalState.exportMenuBar.SetDisabled(false)
+		}
 	})
 	saveBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("saveBtn", core.Qt__FindChildrenRecursively).Pointer())
 	saveBtn.ConnectClicked(func(bool) {

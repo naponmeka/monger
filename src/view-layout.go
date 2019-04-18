@@ -3,6 +3,7 @@ package src
 import (
 	"github.com/naponmeka/bsonparser"
 	"github.com/therecipe/qt/core"
+	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
 )
@@ -43,5 +44,10 @@ func RegisterViewLayoutBtn(widget *widgets.QWidget, subwin *widgets.QDialog) {
 	cancelBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("cancelBtn", core.Qt__FindChildrenRecursively).Pointer())
 	cancelBtn.ConnectClicked(func(bool) {
 		subwin.Close()
+	})
+	copyBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("copyBtn", core.Qt__FindChildrenRecursively).Pointer())
+	copyBtn.ConnectClicked(func(bool) {
+		gui.QGuiApplication_Clipboard().SetText(plainTextEdit.ToPlainText(), gui.QClipboard__Clipboard)
+
 	})
 }

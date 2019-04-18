@@ -15,15 +15,15 @@ type CollectionName struct {
 	Name string `json:"name"`
 }
 
-func ListDB(mongoURI string) (results []string) {
+func ListDB(mongoURI string) (results []string, err error) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoURI))
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 	err = client.Ping(ctx, readpref.Primary())
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 	rawResults, err := client.ListDatabaseNames(ctx, bson.M{})
 	for _, r := range rawResults {
@@ -32,7 +32,7 @@ func ListDB(mongoURI string) (results []string) {
 		}
 	}
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 	return
 }
