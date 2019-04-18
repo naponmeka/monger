@@ -20,6 +20,9 @@ func getSelectedDoc(
 	selected := 0
 	if gs.resultTextEdit.IsHidden() {
 		selected = findRow(resultTreeview, resultTreeview.CurrentIndex())
+		if selected < 0 {
+			selected = 0
+		}
 	} else {
 		text := gs.resultTextEdit.ToPlainText()
 		pos := gs.resultTextEdit.TextCursor().Position()
