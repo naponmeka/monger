@@ -39,6 +39,8 @@ func RegisterViewLayoutBtn(widget *widgets.QWidget, subwin *widgets.QDialog) {
 		docStr, err := bsonparser.BsonToJson(currentStr)
 		if err == nil {
 			plainTextEdit.SetPlainText(docStr)
+		} else {
+			widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 		}
 	})
 	cancelBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("cancelBtn", core.Qt__FindChildrenRecursively).Pointer())
