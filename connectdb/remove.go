@@ -7,6 +7,7 @@ import (
 
 	"github.com/naponmeka/bsonparser"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -23,10 +24,11 @@ func removeExtractor(query string) (filter interface{}, justOne bool, err error)
 	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
 	filter = fields[0]
 	if len(fields) > 1 {
-		rawOption, ok := fields[1].(map[string]interface{})
+		rawOption, ok := fields[1].(primitive.D)
 		if ok {
-			if _, exists := rawOption["justOne"]; exists {
-				if value, isBool := rawOption["justOne"].(bool); isBool {
+			option := rawOption.Map()
+			if _, exists := option["justOne"]; exists {
+				if value, isBool := option["justOne"].(bool); isBool {
 					justOne = value
 				}
 			}
