@@ -56,3 +56,19 @@ func Count(collection *mongo.Collection, filter interface{}, option []*options.C
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	return collection.CountDocuments(ctx, filter, option...)
 }
+
+func sortExtractor(query string) (filter interface{}, err error) {
+	if query == "" {
+		query = "{}"
+	}
+	query, err = bsonparser.BsonToJson(query)
+	if err != nil {
+		return nil, err
+	}
+	var fields interface{}
+	err = bson.UnmarshalExtJSON([]byte(query), true, &fields)
+	if err != nil {
+		return nil, err
+	}
+	return fields, err
+}
