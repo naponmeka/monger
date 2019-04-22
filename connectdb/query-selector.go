@@ -109,6 +109,20 @@ func Query(
 			return results, err
 		}
 		results, err = Remove(collection, filter, justOne)
+	} else if strings.HasPrefix(query, ".deleteOne(") {
+		raw := GetStringInBetween(query, ".deleteOne(", ")")
+		filter, _, err := removeExtractor(raw)
+		if err != nil {
+			return results, err
+		}
+		results, err = Remove(collection, filter, true)
+	} else if strings.HasPrefix(query, ".deleteMany(") {
+		raw := GetStringInBetween(query, ".deleteMany(", ")")
+		filter, _, err := removeExtractor(raw)
+		if err != nil {
+			return results, err
+		}
+		results, err = Remove(collection, filter, false)
 	} else if strings.HasPrefix(query, ".aggregate(") {
 		raw := GetStringInBetween(query, ".aggregate(", ")")
 		steps, err := aggregateExtractor(raw)
