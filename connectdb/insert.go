@@ -26,9 +26,12 @@ func insertExtractor(query string) (documents []interface{}, option *options.Ins
 	documents = fields[0].(primitive.A)
 	ordered := true
 	if len(fields) > 1 {
-		rawOption, ok := fields[1].(map[string]bool)
+		rawOption, ok := fields[1].(primitive.D)
 		if ok {
-			ordered = rawOption["ordered"]
+			optionMap := rawOption.Map()
+			if value, isBool := optionMap["ordered"].(bool); isBool {
+				ordered = value
+			}
 		}
 	}
 	option = &options.InsertManyOptions{

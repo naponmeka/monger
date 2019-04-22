@@ -8,6 +8,7 @@ import (
 
 	"github.com/naponmeka/bsonparser"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -30,15 +31,16 @@ func updateExtractor(query string) (filter interface{}, update interface{}, opti
 	update = fields[1]
 	option = &options.UpdateOptions{}
 	if len(fields) > 2 {
-		rawOption, ok := fields[2].(map[string]interface{})
+		rawOption, ok := fields[2].(primitive.D)
 		if ok {
-			if _, exists := rawOption["upsert"]; exists {
-				if value, isBool := rawOption["upsert"].(bool); isBool {
+			optionMap := rawOption.Map()
+			if _, exists := optionMap["upsert"]; exists {
+				if value, isBool := optionMap["upsert"].(bool); isBool {
 					option.Upsert = &value
 				}
 			}
-			if _, exists := rawOption["multi"]; exists {
-				if value, isBool := rawOption["multi"].(bool); isBool {
+			if _, exists := optionMap["multi"]; exists {
+				if value, isBool := optionMap["multi"].(bool); isBool {
 					isMulti = value
 				}
 			}
