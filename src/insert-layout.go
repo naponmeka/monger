@@ -25,6 +25,10 @@ func NewInsertLayout() *widgets.QWidget {
 
   }
 ]`)
+	_ = NewHighlighter(plainTextEdit.Document())
+	debounce := false
+	textLength := len(plainTextEdit.ToPlainText())
+	registerAutoCloseBracket(plainTextEdit, &debounce, &textLength)
 	return dialogWidget
 }
 

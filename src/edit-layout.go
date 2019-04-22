@@ -21,6 +21,9 @@ func NewEditLayout(docStr string) *widgets.QWidget {
 	plainTextEdit := widgets.NewQPlainTextEditFromPointer(dialogWidget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 	plainTextEdit.SetPlainText(docStr)
 	_ = NewHighlighter(plainTextEdit.Document())
+	debounce := false
+	textLength := len(plainTextEdit.ToPlainText())
+	registerAutoCloseBracket(plainTextEdit, &debounce, &textLength)
 	return dialogWidget
 }
 
