@@ -69,8 +69,6 @@ func executeQuery(gs *GlobalState) {
 		docByte, _ := bson.MarshalExtJSON(doc, false, true)
 		docStr, _ := bsonparser.JsonToBson(string(docByte[:]))
 		docTexts = append(docTexts, docStr)
-		// var out bytes.Buffer
-		// json.Indent(&out, docByte, "", "    ")
 		docStrJson, _ := bsonparser.BsonToJson(docStr)
 		docTextJson = append(docTextJson, docStrJson)
 	}
@@ -81,7 +79,9 @@ func executeQuery(gs *GlobalState) {
 	resultTextJson += "\n]"
 
 	gs.resultTextEdit.SetPlainText(resultText)
+	_ = NewHighlighter(gs.resultTextEdit.Document())
 	gs.resultTextEditJson.SetPlainText(resultTextJson)
+	_ = NewHighlighter(gs.resultTextEditJson.Document())
 
 	t := time.Now()
 	elapsed := t.Sub(start)

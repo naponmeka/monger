@@ -20,6 +20,7 @@ func NewEditLayout(docStr string) *widgets.QWidget {
 	file.Close()
 	plainTextEdit := widgets.NewQPlainTextEditFromPointer(dialogWidget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 	plainTextEdit.SetPlainText(docStr)
+	_ = NewHighlighter(plainTextEdit.Document())
 	return dialogWidget
 }
 

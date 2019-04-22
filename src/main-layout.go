@@ -95,6 +95,7 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 		currentQuery = queryPlainTextEdit.ToPlainText()
 		globalState.currentQuery = &currentQuery
 	})
+	_ = NewHighlighter(queryPlainTextEdit.Document())
 
 	resultTreeview := widgets.NewQTreeViewFromPointer(widget.FindChild("resultTreeView", core.Qt__FindChildrenRecursively).Pointer())
 	model := tree.NewCustomTreeModel(nil)

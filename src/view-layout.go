@@ -18,6 +18,7 @@ func NewViewLayout(docStr string) *widgets.QWidget {
 	plainTextEdit := widgets.NewQPlainTextEditFromPointer(dialogWidget.FindChild("plainTextEdit", core.Qt__FindChildrenRecursively).Pointer())
 	plainTextEdit.SetPlainText(docStr)
 	plainTextEdit.SetTextInteractionFlags(plainTextEdit.TextInteractionFlags() | core.Qt__TextSelectableByKeyboard)
+	_ = NewHighlighter(plainTextEdit.Document())
 	return dialogWidget
 }
 
