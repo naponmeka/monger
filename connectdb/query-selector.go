@@ -88,6 +88,20 @@ func Query(
 			return results, err
 		}
 		results, err = Update(collection, filter, update, option, isMulti)
+	} else if strings.HasPrefix(query, ".updateMany(") {
+		raw := GetStringInBetween(query, ".updateMany(", ")")
+		filter, update, option, isMulti, err := updateExtractor(raw)
+		if err != nil {
+			return results, err
+		}
+		results, err = Update(collection, filter, update, option, isMulti)
+	} else if strings.HasPrefix(query, ".updateOne(") {
+		raw := GetStringInBetween(query, ".updateOne(", ")")
+		filter, update, option, _, err := updateExtractor(raw)
+		if err != nil {
+			return results, err
+		}
+		results, err = Update(collection, filter, update, option, false)
 	} else if strings.HasPrefix(query, ".remove(") {
 		raw := GetStringInBetween(query, ".remove(", ")")
 		filter, justOne, err := removeExtractor(raw)
