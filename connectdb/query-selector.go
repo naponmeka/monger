@@ -123,6 +123,13 @@ func Query(
 			return results, err
 		}
 		results, err = Remove(collection, filter, false)
+	} else if strings.HasPrefix(query, ".replaceOne(") {
+		raw := GetStringInBetween(query, ".replaceOne(", ")")
+		filter, replacement, option, err := replaceExtractor(raw)
+		if err != nil {
+			return results, err
+		}
+		results, err = Replace(collection, filter, replacement, option)
 	} else if strings.HasPrefix(query, ".aggregate(") {
 		raw := GetStringInBetween(query, ".aggregate(", ")")
 		steps, err := aggregateExtractor(raw)
