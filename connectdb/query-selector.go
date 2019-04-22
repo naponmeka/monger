@@ -19,12 +19,21 @@ func Query(
 	collection := GetCollection(mongoURI, db, collectionName)
 	if strings.HasPrefix(query, ".find(") {
 		if strings.HasSuffix(query, ".count()") {
-			raw := GetStringInBetween(strings.TrimSuffix(query, ".count()"), ".find(", ")")
+			query = strings.TrimSuffix(query, ".count()")
+			if i := strings.Index(query, ".sort("); i > 0 {
+				query = query[:i]
+			}
+			raw := GetStringInBetween(query, ".find(", ")")
 			filter, _, _ := findExtractor(raw)
 			c, err := Count(collection, filter, nil)
 			results = append(results, bson.M{"count": c})
 			return results, err
 		} else {
+			sortRaw := ""
+			if i := strings.Index(query, ".sort("); i > 0 {
+				sortRaw = GetStringInBetween(query, ".sort(", ")")
+				query = query[:i]
+			}
 			raw := GetStringInBetween(query, ".find(", ")")
 			filter, fOptions, err := findExtractor(raw)
 			if err != nil {
@@ -41,6 +50,13 @@ func Query(
 				})
 
 			}
+			sort, err := sortExtractor(sortRaw)
+			if err != nil {
+				return results, err
+			}
+			fOptions = append(fOptions, &options.FindOptions{
+				Sort: sort,
+			})
 			results, err = Find(collection, filter, fOptions)
 		}
 
