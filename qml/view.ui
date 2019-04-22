@@ -29,7 +29,7 @@
      <item>
       <widget class="QRadioButton" name="bsonRadioButton">
        <property name="text">
-        <string>bson</string>
+        <string>shell mode</string>
        </property>
        <property name="checked">
         <bool>true</bool>

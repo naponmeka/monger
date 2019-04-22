@@ -32,6 +32,7 @@ type GlobalState struct {
 	limit               *int
 	timeLabel           *widgets.QLabel
 	resultTextEdit      *widgets.QPlainTextEdit
+	resultTextEditJson  *widgets.QPlainTextEdit
 }
 
 func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {

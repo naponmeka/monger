@@ -61,15 +61,27 @@ func executeQuery(gs *GlobalState) {
 		gs.model.Add(item)
 	}
 	resultText := "[\n"
+	resultTextJson := "[\n"
+
 	docTexts := []string{}
+	docTextJson := []string{}
 	for _, doc := range docs {
 		docByte, _ := bson.MarshalExtJSON(doc, false, true)
 		docStr, _ := bsonparser.JsonToBson(string(docByte[:]))
 		docTexts = append(docTexts, docStr)
+		// var out bytes.Buffer
+		// json.Indent(&out, docByte, "", "    ")
+		docStrJson, _ := bsonparser.BsonToJson(docStr)
+		docTextJson = append(docTextJson, docStrJson)
 	}
-	resultText += strings.Join(docTexts, ",\n")
+	resultText += strings.Join(docTexts, ",\n\n")
 	resultText += "\n]"
+
+	resultTextJson += strings.Join(docTextJson, ",\n\n")
+	resultTextJson += "\n]"
+
 	gs.resultTextEdit.SetPlainText(resultText)
+	gs.resultTextEditJson.SetPlainText(resultTextJson)
 
 	t := time.Now()
 	elapsed := t.Sub(start)

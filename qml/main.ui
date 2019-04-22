@@ -363,6 +363,17 @@
         <bool>true</bool>
        </property>
       </widget>
+      <widget class="QPlainTextEdit" name="resultTextViewJson">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="maximumSize">
         <size>
@@ -404,6 +415,11 @@
           <item>
            <property name="text">
             <string>Text view</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Text view (json)</string>
            </property>
           </item>
          </widget>

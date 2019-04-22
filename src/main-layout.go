@@ -105,6 +105,10 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 	resultTextView.SetTextInteractionFlags(resultTextView.TextInteractionFlags() | core.Qt__TextSelectableByKeyboard)
 	resultTextView.Hide()
 
+	resultTextViewJson := widgets.NewQPlainTextEditFromPointer(widget.FindChild("resultTextViewJson", core.Qt__FindChildrenRecursively).Pointer())
+	resultTextViewJson.SetTextInteractionFlags(resultTextView.TextInteractionFlags() | core.Qt__TextSelectableByKeyboard)
+	resultTextViewJson.Hide()
+
 	globalState.queryPlainTextEdit = queryPlainTextEdit
 	globalState.currentName = &name
 	globalState.mongoURI = &mongoURI
@@ -121,15 +125,25 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 	globalState.limit = &limit
 	globalState.timeLabel = timeLabel
 	globalState.resultTextEdit = resultTextView
+	globalState.resultTextEditJson = resultTextViewJson
 
 	switchViewComboBox := widgets.NewQComboBoxFromPointer(mainWidget.FindChild("switchViewComboBox", core.Qt__FindChildrenRecursively).Pointer())
 	switchViewComboBox.ConnectCurrentIndexChanged(func(idx int) {
 		if idx == 0 { // table
 			resultTextView.Hide()
+			resultTextViewJson.Hide()
+
 			resultTreeview.Show()
 		} else if idx == 1 { // text
 			resultTreeview.Hide()
+			resultTextViewJson.Hide()
+
 			resultTextView.Show()
+		} else if idx == 2 { // text json
+			resultTextView.Hide()
+			resultTreeview.Hide()
+
+			resultTextViewJson.Show()
 		}
 	})
 
