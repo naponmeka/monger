@@ -140,7 +140,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <!-- <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>bson</string>
       </attribute>
@@ -211,7 +211,7 @@
         </spacer>
        </item>
       </layout>
-     </widget>
+     </widget> -->
     </widget>
    </item>
   </layout>
