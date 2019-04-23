@@ -117,7 +117,7 @@
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Operations:</string>
+          <string>Document operations:</string>
          </property>
         </widget>
        </item>
@@ -146,6 +146,34 @@
         <widget class="QPushButton" name="deleteDocBtn">
          <property name="text">
           <string>Delete document</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Operations:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="createDatabaseBtn">
+         <property name="text">
+          <string>Create database </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="createCollectionBtn">
+         <property name="text">
+          <string>Create collection</string>
          </property>
         </widget>
        </item>

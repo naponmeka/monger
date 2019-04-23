@@ -172,6 +172,53 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 		&currentCollection,
 		globalState,
 	)
+	createDatabaseBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("createDatabaseBtn", core.Qt__FindChildrenRecursively).Pointer())
+	createDatabaseBtn.ConnectClicked(func(bool) {
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle("Create new database")
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		questionLayout := NewSingleQuestionLayout("Database name:")
+		buttonBox := widgets.NewQDialogButtonBoxFromPointer(questionLayout.FindChild("buttonBox", core.Qt__FindChildrenRecursively).Pointer())
+		answerLineEdit := widgets.NewQLineEditFromPointer(questionLayout.FindChild("answerLineEdit", core.Qt__FindChildrenRecursively).Pointer())
+		buttonBox.ConnectAccepted(func() {
+			db := answerLineEdit.Text()
+			dbs = append(dbs, db)
+			databaseComboBox.AddItems([]string{db})
+			databaseComboBox.SetCurrentIndex(len(dbs) - 1)
+			subwin.Close()
+		})
+		buttonBox.ConnectRejected(func() {
+			subwin.Close()
+		})
+		subwin.Layout().AddWidget(questionLayout)
+		subwin.SetModal(true)
+		subwin.SetMinimumSize2(100, 100)
+		subwin.Exec()
+	})
+
+	createCollectionBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("createCollectionBtn", core.Qt__FindChildrenRecursively).Pointer())
+	createCollectionBtn.ConnectClicked(func(bool) {
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle("Create new collection")
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		questionLayout := NewSingleQuestionLayout(fmt.Sprintf("Current database: %s\n Collection name:", *globalState.currentDB))
+		buttonBox := widgets.NewQDialogButtonBoxFromPointer(questionLayout.FindChild("buttonBox", core.Qt__FindChildrenRecursively).Pointer())
+		answerLineEdit := widgets.NewQLineEditFromPointer(questionLayout.FindChild("answerLineEdit", core.Qt__FindChildrenRecursively).Pointer())
+		buttonBox.ConnectAccepted(func() {
+			connectdb.CreateCollection(*globalState.mongoURI, *globalState.currentDB, answerLineEdit.Text())
+			collections = connectdb.ListCollection(mongoURI, currentDB)
+			collectionComboBox.Clear()
+			collectionComboBox.AddItems(collections)
+			subwin.Close()
+		})
+		buttonBox.ConnectRejected(func() {
+			subwin.Close()
+		})
+		subwin.Layout().AddWidget(questionLayout)
+		subwin.SetModal(true)
+		subwin.SetMinimumSize2(100, 100)
+		subwin.Exec()
+	})
 
 	return mainWidget
 }
