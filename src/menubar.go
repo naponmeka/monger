@@ -1,6 +1,7 @@
 package src
 
 import (
+	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
 )
 
@@ -36,7 +37,7 @@ func CreateMenuBar(tabsHolder *widgets.QTabWidget, globalState *GlobalState) *wi
 	importBtn.SetDisabled(true)
 
 	settingMenuBar := widgets.NewQMenu(nil)
-	settingMenuBar.SetTitle("Setting")
+	settingMenuBar.SetTitle("Other")
 	customizeBtn := settingMenuBar.AddAction("Customize")
 	customizeBtn.ConnectTriggered(func(bool) {
 		subwin := widgets.NewQDialog(nil, 0)
@@ -46,6 +47,25 @@ func CreateMenuBar(tabsHolder *widgets.QTabWidget, globalState *GlobalState) *wi
 		subwin.Layout().AddWidget(exportLayout)
 		subwin.SetModal(true)
 		subwin.SetMinimumSize2(640, 400)
+		subwin.Show()
+	})
+
+	aboutBtn := settingMenuBar.AddAction("Check for updates")
+	aboutBtn.ConnectTriggered(func(bool) {
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle("About")
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		versionLayout := NewVersionLayout()
+		closeBtn := widgets.NewQPushButtonFromPointer(versionLayout.FindChild("closeBtn", core.Qt__FindChildrenRecursively).Pointer())
+		closeBtn.ConnectClicked(func(bool) {
+			subwin.Close()
+		})
+		checkUpdateBtn := widgets.NewQPushButtonFromPointer(versionLayout.FindChild("checkUpdateBtn", core.Qt__FindChildrenRecursively).Pointer())
+		checkUpdateBtn.ConnectClicked(func(bool) {
+			widgets.QMessageBox_Information(nil, "Status", "Nothing to do.", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		})
+		subwin.Layout().AddWidget(versionLayout)
+		subwin.SetModal(true)
 		subwin.Show()
 	})
 

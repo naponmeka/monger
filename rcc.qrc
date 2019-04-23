@@ -10,6 +10,7 @@
 <file>qml/settings.ui</file>
 <file>qml/single-question.ui</file>
 <file>qml/tabs.ui</file>
+<file>qml/version.ui</file>
 <file>qml/view.ui</file>
 </qresource>
 </RCC>
