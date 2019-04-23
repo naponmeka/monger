@@ -18,12 +18,12 @@ func getSelectedDoc(
 ) (string, int) {
 	docStr := ""
 	selected := 0
-	if gs.resultTextEdit.IsHidden() {
+	if gs.resultTextEdit.IsHidden() && gs.resultTextEditJson.IsHidden() { // tree view
 		selected = findRow(resultTreeview, resultTreeview.CurrentIndex())
 		if selected < 0 {
 			selected = 0
 		}
-	} else {
+	} else if gs.resultTextEditJson.IsHidden() { // text view
 		text := gs.resultTextEdit.ToPlainText()
 		pos := gs.resultTextEdit.TextCursor().Position()
 		beginOfDoc := "},\n\n{"
@@ -31,7 +31,6 @@ func getSelectedDoc(
 		var objIDpos int
 		beginOfDocIdx := strings.LastIndex(text[:pos], beginOfDoc)
 		lastestIDIdx := strings.LastIndex(text[:pos], starter)
-		widgets.QMessageBox_Critical(nil, "Error", fmt.Sprintln(beginOfDocIdx, ", ", lastestIDIdx), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 		if beginOfDocIdx > lastestIDIdx {
 			objIDpos = strings.Index(text[pos:], starter) + pos
 		} else {
@@ -44,6 +43,36 @@ func getSelectedDoc(
 		id := text[objIDpos+len(starter) : closer+objIDpos]
 		id = strings.TrimRight(id, ",")
 		id = strings.Replace(id, "ObjectId", "ObjectID", -1)
+		selected = 0
+		for idx, doc := range *documents {
+			docID := fmt.Sprint(doc["_id"])
+			if docID == id {
+				selected = idx
+				break
+			}
+		}
+	} else { // text view json
+		text := gs.resultTextEditJson.ToPlainText()
+		pos := gs.resultTextEditJson.TextCursor().Position()
+		beginOfDoc := "},\n\n{"
+		starter := `"_id": `
+		var objIDpos int
+		beginOfDocIdx := strings.LastIndex(text[:pos], beginOfDoc)
+		lastestIDIdx := strings.LastIndex(text[:pos], starter)
+		if beginOfDocIdx > lastestIDIdx {
+			objIDpos = strings.Index(text[pos:], starter) + pos
+		} else {
+			objIDpos = strings.LastIndex(text[:pos], starter)
+		}
+		if objIDpos == -1 {
+			objIDpos = strings.Index(text, starter)
+		}
+		closer := strings.Index(text[objIDpos:], "\"\n    },\n")
+		id := text[objIDpos+len(starter)+len("{\n        \"$oid\": \"") : closer+objIDpos]
+		id = strings.TrimRight(id, ",")
+		id = strings.TrimRight(id, "\n")
+		id = strings.TrimRight(id, "\"")
+		id = fmt.Sprintf(`ObjectID("%s")`, id)
 		selected = 0
 		for idx, doc := range *documents {
 			docID := fmt.Sprint(doc["_id"])
