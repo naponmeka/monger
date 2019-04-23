@@ -26,9 +26,17 @@ func getSelectedDoc(
 	} else {
 		text := gs.resultTextEdit.ToPlainText()
 		pos := gs.resultTextEdit.TextCursor().Position()
-
+		beginOfDoc := "},\n\n{"
 		starter := `"_id": `
-		objIDpos := strings.LastIndex(text[:pos], starter)
+		var objIDpos int
+		beginOfDocIdx := strings.LastIndex(text[:pos], beginOfDoc)
+		lastestIDIdx := strings.LastIndex(text[:pos], starter)
+		widgets.QMessageBox_Critical(nil, "Error", fmt.Sprintln(beginOfDocIdx, ", ", lastestIDIdx), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		if beginOfDocIdx > lastestIDIdx {
+			objIDpos = strings.Index(text[pos:], starter) + pos
+		} else {
+			objIDpos = strings.LastIndex(text[:pos], starter)
+		}
 		if objIDpos == -1 {
 			objIDpos = strings.Index(text, starter)
 		}

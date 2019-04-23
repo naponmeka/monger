@@ -33,6 +33,8 @@ type GlobalState struct {
 	timeLabel           *widgets.QLabel
 	resultTextEdit      *widgets.QPlainTextEdit
 	resultTextEditJson  *widgets.QPlainTextEdit
+	defaultView         *int
+	timeout             *int
 }
 
 func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {

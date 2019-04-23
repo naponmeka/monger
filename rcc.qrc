@@ -7,6 +7,7 @@
 <file>qml/export.ui</file>
 <file>qml/insert.ui</file>
 <file>qml/main.ui</file>
+<file>qml/settings.ui</file>
 <file>qml/tabs.ui</file>
 <file>qml/view.ui</file>
 </qresource>

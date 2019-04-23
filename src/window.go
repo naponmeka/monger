@@ -12,11 +12,13 @@ func NewWindow() {
 	window := widgets.NewQMainWindow(nil, 0)
 	tabsLayout := NewTabLayout()
 	tabsHolder := widgets.NewQTabWidgetFromPointer(tabsLayout.FindChild("tabWidget", core.Qt__FindChildrenRecursively).Pointer())
-
+	config := readConfig()
 	gs := GlobalState{
-		tabsHolder: tabsHolder,
-		window:     window,
-		tabStates:  make(map[string]TabState),
+		tabsHolder:  tabsHolder,
+		window:      window,
+		tabStates:   make(map[string]TabState),
+		timeout:     &config.Timeout,
+		defaultView: &config.DefaultView,
 	}
 	tabsHolder.ConnectCurrentChanged(func(idx int) {
 		gs.TabChangeUpdateState()

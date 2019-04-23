@@ -10,6 +10,7 @@ import (
 
 type Config struct {
 	Timeout          int             `json:"timeout"`
+	DefaultView      int             `json:"default-view"`
 	SavedConnections []list.ListItem `json:"saved-connections"`
 }
 
@@ -20,6 +21,8 @@ func readConfig() (config Config) {
 	if folder != nil {
 		data, _ := folder.ReadFile("setting.json")
 		json.Unmarshal(data, &config)
+	} else {
+		config.Timeout = 15
 	}
 	return
 }

@@ -150,6 +150,7 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 			resultTextViewJson.Show()
 		}
 	})
+	switchViewComboBox.SetCurrentIndex(*globalState.defaultView)
 
 	registerTemplateBtn(mainWidget, queryPlainTextEdit)
 	registerActionBtn(

@@ -37,8 +37,17 @@ func CreateMenuBar(tabsHolder *widgets.QTabWidget, globalState *GlobalState) *wi
 
 	settingMenuBar := widgets.NewQMenu(nil)
 	settingMenuBar.SetTitle("Setting")
-	timeoutBtn := settingMenuBar.AddAction("Timeout")
-	timeoutBtn.SetDisabled(true)
+	customizeBtn := settingMenuBar.AddAction("Customize")
+	customizeBtn.ConnectTriggered(func(bool) {
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle("Customize")
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		exportLayout := NewSettingsLayout(globalState, subwin)
+		subwin.Layout().AddWidget(exportLayout)
+		subwin.SetModal(true)
+		subwin.SetMinimumSize2(640, 400)
+		subwin.Show()
+	})
 
 	menuBar.AddMenu(fileMenuBar)
 	menuBar.AddMenu(settingMenuBar)
