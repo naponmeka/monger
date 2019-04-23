@@ -49,6 +49,33 @@ func NewExportLayout(globalState *GlobalState) *widgets.QWidget {
 	tableView.SetModel(model)
 	tableData := []table.TableItem{}
 
+	// edit
+	tableView.ConnectDoubleClicked(func(index *core.QModelIndex) {
+		idx := index.Row()
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle("Add config")
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		editTableLayout := NewEditTableLayout()
+		csvFieldLineEdit := widgets.NewQLineEditFromPointer(editTableLayout.FindChild("csvFieldLineEdit", core.Qt__FindChildrenRecursively).Pointer())
+		csvFieldLineEdit.SetText(tableData[idx].CSVField)
+		fromFieldLineEdit := widgets.NewQLineEditFromPointer(editTableLayout.FindChild("fromFieldLineEdit", core.Qt__FindChildrenRecursively).Pointer())
+		fromFieldLineEdit.SetText(tableData[idx].FromField)
+		cancelBtn := widgets.NewQPushButtonFromPointer(editTableLayout.FindChild("cancelBtn", core.Qt__FindChildrenRecursively).Pointer())
+		cancelBtn.ConnectClicked(func(bool) {
+			subwin.Close()
+		})
+		saveBtn := widgets.NewQPushButtonFromPointer(editTableLayout.FindChild("saveBtn", core.Qt__FindChildrenRecursively).Pointer())
+		saveBtn.ConnectClicked(func(bool) {
+			model.EditAt(idx, csvFieldLineEdit.Text(), fromFieldLineEdit.Text())
+			tableData[idx].CSVField = csvFieldLineEdit.Text()
+			tableData[idx].FromField = fromFieldLineEdit.Text()
+			subwin.Close()
+		})
+		subwin.Layout().AddWidget(editTableLayout)
+		subwin.SetModal(true)
+		subwin.Exec()
+	})
+
 	addBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("addBtn", core.Qt__FindChildrenRecursively).Pointer())
 	addBtn.ConnectClicked(func(bool) {
 		subwin := widgets.NewQDialog(nil, 0)
@@ -77,10 +104,11 @@ func NewExportLayout(globalState *GlobalState) *widgets.QWidget {
 	})
 	removeBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("removeBtn", core.Qt__FindChildrenRecursively).Pointer())
 	removeBtn.ConnectClicked(func(bool) {
-		if len(tableData) > 0 {
-			tableData = tableData[:len(tableData)-1]
+		idx := tableView.CurrentIndex().Row()
+		if idx >= 0 {
+			tableData = append(tableData[:idx], tableData[idx+1:]...)
+			model.RemoveAt(idx)
 		}
-		model.Remove()
 	})
 
 	csvFilenameLineEdit := widgets.NewQLineEditFromPointer(widget.FindChild("csvFilenameLineEdit", core.Qt__FindChildrenRecursively).Pointer())

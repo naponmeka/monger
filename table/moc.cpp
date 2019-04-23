@@ -49,6 +49,8 @@ public:
 	void Signal_Remove() { callbackCustomTableModel61fd99_Remove(this); };
 	void Signal_Add(quintptr item) { callbackCustomTableModel61fd99_Add(this, item); };
 	void Signal_Edit(QString firstName, QString lastName) { QByteArray te57915 = firstName.toUtf8(); Moc_PackedString firstNamePacked = { const_cast<char*>(te57915.prepend("WHITESPACE").constData()+10), te57915.size()-10 };QByteArray t9b831e = lastName.toUtf8(); Moc_PackedString lastNamePacked = { const_cast<char*>(t9b831e.prepend("WHITESPACE").constData()+10), t9b831e.size()-10 };callbackCustomTableModel61fd99_Edit(this, firstNamePacked, lastNamePacked); };
+	void Signal_RemoveAt(qint32 i) { callbackCustomTableModel61fd99_RemoveAt(this, i); };
+	void Signal_EditAt(qint32 i, QString firstName, QString lastName) { QByteArray te57915 = firstName.toUtf8(); Moc_PackedString firstNamePacked = { const_cast<char*>(te57915.prepend("WHITESPACE").constData()+10), te57915.size()-10 };QByteArray t9b831e = lastName.toUtf8(); Moc_PackedString lastNamePacked = { const_cast<char*>(t9b831e.prepend("WHITESPACE").constData()+10), t9b831e.size()-10 };callbackCustomTableModel61fd99_EditAt(this, i, firstNamePacked, lastNamePacked); };
 	 ~CustomTableModel61fd99() { callbackCustomTableModel61fd99_DestroyCustomTableModel(this); };
 	bool dropMimeData(const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent) { return callbackCustomTableModel61fd99_DropMimeData(this, const_cast<QMimeData*>(data), action, row, column, const_cast<QModelIndex*>(&parent)) != 0; };
 	QModelIndex index(int row, int column, const QModelIndex & parent) const { return *static_cast<QModelIndex*>(callbackCustomTableModel61fd99_Index(const_cast<void*>(static_cast<const void*>(this)), row, column, const_cast<QModelIndex*>(&parent))); };
@@ -117,6 +119,8 @@ signals:
 	void remove();
 	void add(quintptr item);
 	void edit(QString firstName, QString lastName);
+	void removeAt(qint32 i);
+	void editAt(qint32 i, QString firstName, QString lastName);
 public slots:
 private:
 };
@@ -170,6 +174,36 @@ void CustomTableModel61fd99_DisconnectEdit(void* ptr)
 void CustomTableModel61fd99_Edit(void* ptr, struct Moc_PackedString firstName, struct Moc_PackedString lastName)
 {
 	static_cast<CustomTableModel61fd99*>(ptr)->edit(QString::fromUtf8(firstName.data, firstName.len), QString::fromUtf8(lastName.data, lastName.len));
+}
+
+void CustomTableModel61fd99_ConnectRemoveAt(void* ptr)
+{
+	QObject::connect(static_cast<CustomTableModel61fd99*>(ptr), static_cast<void (CustomTableModel61fd99::*)(qint32)>(&CustomTableModel61fd99::removeAt), static_cast<CustomTableModel61fd99*>(ptr), static_cast<void (CustomTableModel61fd99::*)(qint32)>(&CustomTableModel61fd99::Signal_RemoveAt));
+}
+
+void CustomTableModel61fd99_DisconnectRemoveAt(void* ptr)
+{
+	QObject::disconnect(static_cast<CustomTableModel61fd99*>(ptr), static_cast<void (CustomTableModel61fd99::*)(qint32)>(&CustomTableModel61fd99::removeAt), static_cast<CustomTableModel61fd99*>(ptr), static_cast<void (CustomTableModel61fd99::*)(qint32)>(&CustomTableModel61fd99::Signal_RemoveAt));
+}
+
+void CustomTableModel61fd99_RemoveAt(void* ptr, int i)
+{
+	static_cast<CustomTableModel61fd99*>(ptr)->removeAt(i);
+}
+
+void CustomTableModel61fd99_ConnectEditAt(void* ptr)
+{
+	QObject::connect(static_cast<CustomTableModel61fd99*>(ptr), static_cast<void (CustomTableModel61fd99::*)(qint32, QString, QString)>(&CustomTableModel61fd99::editAt), static_cast<CustomTableModel61fd99*>(ptr), static_cast<void (CustomTableModel61fd99::*)(qint32, QString, QString)>(&CustomTableModel61fd99::Signal_EditAt));
+}
+
+void CustomTableModel61fd99_DisconnectEditAt(void* ptr)
+{
+	QObject::disconnect(static_cast<CustomTableModel61fd99*>(ptr), static_cast<void (CustomTableModel61fd99::*)(qint32, QString, QString)>(&CustomTableModel61fd99::editAt), static_cast<CustomTableModel61fd99*>(ptr), static_cast<void (CustomTableModel61fd99::*)(qint32, QString, QString)>(&CustomTableModel61fd99::Signal_EditAt));
+}
+
+void CustomTableModel61fd99_EditAt(void* ptr, int i, struct Moc_PackedString firstName, struct Moc_PackedString lastName)
+{
+	static_cast<CustomTableModel61fd99*>(ptr)->editAt(i, QString::fromUtf8(firstName.data, firstName.len), QString::fromUtf8(lastName.data, lastName.len));
 }
 
 int CustomTableModel61fd99_CustomTableModel61fd99_QRegisterMetaType()

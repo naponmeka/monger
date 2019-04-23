@@ -83,6 +83,8 @@ func callbackCustomTableModel61fd99_Constructor(ptr unsafe.Pointer) {
 	this.ConnectRemove(this.remove)
 	this.ConnectAdd(this.add)
 	this.ConnectEdit(this.edit)
+	this.ConnectRemoveAt(this.removeAt)
+	this.ConnectEditAt(this.editAt)
 	this.init()
 }
 
@@ -216,6 +218,94 @@ func (ptr *CustomTableModel) Edit(firstName string, lastName string) {
 			defer C.free(unsafe.Pointer(lastNameC))
 		}
 		C.CustomTableModel61fd99_Edit(ptr.Pointer(), C.struct_Moc_PackedString{data: firstNameC, len: C.longlong(len(firstName))}, C.struct_Moc_PackedString{data: lastNameC, len: C.longlong(len(lastName))})
+	}
+}
+
+//export callbackCustomTableModel61fd99_RemoveAt
+func callbackCustomTableModel61fd99_RemoveAt(ptr unsafe.Pointer, i C.int) {
+	if signal := qt.GetSignal(ptr, "removeAt"); signal != nil {
+		signal.(func(int))(int(int32(i)))
+	}
+
+}
+
+func (ptr *CustomTableModel) ConnectRemoveAt(f func(i int)) {
+	if ptr.Pointer() != nil {
+
+		if !qt.ExistsSignal(ptr.Pointer(), "removeAt") {
+			C.CustomTableModel61fd99_ConnectRemoveAt(ptr.Pointer())
+		}
+
+		if signal := qt.LendSignal(ptr.Pointer(), "removeAt"); signal != nil {
+			qt.ConnectSignal(ptr.Pointer(), "removeAt", func(i int) {
+				signal.(func(int))(i)
+				f(i)
+			})
+		} else {
+			qt.ConnectSignal(ptr.Pointer(), "removeAt", f)
+		}
+	}
+}
+
+func (ptr *CustomTableModel) DisconnectRemoveAt() {
+	if ptr.Pointer() != nil {
+		C.CustomTableModel61fd99_DisconnectRemoveAt(ptr.Pointer())
+		qt.DisconnectSignal(ptr.Pointer(), "removeAt")
+	}
+}
+
+func (ptr *CustomTableModel) RemoveAt(i int) {
+	if ptr.Pointer() != nil {
+		C.CustomTableModel61fd99_RemoveAt(ptr.Pointer(), C.int(int32(i)))
+	}
+}
+
+//export callbackCustomTableModel61fd99_EditAt
+func callbackCustomTableModel61fd99_EditAt(ptr unsafe.Pointer, i C.int, firstName C.struct_Moc_PackedString, lastName C.struct_Moc_PackedString) {
+	if signal := qt.GetSignal(ptr, "editAt"); signal != nil {
+		signal.(func(int, string, string))(int(int32(i)), cGoUnpackString(firstName), cGoUnpackString(lastName))
+	}
+
+}
+
+func (ptr *CustomTableModel) ConnectEditAt(f func(i int, firstName string, lastName string)) {
+	if ptr.Pointer() != nil {
+
+		if !qt.ExistsSignal(ptr.Pointer(), "editAt") {
+			C.CustomTableModel61fd99_ConnectEditAt(ptr.Pointer())
+		}
+
+		if signal := qt.LendSignal(ptr.Pointer(), "editAt"); signal != nil {
+			qt.ConnectSignal(ptr.Pointer(), "editAt", func(i int, firstName string, lastName string) {
+				signal.(func(int, string, string))(i, firstName, lastName)
+				f(i, firstName, lastName)
+			})
+		} else {
+			qt.ConnectSignal(ptr.Pointer(), "editAt", f)
+		}
+	}
+}
+
+func (ptr *CustomTableModel) DisconnectEditAt() {
+	if ptr.Pointer() != nil {
+		C.CustomTableModel61fd99_DisconnectEditAt(ptr.Pointer())
+		qt.DisconnectSignal(ptr.Pointer(), "editAt")
+	}
+}
+
+func (ptr *CustomTableModel) EditAt(i int, firstName string, lastName string) {
+	if ptr.Pointer() != nil {
+		var firstNameC *C.char
+		if firstName != "" {
+			firstNameC = C.CString(firstName)
+			defer C.free(unsafe.Pointer(firstNameC))
+		}
+		var lastNameC *C.char
+		if lastName != "" {
+			lastNameC = C.CString(lastName)
+			defer C.free(unsafe.Pointer(lastNameC))
+		}
+		C.CustomTableModel61fd99_EditAt(ptr.Pointer(), C.int(int32(i)), C.struct_Moc_PackedString{data: firstNameC, len: C.longlong(len(firstName))}, C.struct_Moc_PackedString{data: lastNameC, len: C.longlong(len(lastName))})
 	}
 }
 

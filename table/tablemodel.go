@@ -7,9 +7,11 @@ type CustomTableModel struct {
 
 	_ func() `constructor:"init"`
 
-	_ func()                                  `signal:"remove,auto"`
-	_ func(item TableItem)                    `signal:"add,auto"`
-	_ func(firstName string, lastName string) `signal:"edit,auto"`
+	_ func()                                         `signal:"remove,auto"`
+	_ func(item TableItem)                           `signal:"add,auto"`
+	_ func(firstName string, lastName string)        `signal:"edit,auto"`
+	_ func(i int)                                    `signal:"removeAt,auto"`
+	_ func(i int, firstName string, lastName string) `signal:"editAt,auto"`
 
 	modelData []TableItem
 }
@@ -68,6 +70,15 @@ func (m *CustomTableModel) remove() {
 	m.EndRemoveRows()
 }
 
+func (m *CustomTableModel) removeAt(i int) {
+	if len(m.modelData) == 0 || i > len(m.modelData) {
+		return
+	}
+	m.BeginRemoveRows(core.NewQModelIndex(), i, i)
+	m.modelData = append(m.modelData[:i], m.modelData[i+1:]...)
+	m.EndRemoveRows()
+}
+
 func (m *CustomTableModel) add(item TableItem) {
 	m.BeginInsertRows(core.NewQModelIndex(), len(m.modelData), len(m.modelData))
 	m.modelData = append(m.modelData, item)
@@ -80,4 +91,12 @@ func (m *CustomTableModel) edit(firstName string, lastName string) {
 	}
 	m.modelData[len(m.modelData)-1] = TableItem{firstName, lastName}
 	m.DataChanged(m.Index(len(m.modelData)-1, 0, core.NewQModelIndex()), m.Index(len(m.modelData)-1, 1, core.NewQModelIndex()), []int{int(core.Qt__DisplayRole)})
+}
+
+func (m *CustomTableModel) editAt(idx int, firstName string, lastName string) {
+	if len(m.modelData) == 0 {
+		return
+	}
+	m.modelData[idx] = TableItem{firstName, lastName}
+	m.DataChanged(m.Index(idx, 0, core.NewQModelIndex()), m.Index(idx, 1, core.NewQModelIndex()), []int{int(core.Qt__DisplayRole)})
 }
