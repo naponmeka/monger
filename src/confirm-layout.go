@@ -38,7 +38,7 @@ func RegisterConfirmDeleteLayoutBtn(
 		filter := bson.D{
 			{"_id", oid},
 		}
-		connectdb.Remove(collection, filter, true)
+		connectdb.Remove(*globalState.timeout, collection, filter, true)
 		subwin.Close()
 		globalState.ExecuteQuery()
 	})

@@ -95,6 +95,7 @@ func NewExportLayout(globalState *GlobalState) *widgets.QWidget {
 			*globalState.currentQuery,
 			-1,
 			-1,
+			*globalState.timeout,
 		)
 		if err != nil {
 			widgets.QMessageBox_Information(exportDialogWidget, "Error", "Cannot Query", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
@@ -107,6 +108,7 @@ func NewExportLayout(globalState *GlobalState) *widgets.QWidget {
 			*globalState.currentQuery+".count()",
 			-1,
 			-1,
+			*globalState.timeout,
 		)
 		total := countResult[0]["count"].(int64)
 		totalDocuments := int(total)

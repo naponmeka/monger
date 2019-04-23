@@ -28,8 +28,8 @@ func insertOneExtractor(query string) (document interface{}, option *options.Ins
 	return document, option, err
 }
 
-func InsertOne(collection *mongo.Collection, document interface{}, option *options.InsertOneOptions) (results []bson.M, err error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func InsertOne(timeout int, collection *mongo.Collection, document interface{}, option *options.InsertOneOptions) (results []bson.M, err error) {
+	ctx, _ := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	insertOneResult, err := collection.InsertOne(ctx, document, option)
 	if err != nil {
 		return results, err

@@ -42,8 +42,8 @@ func replaceExtractor(query string) (filter interface{}, update interface{}, opt
 	return filter, update, option, err
 }
 
-func Replace(collection *mongo.Collection, filter interface{}, replacement interface{}, option *options.ReplaceOptions) (results []bson.M, err error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func Replace(timeout int, collection *mongo.Collection, filter interface{}, replacement interface{}, option *options.ReplaceOptions) (results []bson.M, err error) {
+	ctx, _ := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	var updateResult *mongo.UpdateResult
 	updateResult, _ = collection.ReplaceOne(ctx, filter, replacement)
 	var resultDoc bson.M

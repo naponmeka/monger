@@ -19,8 +19,8 @@ func aggregateExtractor(query string) (steps interface{}, err error) {
 	return steps, nil
 }
 
-func Aggregate(collection *mongo.Collection, steps interface{}) (results []bson.M, err error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func Aggregate(timeout int, collection *mongo.Collection, steps interface{}) (results []bson.M, err error) {
+	ctx, _ := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	cur, err := collection.Aggregate(ctx, steps)
 	defer cur.Close(ctx)
 	for cur.Next(ctx) {

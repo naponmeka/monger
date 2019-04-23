@@ -40,8 +40,8 @@ func insertExtractor(query string) (documents []interface{}, option *options.Ins
 	return documents, option, err
 }
 
-func Insert(collection *mongo.Collection, documents []interface{}, option *options.InsertManyOptions) (results []bson.M, err error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func Insert(timeout int, collection *mongo.Collection, documents []interface{}, option *options.InsertManyOptions) (results []bson.M, err error) {
+	ctx, _ := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	rawResults, err := collection.InsertMany(ctx, documents, option)
 	for _, r := range rawResults.InsertedIDs {
 		bDoc := bson.M{"_id": r}

@@ -37,8 +37,8 @@ func removeExtractor(query string) (filter interface{}, justOne bool, err error)
 	return filter, justOne, err
 }
 
-func Remove(collection *mongo.Collection, filter interface{}, justOne bool) (results []bson.M, err error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func Remove(timeout int, collection *mongo.Collection, filter interface{}, justOne bool) (results []bson.M, err error) {
+	ctx, _ := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	var deleteResult *mongo.DeleteResult
 	if justOne {
 		deleteResult, err = collection.DeleteOne(ctx, filter, nil)

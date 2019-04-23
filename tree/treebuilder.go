@@ -16,8 +16,9 @@ func CreateItems(
 	query string,
 	skip int,
 	limit int,
+	timeout int,
 ) (items []*TreeItem, documents []bson.M, err error) {
-	documents, err = connectdb.Query(mongoURI, db, collectionName, query, skip, limit)
+	documents, err = connectdb.Query(mongoURI, db, collectionName, query, skip, limit, timeout)
 	if err != nil {
 		return nil, nil, err
 	}

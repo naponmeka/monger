@@ -38,8 +38,8 @@ func findExtractor(query string) (filter interface{}, returnOptions []*options.F
 	return filter, returnOptions, err
 }
 
-func Find(collection *mongo.Collection, filter interface{}, option []*options.FindOptions) (results []bson.M, err error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func Find(timeout int, collection *mongo.Collection, filter interface{}, option []*options.FindOptions) (results []bson.M, err error) {
+	ctx, _ := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	cur, err := collection.Find(ctx, filter, option...)
 	defer cur.Close(ctx)
 	for cur.Next(ctx) {
@@ -52,8 +52,8 @@ func Find(collection *mongo.Collection, filter interface{}, option []*options.Fi
 	return
 }
 
-func Count(collection *mongo.Collection, filter interface{}, option []*options.CountOptions) (int64, error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func Count(timeout int, collection *mongo.Collection, filter interface{}, option []*options.CountOptions) (int64, error) {
+	ctx, _ := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	return collection.CountDocuments(ctx, filter, option...)
 }
 

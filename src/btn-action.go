@@ -51,7 +51,15 @@ func executeQuery(gs *GlobalState) {
 	for i := 0; i < 100; i++ {
 		gs.model.Remove()
 	}
-	items, docs, err := tree.CreateItems(*gs.mongoURI, *gs.currentDB, *gs.currentCollection, currentQuery, *gs.skip, *gs.limit)
+	items, docs, err := tree.CreateItems(
+		*gs.mongoURI,
+		*gs.currentDB,
+		*gs.currentCollection,
+		currentQuery,
+		*gs.skip,
+		*gs.limit,
+		*gs.timeout,
+	)
 	if err != nil {
 		widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 		return

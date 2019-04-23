@@ -14,6 +14,7 @@ func Query(
 	query string,
 	skip int,
 	limit int,
+	timeout int,
 ) (results []bson.M, err error) {
 	query = strings.TrimSpace(query)
 	collection := GetCollection(mongoURI, db, collectionName)
@@ -25,7 +26,7 @@ func Query(
 			}
 			raw := GetStringInBetween(query, ".find(", ")")
 			filter, _, _ := findExtractor(raw)
-			c, err := Count(collection, filter, nil)
+			c, err := Count(timeout, collection, filter, nil)
 			results = append(results, bson.M{"count": c})
 			return results, err
 		} else {
@@ -57,7 +58,7 @@ func Query(
 			fOptions = append(fOptions, &options.FindOptions{
 				Sort: sort,
 			})
-			results, err = Find(collection, filter, fOptions)
+			results, err = Find(timeout, collection, filter, fOptions)
 		}
 
 	} else if strings.HasPrefix(query, ".insert(") {
@@ -66,79 +67,77 @@ func Query(
 		if err != nil {
 			return results, err
 		}
-		results, err = Insert(collection, documents, option)
+		results, err = Insert(timeout, collection, documents, option)
 	} else if strings.HasPrefix(query, ".insertMany(") {
 		raw := GetStringInBetween(query, ".insertMany(", ")")
 		documents, option, err := insertExtractor(raw)
 		if err != nil {
 			return results, err
 		}
-		results, err = Insert(collection, documents, option)
+		results, err = Insert(timeout, collection, documents, option)
 	} else if strings.HasPrefix(query, ".insertOne(") {
 		raw := GetStringInBetween(query, ".insertOne(", ")")
 		document, option, err := insertOneExtractor(raw)
 		if err != nil {
 			return results, err
 		}
-		results, err = InsertOne(collection, document, option)
+		results, err = InsertOne(timeout, collection, document, option)
 	} else if strings.HasPrefix(query, ".update(") {
 		raw := GetStringInBetween(query, ".update(", ")")
 		filter, update, option, isMulti, err := updateExtractor(raw)
 		if err != nil {
 			return results, err
 		}
-		results, err = Update(collection, filter, update, option, isMulti)
+		results, err = Update(timeout, collection, filter, update, option, isMulti)
 	} else if strings.HasPrefix(query, ".updateMany(") {
 		raw := GetStringInBetween(query, ".updateMany(", ")")
 		filter, update, option, isMulti, err := updateExtractor(raw)
 		if err != nil {
 			return results, err
 		}
-		results, err = Update(collection, filter, update, option, isMulti)
+		results, err = Update(timeout, collection, filter, update, option, isMulti)
 	} else if strings.HasPrefix(query, ".updateOne(") {
 		raw := GetStringInBetween(query, ".updateOne(", ")")
 		filter, update, option, _, err := updateExtractor(raw)
 		if err != nil {
 			return results, err
 		}
-		results, err = Update(collection, filter, update, option, false)
+		results, err = Update(timeout, collection, filter, update, option, false)
 	} else if strings.HasPrefix(query, ".remove(") {
 		raw := GetStringInBetween(query, ".remove(", ")")
 		filter, justOne, err := removeExtractor(raw)
 		if err != nil {
 			return results, err
 		}
-		results, err = Remove(collection, filter, justOne)
+		results, err = Remove(timeout, collection, filter, justOne)
 	} else if strings.HasPrefix(query, ".deleteOne(") {
 		raw := GetStringInBetween(query, ".deleteOne(", ")")
 		filter, _, err := removeExtractor(raw)
 		if err != nil {
 			return results, err
 		}
-		results, err = Remove(collection, filter, true)
+		results, err = Remove(timeout, collection, filter, true)
 	} else if strings.HasPrefix(query, ".deleteMany(") {
 		raw := GetStringInBetween(query, ".deleteMany(", ")")
 		filter, _, err := removeExtractor(raw)
 		if err != nil {
 			return results, err
 		}
-		results, err = Remove(collection, filter, false)
+		results, err = Remove(timeout, collection, filter, false)
 	} else if strings.HasPrefix(query, ".replaceOne(") {
 		raw := GetStringInBetween(query, ".replaceOne(", ")")
 		filter, replacement, option, err := replaceExtractor(raw)
 		if err != nil {
 			return results, err
 		}
-		results, err = Replace(collection, filter, replacement, option)
+		results, err = Replace(timeout, collection, filter, replacement, option)
 	} else if strings.HasPrefix(query, ".aggregate(") {
 		raw := GetStringInBetween(query, ".aggregate(", ")")
 		steps, err := aggregateExtractor(raw)
 		if err != nil {
 			return results, err
 		}
-		results, err = Aggregate(collection, steps)
-	} else {
-		results = ListDocuments(mongoURI, db, collectionName)
+		results, err = Aggregate(timeout, collection, steps)
 	}
 	return
 }

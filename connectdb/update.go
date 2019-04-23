@@ -49,8 +49,8 @@ func updateExtractor(query string) (filter interface{}, update interface{}, opti
 	return filter, update, option, isMulti, err
 }
 
-func Update(collection *mongo.Collection, filter interface{}, update interface{}, option *options.UpdateOptions, isMulti bool) (results []bson.M, err error) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func Update(timeout int, collection *mongo.Collection, filter interface{}, update interface{}, option *options.UpdateOptions, isMulti bool) (results []bson.M, err error) {
+	ctx, _ := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	var updateResult *mongo.UpdateResult
 	if isMulti {
 		updateResult, err = collection.UpdateMany(ctx, filter, update, option)

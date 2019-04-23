@@ -61,7 +61,7 @@ func RegisterEditLayoutBtn(
 				{"_id", v},
 			}
 		}
-		connectdb.Replace(collection, filter, document, nil)
+		connectdb.Replace(*globalState.timeout, collection, filter, document, nil)
 		subwin.Close()
 		globalState.ExecuteQuery()
 	})

@@ -61,7 +61,7 @@ func RegisterInsertLayoutBtn(
 				widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 				return
 			}
-			connectdb.Insert(collection, documents, nil)
+			connectdb.Insert(*globalState.timeout, collection, documents, nil)
 		} else {
 			document := bson.M{}
 			err := bson.UnmarshalExtJSON([]byte(jsonStr), false, &document)
@@ -69,7 +69,7 @@ func RegisterInsertLayoutBtn(
 				widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 				return
 			}
-			connectdb.Insert(collection, []interface{}{document}, nil)
+			connectdb.Insert(*globalState.timeout, collection, []interface{}{document}, nil)
 		}
 		subwin.Close()
 		globalState.ExecuteQuery()
