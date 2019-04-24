@@ -7,6 +7,21 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
+func RefreshIndexTree(
+	model *tree.CustomTreeModel,
+	globalState *GlobalState,
+) {
+	model.RemoveAll()
+	items, err := tree.CreateIndexItems(*globalState.mongoURI, *globalState.currentDB, *globalState.currentCollection, *globalState.timeout)
+	if err != nil {
+		widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+	}
+
+	for _, item := range items {
+		model.Add(item)
+	}
+}
+
 func NewManageIndexLayout(subwin *widgets.QDialog, globalState *GlobalState) *widgets.QWidget {
 	var widget = widgets.NewQWidget(nil, 0)
 	var loader = uitools.NewQUiLoader(nil)
@@ -17,15 +32,7 @@ func NewManageIndexLayout(subwin *widgets.QDialog, globalState *GlobalState) *wi
 	indexTreeview := widgets.NewQTreeViewFromPointer(widget.FindChild("indexTreeView", core.Qt__FindChildrenRecursively).Pointer())
 	model := tree.NewCustomTreeModel(nil)
 	indexTreeview.SetModel(model)
-
-	items, err := tree.CreateIndexItems(*globalState.mongoURI, *globalState.currentDB, *globalState.currentCollection, *globalState.timeout)
-	if err != nil {
-		widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
-	}
-
-	for _, item := range items {
-		model.Add(item)
-	}
+	RefreshIndexTree(model, globalState)
 	indexTreeview.ExpandAll()
 
 	addBtn := widgets.NewQPushButtonFromPointer(layoutWidget.FindChild("addBtn", core.Qt__FindChildrenRecursively).Pointer())
@@ -33,7 +40,7 @@ func NewManageIndexLayout(subwin *widgets.QDialog, globalState *GlobalState) *wi
 		subwin := widgets.NewQDialog(nil, 0)
 		subwin.SetWindowTitle("Create index")
 		subwin.SetLayout(widgets.NewQHBoxLayout())
-		createIndexLayout := NewCreateIndexLayout(subwin)
+		createIndexLayout := NewCreateIndexLayout(subwin, model, globalState, false)
 		subwin.Layout().AddWidget(createIndexLayout)
 		subwin.SetModal(true)
 		subwin.Exec()

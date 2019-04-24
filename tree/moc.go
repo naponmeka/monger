@@ -81,6 +81,7 @@ func callbackCustomTreeModelabdc68_Constructor(ptr unsafe.Pointer) {
 	this := NewCustomTreeModelFromPointer(ptr)
 	qt.Register(ptr, this)
 	this.ConnectRemove(this.remove)
+	this.ConnectRemoveAll(this.removeAll)
 	this.ConnectAdd(this.add)
 	this.ConnectEdit(this.edit)
 	this.init()
@@ -122,6 +123,45 @@ func (ptr *CustomTreeModel) DisconnectRemove() {
 func (ptr *CustomTreeModel) Remove() {
 	if ptr.Pointer() != nil {
 		C.CustomTreeModelabdc68_Remove(ptr.Pointer())
+	}
+}
+
+//export callbackCustomTreeModelabdc68_RemoveAll
+func callbackCustomTreeModelabdc68_RemoveAll(ptr unsafe.Pointer) {
+	if signal := qt.GetSignal(ptr, "removeAll"); signal != nil {
+		signal.(func())()
+	}
+
+}
+
+func (ptr *CustomTreeModel) ConnectRemoveAll(f func()) {
+	if ptr.Pointer() != nil {
+
+		if !qt.ExistsSignal(ptr.Pointer(), "removeAll") {
+			C.CustomTreeModelabdc68_ConnectRemoveAll(ptr.Pointer())
+		}
+
+		if signal := qt.LendSignal(ptr.Pointer(), "removeAll"); signal != nil {
+			qt.ConnectSignal(ptr.Pointer(), "removeAll", func() {
+				signal.(func())()
+				f()
+			})
+		} else {
+			qt.ConnectSignal(ptr.Pointer(), "removeAll", f)
+		}
+	}
+}
+
+func (ptr *CustomTreeModel) DisconnectRemoveAll() {
+	if ptr.Pointer() != nil {
+		C.CustomTreeModelabdc68_DisconnectRemoveAll(ptr.Pointer())
+		qt.DisconnectSignal(ptr.Pointer(), "removeAll")
+	}
+}
+
+func (ptr *CustomTreeModel) RemoveAll() {
+	if ptr.Pointer() != nil {
+		C.CustomTreeModelabdc68_RemoveAll(ptr.Pointer())
 	}
 }
 

@@ -8,6 +8,7 @@ type CustomTreeModel struct {
 	_ func() `constructor:"init"`
 
 	_ func()                                  `signal:"remove,auto"`
+	_ func()                                  `signal:"removeAll,auto"`
 	_ func(item *TreeItem)                    `signal:"add,auto"`
 	_ func(firstName string, lastName string) `signal:"edit,auto"`
 
@@ -98,6 +99,19 @@ func (m *CustomTreeModel) remove() {
 	m.rootItem._childItems = m.rootItem._childItems[:len(m.rootItem._childItems)-1]
 	m.EndRemoveRows()
 	item.DestroyTreeItem()
+}
+
+func (m *CustomTreeModel) removeAll() {
+	if m.rootItem.childCount() == 0 {
+		return
+	}
+	m.BeginRemoveRows(core.NewQModelIndex(), 0, len(m.rootItem._childItems)-1)
+	for i := 0; i < len(m.rootItem._childItems); i++ {
+		item := m.rootItem._childItems[i]
+		item.DestroyTreeItem()
+	}
+	m.rootItem._childItems = []*TreeItem{}
+	m.EndRemoveRows()
 }
 
 func (m *CustomTreeModel) add(item *TreeItem) {

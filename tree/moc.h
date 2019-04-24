@@ -8,10 +8,10 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
-class CustomTreeModelabdc68;
-void CustomTreeModelabdc68_CustomTreeModelabdc68_QRegisterMetaTypes();
 class TreeItemabdc68;
 void TreeItemabdc68_TreeItemabdc68_QRegisterMetaTypes();
+class CustomTreeModelabdc68;
+void CustomTreeModelabdc68_CustomTreeModelabdc68_QRegisterMetaTypes();
 extern "C" {
 #endif
 
@@ -20,6 +20,9 @@ struct Moc_PackedList { void* data; long long len; };
 void CustomTreeModelabdc68_ConnectRemove(void* ptr);
 void CustomTreeModelabdc68_DisconnectRemove(void* ptr);
 void CustomTreeModelabdc68_Remove(void* ptr);
+void CustomTreeModelabdc68_ConnectRemoveAll(void* ptr);
+void CustomTreeModelabdc68_DisconnectRemoveAll(void* ptr);
+void CustomTreeModelabdc68_RemoveAll(void* ptr);
 void CustomTreeModelabdc68_ConnectAdd(void* ptr);
 void CustomTreeModelabdc68_DisconnectAdd(void* ptr);
 void CustomTreeModelabdc68_Add(void* ptr, void* item);

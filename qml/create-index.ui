@@ -41,7 +41,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEdit"/>
+          <widget class="QLineEdit" name="nameLineEdit"/>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_3">
@@ -51,33 +51,33 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QPlainTextEdit" name="plainTextEdit"/>
+          <widget class="QPlainTextEdit" name="keysPlainTextEdit"/>
          </item>
         </layout>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox">
+        <widget class="QCheckBox" name="uniqueCheckBox">
          <property name="text">
           <string>Unique</string>
          </property>
         </widget>
        </item>
-       <item>
+       <!-- <item>
         <widget class="QCheckBox" name="checkBox_3">
          <property name="text">
           <string>Drop duplicate</string>
          </property>
         </widget>
-       </item>
+       </item> -->
        <item>
-        <widget class="QCheckBox" name="checkBox_2">
+        <widget class="QCheckBox" name="sparseCheckBox">
          <property name="text">
           <string>Sparse</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox_4">
+        <widget class="QCheckBox" name="backgroundCheckBox">
          <property name="text">
           <string>Create in background</string>
          </property>
@@ -86,7 +86,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QCheckBox" name="checkBox_5">
+          <widget class="QCheckBox" name="expireAfterCheckBox">
            <property name="text">
             <string>Expire after</string>
            </property>
@@ -119,11 +119,11 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <!-- <widget class="QWidget" name="tab_2">
       <attribute name="title">
        <string>Text search</string>
       </attribute>
-     </widget>
+     </widget> -->
     </widget>
    </item>
    <item>
@@ -149,7 +149,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="saveBtn">
        <property name="text">
         <string>Save</string>
        </property>
