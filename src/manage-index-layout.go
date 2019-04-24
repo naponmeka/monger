@@ -26,6 +26,7 @@ func NewManageIndexLayout(subwin *widgets.QDialog, globalState *GlobalState) *wi
 	for _, item := range items {
 		model.Add(item)
 	}
+	indexTreeview.ExpandAll()
 
 	addBtn := widgets.NewQPushButtonFromPointer(layoutWidget.FindChild("addBtn", core.Qt__FindChildrenRecursively).Pointer())
 	addBtn.ConnectClicked(func(bool) {

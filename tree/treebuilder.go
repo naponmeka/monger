@@ -43,8 +43,7 @@ func CreateIndexItems(
 			CastToString(doc["name"]),
 			"-",
 		})
-		childItem := Traverse(doc["key"], "Keys", -1, nil)
-		item.appendChild(childItem)
+		Traverse(doc["key"], "Keys", 1, item)
 		items = append(items, item)
 	}
 	if err != nil {
@@ -76,9 +75,7 @@ func Traverse(current interface{}, parent interface{}, level int, parentItem *Tr
 			Traverse(v, fmt.Sprintf("[%d]", k), level, item)
 		}
 	case bson.M:
-		if level == -1 {
-			item = NewTreeItem(nil).initWith([]string{CastToString(parent), fmt.Sprintf("{%d fields}", len(val)), "object"})
-		} else if level == 0 {
+		if level == 0 {
 			doc := parent.(bson.M)
 			objID := doc["_id"]
 			item = NewTreeItem(nil).initWith([]string{CastToString(objID), fmt.Sprintf("{%d fields}", len(val)), "object"})

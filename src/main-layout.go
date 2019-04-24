@@ -228,7 +228,7 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 		manageIndexLayout := NewManageIndexLayout(subwin, globalState)
 		subwin.Layout().AddWidget(manageIndexLayout)
 		subwin.SetModal(true)
-		// subwin.SetMinimumSize2(100, 100)
+		subwin.SetMinimumSize2(400, 300)
 		subwin.Exec()
 	})
 
