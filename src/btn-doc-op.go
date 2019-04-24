@@ -16,6 +16,9 @@ func getSelectedDoc(
 	resultTreeview *widgets.QTreeView,
 	documents *[]bson.M,
 ) (string, int) {
+	if documents == nil || len(*documents) == 0 {
+		return "", -1
+	}
 	docStr := ""
 	selected := 0
 	if gs.resultTextEdit.IsHidden() && gs.resultTextEditJson.IsHidden() { // tree view
@@ -101,31 +104,36 @@ func registerDocOperationBtn(
 	editDocBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("editDocBtn", core.Qt__FindChildrenRecursively).Pointer())
 	editDocBtn.ConnectClicked(func(bool) {
 		docStr, selected := getSelectedDoc(globalState, resultTreeview, documents)
-		docID := fmt.Sprint((*documents)[selected]["_id"])
-		subwin := widgets.NewQDialog(nil, 0)
-		subwin.SetWindowTitle(fmt.Sprintf("Edit: %s", docID))
-		subwin.SetLayout(widgets.NewQHBoxLayout())
-		editLayout := NewEditLayout(docStr)
-		subwin.Layout().AddWidget(editLayout)
-		dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
-		RegisterEditLayoutBtn(editLayout, subwin, dbCollection, globalState)
-		subwin.SetModal(true)
-		subwin.SetMinimumSize2(640, 480)
-		subwin.Exec()
+		if documents != nil && selected >= 0 && selected < len(*documents) {
+			docID := fmt.Sprint((*documents)[selected]["_id"])
+			subwin := widgets.NewQDialog(nil, 0)
+			subwin.SetWindowTitle(fmt.Sprintf("Edit: %s", docID))
+			subwin.SetLayout(widgets.NewQHBoxLayout())
+			editLayout := NewEditLayout(docStr)
+			subwin.Layout().AddWidget(editLayout)
+			dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
+			RegisterEditLayoutBtn(editLayout, subwin, dbCollection, globalState)
+			subwin.SetModal(true)
+			subwin.SetMinimumSize2(640, 480)
+			subwin.Exec()
+		}
 	})
 	viewDocBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("viewDocBtn", core.Qt__FindChildrenRecursively).Pointer())
 	viewDocBtn.ConnectClicked(func(bool) {
 		docStr, selected := getSelectedDoc(globalState, resultTreeview, documents)
-		docID := fmt.Sprint((*documents)[selected]["_id"])
-		subwin := widgets.NewQDialog(nil, 0)
-		subwin.SetWindowTitle(fmt.Sprintf("View: %s", docID))
-		subwin.SetLayout(widgets.NewQHBoxLayout())
-		viewLayout := NewViewLayout(docStr)
-		subwin.Layout().AddWidget(viewLayout)
-		RegisterViewLayoutBtn(viewLayout, subwin)
-		subwin.SetModal(true)
-		subwin.SetMinimumSize2(640, 480)
-		subwin.Exec()
+		if documents != nil && selected >= 0 && selected < len(*documents) {
+			docID := fmt.Sprint((*documents)[selected]["_id"])
+			subwin := widgets.NewQDialog(nil, 0)
+			subwin.SetWindowTitle(fmt.Sprintf("View: %s", docID))
+			subwin.SetLayout(widgets.NewQHBoxLayout())
+			viewLayout := NewViewLayout(docStr)
+			subwin.Layout().AddWidget(viewLayout)
+			RegisterViewLayoutBtn(viewLayout, subwin)
+			subwin.SetModal(true)
+			subwin.SetMinimumSize2(640, 480)
+			subwin.Exec()
+		}
+
 	})
 	insertDocBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("insertDocBtn", core.Qt__FindChildrenRecursively).Pointer())
 	insertDocBtn.ConnectClicked(func(bool) {
@@ -144,22 +152,24 @@ func registerDocOperationBtn(
 	deleteDocBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("deleteDocBtn", core.Qt__FindChildrenRecursively).Pointer())
 	deleteDocBtn.ConnectClicked(func(bool) {
 		_, selected := getSelectedDoc(globalState, resultTreeview, documents)
-		subwin := widgets.NewQDialog(nil, 0)
-		docID := fmt.Sprint((*documents)[selected]["_id"])
-		subwin.SetWindowTitle(fmt.Sprintf("Delete: %s", docID))
-		subwin.SetLayout(widgets.NewQHBoxLayout())
-		deleteConfirmLayout := NewConfirmLayout("Confirm delete?\n" + docID)
-		subwin.Layout().AddWidget(deleteConfirmLayout)
-		dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
-		RegisterConfirmDeleteLayoutBtn(
-			deleteConfirmLayout,
-			subwin,
-			dbCollection,
-			(*documents)[selected],
-			globalState,
-		)
-		subwin.SetModal(true)
-		subwin.SetMinimumSize2(100, 100)
-		subwin.Exec()
+		if documents != nil && selected >= 0 && selected < len(*documents) {
+			subwin := widgets.NewQDialog(nil, 0)
+			docID := fmt.Sprint((*documents)[selected]["_id"])
+			subwin.SetWindowTitle(fmt.Sprintf("Delete: %s", docID))
+			subwin.SetLayout(widgets.NewQHBoxLayout())
+			deleteConfirmLayout := NewConfirmLayout("Confirm delete?\n" + docID)
+			subwin.Layout().AddWidget(deleteConfirmLayout)
+			dbCollection := connectdb.GetCollection(*mongoURI, *currentDB, *currentCollection)
+			RegisterConfirmDeleteLayoutBtn(
+				deleteConfirmLayout,
+				subwin,
+				dbCollection,
+				(*documents)[selected],
+				globalState,
+			)
+			subwin.SetModal(true)
+			subwin.SetMinimumSize2(100, 100)
+			subwin.Exec()
+		}
 	})
 }

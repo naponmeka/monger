@@ -57,16 +57,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="copyBtn">
+      <widget class="QPushButton" name="cancelBtn">
        <property name="text">
-        <string>Copy</string>
+        <string>Close</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="cancelBtn">
+      <widget class="QPushButton" name="copyBtn">
        <property name="text">
-        <string>Close</string>
+        <string>Copy</string>
        </property>
       </widget>
      </item>
