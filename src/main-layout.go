@@ -220,5 +220,17 @@ func NewMainLayout(mongoURI string, globalState *GlobalState, name string) *widg
 		subwin.Exec()
 	})
 
+	manageIndexBtn := widgets.NewQPushButtonFromPointer(mainWidget.FindChild("manageIndexBtn", core.Qt__FindChildrenRecursively).Pointer())
+	manageIndexBtn.ConnectClicked(func(bool) {
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle("Manage Index")
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		manageIndexLayout := NewManageIndexLayout(subwin, globalState)
+		subwin.Layout().AddWidget(manageIndexLayout)
+		subwin.SetModal(true)
+		// subwin.SetMinimumSize2(100, 100)
+		subwin.Exec()
+	})
+
 	return mainWidget
 }

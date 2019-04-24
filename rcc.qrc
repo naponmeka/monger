@@ -2,11 +2,13 @@
 <qresource>
 <file>qml/confirm.ui</file>
 <file>qml/connect.ui</file>
+<file>qml/create-index.ui</file>
 <file>qml/edit.ui</file>
 <file>qml/edittable.ui</file>
 <file>qml/export.ui</file>
 <file>qml/insert.ui</file>
 <file>qml/main.ui</file>
+<file>qml/manage-index.ui</file>
 <file>qml/settings.ui</file>
 <file>qml/single-question.ui</file>
 <file>qml/tabs.ui</file>

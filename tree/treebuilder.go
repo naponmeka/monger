@@ -29,6 +29,30 @@ func CreateItems(
 	return
 }
 
+func CreateIndexItems(
+	mongoURI string,
+	db string,
+	collectionName string,
+	timeout int,
+) (items []*TreeItem, err error) {
+	collection := connectdb.GetCollection(mongoURI, db, collectionName)
+	documents, err := connectdb.ListIndex(timeout, collection)
+	for _, doc := range documents {
+		item := NewTreeItem(nil).initWith([]string{
+			"Name",
+			CastToString(doc["name"]),
+			"-",
+		})
+		childItem := Traverse(doc["key"], "Keys", -1, nil)
+		item.appendChild(childItem)
+		items = append(items, item)
+	}
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
 func CastToString(x interface{}) string {
 	switch x.(type) {
 	case bson.M:
@@ -52,13 +76,13 @@ func Traverse(current interface{}, parent interface{}, level int, parentItem *Tr
 			Traverse(v, fmt.Sprintf("[%d]", k), level, item)
 		}
 	case bson.M:
-		if level == 0 {
+		if level == -1 {
+			item = NewTreeItem(nil).initWith([]string{CastToString(parent), fmt.Sprintf("{%d fields}", len(val)), "object"})
+		} else if level == 0 {
 			doc := parent.(bson.M)
 			objID := doc["_id"]
-			fmt.Println(CastToString(objID), fmt.Sprintf("{%d fields}", len(val)), "[object]\t")
 			item = NewTreeItem(nil).initWith([]string{CastToString(objID), fmt.Sprintf("{%d fields}", len(val)), "object"})
 		} else {
-			fmt.Println(CastToString(parent), fmt.Sprintf("{%d fields}", len(val)), "[object]\t")
 			item = NewTreeItem(nil).initWith([]string{CastToString(parent), fmt.Sprintf("{%d fields}", len(val)), "object"})
 		}
 
