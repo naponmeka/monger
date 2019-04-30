@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/naponmeka/robone/src"
+	"github.com/naponmeka/monger/src"
 	"github.com/therecipe/qt/widgets"
 )
 

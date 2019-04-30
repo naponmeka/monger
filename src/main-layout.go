@@ -3,8 +3,8 @@ package src
 import (
 	"fmt"
 
-	"github.com/naponmeka/robone/connectdb"
-	"github.com/naponmeka/robone/tree"
+	"github.com/naponmeka/monger/connectdb"
+	"github.com/naponmeka/monger/tree"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"

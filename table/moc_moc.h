@@ -19,18 +19,18 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_CustomTableModele3d187_t {
+struct qt_meta_stringdata_CustomTableModel36d085_t {
     QByteArrayData data[12];
     char stringdata0[91];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_CustomTableModele3d187_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_CustomTableModel36d085_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_CustomTableModele3d187_t qt_meta_stringdata_CustomTableModele3d187 = {
+static const qt_meta_stringdata_CustomTableModel36d085_t qt_meta_stringdata_CustomTableModel36d085 = {
     {
-QT_MOC_LITERAL(0, 0, 22), // "CustomTableModele3d187"
+QT_MOC_LITERAL(0, 0, 22), // "CustomTableModel36d085"
 QT_MOC_LITERAL(1, 23, 6), // "remove"
 QT_MOC_LITERAL(2, 30, 0), // ""
 QT_MOC_LITERAL(3, 31, 3), // "add"
@@ -44,13 +44,13 @@ QT_MOC_LITERAL(10, 82, 1), // "i"
 QT_MOC_LITERAL(11, 84, 6) // "editAt"
 
     },
-    "CustomTableModele3d187\0remove\0\0add\0"
+    "CustomTableModel36d085\0remove\0\0add\0"
     "quintptr\0item\0edit\0firstName\0lastName\0"
     "removeAt\0i\0editAt"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_CustomTableModele3d187[] = {
+static const uint qt_meta_data_CustomTableModel36d085[] = {
 
  // content:
        8,       // revision
@@ -80,10 +80,10 @@ static const uint qt_meta_data_CustomTableModele3d187[] = {
        0        // eod
 };
 
-void CustomTableModele3d187::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void CustomTableModel36d085::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        CustomTableModele3d187 *_t = static_cast<CustomTableModele3d187 *>(_o);
+        CustomTableModel36d085 *_t = static_cast<CustomTableModel36d085 *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->remove(); break;
@@ -96,36 +96,36 @@ void CustomTableModele3d187::qt_static_metacall(QObject *_o, QMetaObject::Call _
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            using _t = void (CustomTableModele3d187::*)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomTableModele3d187::remove)) {
+            using _t = void (CustomTableModel36d085::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomTableModel36d085::remove)) {
                 *result = 0;
                 return;
             }
         }
         {
-            using _t = void (CustomTableModele3d187::*)(quintptr );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomTableModele3d187::add)) {
+            using _t = void (CustomTableModel36d085::*)(quintptr );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomTableModel36d085::add)) {
                 *result = 1;
                 return;
             }
         }
         {
-            using _t = void (CustomTableModele3d187::*)(QString , QString );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomTableModele3d187::edit)) {
+            using _t = void (CustomTableModel36d085::*)(QString , QString );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomTableModel36d085::edit)) {
                 *result = 2;
                 return;
             }
         }
         {
-            using _t = void (CustomTableModele3d187::*)(qint32 );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomTableModele3d187::removeAt)) {
+            using _t = void (CustomTableModel36d085::*)(qint32 );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomTableModel36d085::removeAt)) {
                 *result = 3;
                 return;
             }
         }
         {
-            using _t = void (CustomTableModele3d187::*)(qint32 , QString , QString );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomTableModele3d187::editAt)) {
+            using _t = void (CustomTableModel36d085::*)(qint32 , QString , QString );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomTableModel36d085::editAt)) {
                 *result = 4;
                 return;
             }
@@ -133,30 +133,30 @@ void CustomTableModele3d187::qt_static_metacall(QObject *_o, QMetaObject::Call _
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject CustomTableModele3d187::staticMetaObject = { {
+QT_INIT_METAOBJECT const QMetaObject CustomTableModel36d085::staticMetaObject = { {
     &QAbstractTableModel::staticMetaObject,
-    qt_meta_stringdata_CustomTableModele3d187.data,
-    qt_meta_data_CustomTableModele3d187,
+    qt_meta_stringdata_CustomTableModel36d085.data,
+    qt_meta_data_CustomTableModel36d085,
     qt_static_metacall,
     nullptr,
     nullptr
 } };
 
 
-const QMetaObject *CustomTableModele3d187::metaObject() const
+const QMetaObject *CustomTableModel36d085::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *CustomTableModele3d187::qt_metacast(const char *_clname)
+void *CustomTableModel36d085::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_CustomTableModele3d187.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_CustomTableModel36d085.stringdata0))
         return static_cast<void*>(this);
     return QAbstractTableModel::qt_metacast(_clname);
 }
 
-int CustomTableModele3d187::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int CustomTableModel36d085::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QAbstractTableModel::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -174,34 +174,34 @@ int CustomTableModele3d187::qt_metacall(QMetaObject::Call _c, int _id, void **_a
 }
 
 // SIGNAL 0
-void CustomTableModele3d187::remove()
+void CustomTableModel36d085::remove()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }
 
 // SIGNAL 1
-void CustomTableModele3d187::add(quintptr _t1)
+void CustomTableModel36d085::add(quintptr _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
-void CustomTableModele3d187::edit(QString _t1, QString _t2)
+void CustomTableModel36d085::edit(QString _t1, QString _t2)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
-void CustomTableModele3d187::removeAt(qint32 _t1)
+void CustomTableModel36d085::removeAt(qint32 _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 
 // SIGNAL 4
-void CustomTableModele3d187::editAt(qint32 _t1, QString _t2, QString _t3)
+void CustomTableModel36d085::editAt(qint32 _t1, QString _t2, QString _t3)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);

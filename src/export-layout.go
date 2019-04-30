@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/naponmeka/robone/connectdb"
-	"github.com/naponmeka/robone/table"
+	"github.com/naponmeka/monger/connectdb"
+	"github.com/naponmeka/monger/table"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"

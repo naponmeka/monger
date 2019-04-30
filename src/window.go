@@ -44,7 +44,7 @@ func NewWindow() {
 	menuBar := CreateMenuBar(tabsHolder, &gs)
 	window.SetMenuBar(menuBar)
 	window.SetMinimumSize2(720, 480)
-	window.SetWindowTitle("Robone")
+	window.SetWindowTitle("Monger")
 	window.SetCentralWidget(tabsLayout)
 
 	window.ConnectKeyPressEvent(func(event *gui.QKeyEvent) {

@@ -1,10 +1,9 @@
-# robone
+# Monger
 
 ## Development
 ```
-git clone git@github.com:naponmeka/robone.git
-cd robone
-go mod init
+git clone https://github.com/naponmeka/monger.git
+cd monger
 
 go mod download && go get -u -v github.com/therecipe/qt/cmd/qtsetup && go get -u -v github.com/therecipe/qt/cmd/...
 

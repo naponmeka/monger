@@ -2,7 +2,7 @@ package src
 
 import (
 	"github.com/naponmeka/bsonparser"
-	"github.com/naponmeka/robone/connectdb"
+	"github.com/naponmeka/monger/connectdb"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/uitools"
 	"github.com/therecipe/qt/widgets"
