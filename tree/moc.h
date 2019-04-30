@@ -8,10 +8,10 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
-class CustomTreeModel5c58e0;
-void CustomTreeModel5c58e0_CustomTreeModel5c58e0_QRegisterMetaTypes();
 class TreeItem5c58e0;
 void TreeItem5c58e0_TreeItem5c58e0_QRegisterMetaTypes();
+class CustomTreeModel5c58e0;
+void CustomTreeModel5c58e0_CustomTreeModel5c58e0_QRegisterMetaTypes();
 extern "C" {
 #endif
 

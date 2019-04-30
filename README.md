@@ -23,8 +23,7 @@ Currently under heavy development/testing.
 - Ubuntu: coming soon
 
 ## Todo
-- .explain()
-- .currentOps()
+- other non crud operations : .explain(), .currentOp() , etc.
 - More export/import options (Integrate mongodump mongoexport)
 - Connect with SSH and other authentication methods
 - Example code generator
@@ -52,4 +51,4 @@ qtdeploy -fast test desktop .
 ## Acknowledgements
 - [Qt](https://www.qt.io/)
 - [therecipe/qt](https://github.com/therecipe/qt)
-- Logo by Chanisara Suksomjit
+- Logo by [Chanisara Suksomjit](https://github.com/csuksomjit)
