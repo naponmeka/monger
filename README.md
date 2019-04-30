@@ -3,14 +3,22 @@
     <img width="200" height="200" src="https://github.com/naponmeka/monger/raw/master/res/app-icon/icon_256x256.png">
   </a>
   <br>
-
-  <h1>Monger</h1>
-  <p>
-    Monger is ...
-  </p>
 </div>
 
 # Monger
+Monger is a simple cross-platform MongoDB management tool. Its main purpose is to provide a better user experience for mongodb users.
+
+## Features
+- Switching between MongoDB extend json syntax and MongoDB shell syntax
+- Export as CSV
+- Connect via mongodb uri
+
+## TODO
+- .explain()
+- .currentOps()
+- More export/import options (Integrate mongodump mongoexport)
+- Connect with SSH and other authentication methods
+- Example code generator
 
 ## Development
 ```
