@@ -13,7 +13,16 @@ Monger is a simple cross-platform MongoDB management tool. Its main purpose is t
 - Export as CSV
 - Connect via mongodb uri
 
-## TODO
+## Disclaimer
+Still in alpha stage maybe unstable. Do not use on your production database.
+Currently under heavy development/testing.
+
+## Download
+- Mac OS: [Monger1.0-MacOS-alpha.dmg](https://github.com/naponmeka/monger/raw/master/releases/Monger1.0.0-MacOS-alpha.dmg)
+- Windows: coming soon
+- Ubuntu: coming soon
+
+## Todo
 - .explain()
 - .currentOps()
 - More export/import options (Integrate mongodump mongoexport)
@@ -39,3 +48,8 @@ qtdeploy test desktop .
 qtdeploy -fast test desktop .
 
 ```
+
+## Acknowledgements
+- [Qt](https://www.qt.io/)
+- [therecipe/qt](https://github.com/therecipe/qt)
+- Logo by Chanisara Suksomjit
