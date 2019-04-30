@@ -22,7 +22,8 @@ func cGoUnpackString(s C.struct_Moc_PackedString) string {
 }
 func cGoUnpackBytes(s C.struct_Moc_PackedString) []byte {
 	if int(s.len) == -1 {
-		return []byte(C.GoString(s.data))
+		gs := C.GoString(s.data)
+		return *(*[]byte)(unsafe.Pointer(&gs))
 	}
 	return C.GoBytes(unsafe.Pointer(s.data), C.int(s.len))
 }
@@ -76,8 +77,8 @@ func NewCustomTreeModelFromPointer(ptr unsafe.Pointer) (n *CustomTreeModel) {
 	return
 }
 
-//export callbackCustomTreeModelabdc68_Constructor
-func callbackCustomTreeModelabdc68_Constructor(ptr unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_Constructor
+func callbackCustomTreeModel55c818_Constructor(ptr unsafe.Pointer) {
 	this := NewCustomTreeModelFromPointer(ptr)
 	qt.Register(ptr, this)
 	this.ConnectRemove(this.remove)
@@ -87,10 +88,10 @@ func callbackCustomTreeModelabdc68_Constructor(ptr unsafe.Pointer) {
 	this.init()
 }
 
-//export callbackCustomTreeModelabdc68_Remove
-func callbackCustomTreeModelabdc68_Remove(ptr unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_Remove
+func callbackCustomTreeModel55c818_Remove(ptr unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "remove"); signal != nil {
-		signal.(func())()
+		(*(*func())(signal))()
 	}
 
 }
@@ -99,37 +100,38 @@ func (ptr *CustomTreeModel) ConnectRemove(f func()) {
 	if ptr.Pointer() != nil {
 
 		if !qt.ExistsSignal(ptr.Pointer(), "remove") {
-			C.CustomTreeModelabdc68_ConnectRemove(ptr.Pointer())
+			C.CustomTreeModel55c818_ConnectRemove(ptr.Pointer())
 		}
 
 		if signal := qt.LendSignal(ptr.Pointer(), "remove"); signal != nil {
-			qt.ConnectSignal(ptr.Pointer(), "remove", func() {
-				signal.(func())()
+			f := func() {
+				(*(*func())(signal))()
 				f()
-			})
+			}
+			qt.ConnectSignal(ptr.Pointer(), "remove", unsafe.Pointer(&f))
 		} else {
-			qt.ConnectSignal(ptr.Pointer(), "remove", f)
+			qt.ConnectSignal(ptr.Pointer(), "remove", unsafe.Pointer(&f))
 		}
 	}
 }
 
 func (ptr *CustomTreeModel) DisconnectRemove() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_DisconnectRemove(ptr.Pointer())
+		C.CustomTreeModel55c818_DisconnectRemove(ptr.Pointer())
 		qt.DisconnectSignal(ptr.Pointer(), "remove")
 	}
 }
 
 func (ptr *CustomTreeModel) Remove() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_Remove(ptr.Pointer())
+		C.CustomTreeModel55c818_Remove(ptr.Pointer())
 	}
 }
 
-//export callbackCustomTreeModelabdc68_RemoveAll
-func callbackCustomTreeModelabdc68_RemoveAll(ptr unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_RemoveAll
+func callbackCustomTreeModel55c818_RemoveAll(ptr unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "removeAll"); signal != nil {
-		signal.(func())()
+		(*(*func())(signal))()
 	}
 
 }
@@ -138,37 +140,38 @@ func (ptr *CustomTreeModel) ConnectRemoveAll(f func()) {
 	if ptr.Pointer() != nil {
 
 		if !qt.ExistsSignal(ptr.Pointer(), "removeAll") {
-			C.CustomTreeModelabdc68_ConnectRemoveAll(ptr.Pointer())
+			C.CustomTreeModel55c818_ConnectRemoveAll(ptr.Pointer())
 		}
 
 		if signal := qt.LendSignal(ptr.Pointer(), "removeAll"); signal != nil {
-			qt.ConnectSignal(ptr.Pointer(), "removeAll", func() {
-				signal.(func())()
+			f := func() {
+				(*(*func())(signal))()
 				f()
-			})
+			}
+			qt.ConnectSignal(ptr.Pointer(), "removeAll", unsafe.Pointer(&f))
 		} else {
-			qt.ConnectSignal(ptr.Pointer(), "removeAll", f)
+			qt.ConnectSignal(ptr.Pointer(), "removeAll", unsafe.Pointer(&f))
 		}
 	}
 }
 
 func (ptr *CustomTreeModel) DisconnectRemoveAll() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_DisconnectRemoveAll(ptr.Pointer())
+		C.CustomTreeModel55c818_DisconnectRemoveAll(ptr.Pointer())
 		qt.DisconnectSignal(ptr.Pointer(), "removeAll")
 	}
 }
 
 func (ptr *CustomTreeModel) RemoveAll() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_RemoveAll(ptr.Pointer())
+		C.CustomTreeModel55c818_RemoveAll(ptr.Pointer())
 	}
 }
 
-//export callbackCustomTreeModelabdc68_Add
-func callbackCustomTreeModelabdc68_Add(ptr unsafe.Pointer, item unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_Add
+func callbackCustomTreeModel55c818_Add(ptr unsafe.Pointer, item unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "add"); signal != nil {
-		signal.(func(*TreeItem))(NewTreeItemFromPointer(item))
+		(*(*func(*TreeItem))(signal))(NewTreeItemFromPointer(item))
 	}
 
 }
@@ -177,37 +180,38 @@ func (ptr *CustomTreeModel) ConnectAdd(f func(item *TreeItem)) {
 	if ptr.Pointer() != nil {
 
 		if !qt.ExistsSignal(ptr.Pointer(), "add") {
-			C.CustomTreeModelabdc68_ConnectAdd(ptr.Pointer())
+			C.CustomTreeModel55c818_ConnectAdd(ptr.Pointer())
 		}
 
 		if signal := qt.LendSignal(ptr.Pointer(), "add"); signal != nil {
-			qt.ConnectSignal(ptr.Pointer(), "add", func(item *TreeItem) {
-				signal.(func(*TreeItem))(item)
+			f := func(item *TreeItem) {
+				(*(*func(*TreeItem))(signal))(item)
 				f(item)
-			})
+			}
+			qt.ConnectSignal(ptr.Pointer(), "add", unsafe.Pointer(&f))
 		} else {
-			qt.ConnectSignal(ptr.Pointer(), "add", f)
+			qt.ConnectSignal(ptr.Pointer(), "add", unsafe.Pointer(&f))
 		}
 	}
 }
 
 func (ptr *CustomTreeModel) DisconnectAdd() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_DisconnectAdd(ptr.Pointer())
+		C.CustomTreeModel55c818_DisconnectAdd(ptr.Pointer())
 		qt.DisconnectSignal(ptr.Pointer(), "add")
 	}
 }
 
 func (ptr *CustomTreeModel) Add(item TreeItem_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_Add(ptr.Pointer(), PointerFromTreeItem(item))
+		C.CustomTreeModel55c818_Add(ptr.Pointer(), PointerFromTreeItem(item))
 	}
 }
 
-//export callbackCustomTreeModelabdc68_Edit
-func callbackCustomTreeModelabdc68_Edit(ptr unsafe.Pointer, firstName C.struct_Moc_PackedString, lastName C.struct_Moc_PackedString) {
+//export callbackCustomTreeModel55c818_Edit
+func callbackCustomTreeModel55c818_Edit(ptr unsafe.Pointer, firstName C.struct_Moc_PackedString, lastName C.struct_Moc_PackedString) {
 	if signal := qt.GetSignal(ptr, "edit"); signal != nil {
-		signal.(func(string, string))(cGoUnpackString(firstName), cGoUnpackString(lastName))
+		(*(*func(string, string))(signal))(cGoUnpackString(firstName), cGoUnpackString(lastName))
 	}
 
 }
@@ -216,23 +220,24 @@ func (ptr *CustomTreeModel) ConnectEdit(f func(firstName string, lastName string
 	if ptr.Pointer() != nil {
 
 		if !qt.ExistsSignal(ptr.Pointer(), "edit") {
-			C.CustomTreeModelabdc68_ConnectEdit(ptr.Pointer())
+			C.CustomTreeModel55c818_ConnectEdit(ptr.Pointer())
 		}
 
 		if signal := qt.LendSignal(ptr.Pointer(), "edit"); signal != nil {
-			qt.ConnectSignal(ptr.Pointer(), "edit", func(firstName string, lastName string) {
-				signal.(func(string, string))(firstName, lastName)
+			f := func(firstName string, lastName string) {
+				(*(*func(string, string))(signal))(firstName, lastName)
 				f(firstName, lastName)
-			})
+			}
+			qt.ConnectSignal(ptr.Pointer(), "edit", unsafe.Pointer(&f))
 		} else {
-			qt.ConnectSignal(ptr.Pointer(), "edit", f)
+			qt.ConnectSignal(ptr.Pointer(), "edit", unsafe.Pointer(&f))
 		}
 	}
 }
 
 func (ptr *CustomTreeModel) DisconnectEdit() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_DisconnectEdit(ptr.Pointer())
+		C.CustomTreeModel55c818_DisconnectEdit(ptr.Pointer())
 		qt.DisconnectSignal(ptr.Pointer(), "edit")
 	}
 }
@@ -249,16 +254,16 @@ func (ptr *CustomTreeModel) Edit(firstName string, lastName string) {
 			lastNameC = C.CString(lastName)
 			defer C.free(unsafe.Pointer(lastNameC))
 		}
-		C.CustomTreeModelabdc68_Edit(ptr.Pointer(), C.struct_Moc_PackedString{data: firstNameC, len: C.longlong(len(firstName))}, C.struct_Moc_PackedString{data: lastNameC, len: C.longlong(len(lastName))})
+		C.CustomTreeModel55c818_Edit(ptr.Pointer(), C.struct_Moc_PackedString{data: firstNameC, len: C.longlong(len(firstName))}, C.struct_Moc_PackedString{data: lastNameC, len: C.longlong(len(lastName))})
 	}
 }
 
 func CustomTreeModel_QRegisterMetaType() int {
-	return int(int32(C.CustomTreeModelabdc68_CustomTreeModelabdc68_QRegisterMetaType()))
+	return int(int32(C.CustomTreeModel55c818_CustomTreeModel55c818_QRegisterMetaType()))
 }
 
 func (ptr *CustomTreeModel) QRegisterMetaType() int {
-	return int(int32(C.CustomTreeModelabdc68_CustomTreeModelabdc68_QRegisterMetaType()))
+	return int(int32(C.CustomTreeModel55c818_CustomTreeModel55c818_QRegisterMetaType()))
 }
 
 func CustomTreeModel_QRegisterMetaType2(typeName string) int {
@@ -267,7 +272,7 @@ func CustomTreeModel_QRegisterMetaType2(typeName string) int {
 		typeNameC = C.CString(typeName)
 		defer C.free(unsafe.Pointer(typeNameC))
 	}
-	return int(int32(C.CustomTreeModelabdc68_CustomTreeModelabdc68_QRegisterMetaType2(typeNameC)))
+	return int(int32(C.CustomTreeModel55c818_CustomTreeModel55c818_QRegisterMetaType2(typeNameC)))
 }
 
 func (ptr *CustomTreeModel) QRegisterMetaType2(typeName string) int {
@@ -276,15 +281,15 @@ func (ptr *CustomTreeModel) QRegisterMetaType2(typeName string) int {
 		typeNameC = C.CString(typeName)
 		defer C.free(unsafe.Pointer(typeNameC))
 	}
-	return int(int32(C.CustomTreeModelabdc68_CustomTreeModelabdc68_QRegisterMetaType2(typeNameC)))
+	return int(int32(C.CustomTreeModel55c818_CustomTreeModel55c818_QRegisterMetaType2(typeNameC)))
 }
 
 func CustomTreeModel_QmlRegisterType() int {
-	return int(int32(C.CustomTreeModelabdc68_CustomTreeModelabdc68_QmlRegisterType()))
+	return int(int32(C.CustomTreeModel55c818_CustomTreeModel55c818_QmlRegisterType()))
 }
 
 func (ptr *CustomTreeModel) QmlRegisterType() int {
-	return int(int32(C.CustomTreeModelabdc68_CustomTreeModelabdc68_QmlRegisterType()))
+	return int(int32(C.CustomTreeModel55c818_CustomTreeModel55c818_QmlRegisterType()))
 }
 
 func CustomTreeModel_QmlRegisterType2(uri string, versionMajor int, versionMinor int, qmlName string) int {
@@ -298,7 +303,7 @@ func CustomTreeModel_QmlRegisterType2(uri string, versionMajor int, versionMinor
 		qmlNameC = C.CString(qmlName)
 		defer C.free(unsafe.Pointer(qmlNameC))
 	}
-	return int(int32(C.CustomTreeModelabdc68_CustomTreeModelabdc68_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
+	return int(int32(C.CustomTreeModel55c818_CustomTreeModel55c818_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
 }
 
 func (ptr *CustomTreeModel) QmlRegisterType2(uri string, versionMajor int, versionMinor int, qmlName string) int {
@@ -312,12 +317,12 @@ func (ptr *CustomTreeModel) QmlRegisterType2(uri string, versionMajor int, versi
 		qmlNameC = C.CString(qmlName)
 		defer C.free(unsafe.Pointer(qmlNameC))
 	}
-	return int(int32(C.CustomTreeModelabdc68_CustomTreeModelabdc68_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
+	return int(int32(C.CustomTreeModel55c818_CustomTreeModel55c818_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
 }
 
 func (ptr *CustomTreeModel) __setItemData_roles_atList(v int, i int) *std_core.QVariant {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQVariantFromPointer(C.CustomTreeModelabdc68___setItemData_roles_atList(ptr.Pointer(), C.int(int32(v)), C.int(int32(i))))
+		tmpValue := std_core.NewQVariantFromPointer(C.CustomTreeModel55c818___setItemData_roles_atList(ptr.Pointer(), C.int(int32(v)), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QVariant).DestroyQVariant)
 		return tmpValue
 	}
@@ -326,12 +331,12 @@ func (ptr *CustomTreeModel) __setItemData_roles_atList(v int, i int) *std_core.Q
 
 func (ptr *CustomTreeModel) __setItemData_roles_setList(key int, i std_core.QVariant_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___setItemData_roles_setList(ptr.Pointer(), C.int(int32(key)), std_core.PointerFromQVariant(i))
+		C.CustomTreeModel55c818___setItemData_roles_setList(ptr.Pointer(), C.int(int32(key)), std_core.PointerFromQVariant(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __setItemData_roles_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___setItemData_roles_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___setItemData_roles_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __setItemData_roles_keyList() []int {
@@ -343,14 +348,14 @@ func (ptr *CustomTreeModel) __setItemData_roles_keyList() []int {
 				out[i] = tmpList.____setItemData_roles_keyList_atList(i)
 			}
 			return out
-		}(C.CustomTreeModelabdc68___setItemData_roles_keyList(ptr.Pointer()))
+		}(C.CustomTreeModel55c818___setItemData_roles_keyList(ptr.Pointer()))
 	}
 	return make([]int, 0)
 }
 
 func (ptr *CustomTreeModel) __changePersistentIndexList_from_atList(i int) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68___changePersistentIndexList_from_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818___changePersistentIndexList_from_atList(ptr.Pointer(), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
@@ -359,17 +364,17 @@ func (ptr *CustomTreeModel) __changePersistentIndexList_from_atList(i int) *std_
 
 func (ptr *CustomTreeModel) __changePersistentIndexList_from_setList(i std_core.QModelIndex_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___changePersistentIndexList_from_setList(ptr.Pointer(), std_core.PointerFromQModelIndex(i))
+		C.CustomTreeModel55c818___changePersistentIndexList_from_setList(ptr.Pointer(), std_core.PointerFromQModelIndex(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __changePersistentIndexList_from_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___changePersistentIndexList_from_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___changePersistentIndexList_from_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __changePersistentIndexList_to_atList(i int) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68___changePersistentIndexList_to_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818___changePersistentIndexList_to_atList(ptr.Pointer(), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
@@ -378,34 +383,34 @@ func (ptr *CustomTreeModel) __changePersistentIndexList_to_atList(i int) *std_co
 
 func (ptr *CustomTreeModel) __changePersistentIndexList_to_setList(i std_core.QModelIndex_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___changePersistentIndexList_to_setList(ptr.Pointer(), std_core.PointerFromQModelIndex(i))
+		C.CustomTreeModel55c818___changePersistentIndexList_to_setList(ptr.Pointer(), std_core.PointerFromQModelIndex(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __changePersistentIndexList_to_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___changePersistentIndexList_to_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___changePersistentIndexList_to_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __dataChanged_roles_atList(i int) int {
 	if ptr.Pointer() != nil {
-		return int(int32(C.CustomTreeModelabdc68___dataChanged_roles_atList(ptr.Pointer(), C.int(int32(i)))))
+		return int(int32(C.CustomTreeModel55c818___dataChanged_roles_atList(ptr.Pointer(), C.int(int32(i)))))
 	}
 	return 0
 }
 
 func (ptr *CustomTreeModel) __dataChanged_roles_setList(i int) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___dataChanged_roles_setList(ptr.Pointer(), C.int(int32(i)))
+		C.CustomTreeModel55c818___dataChanged_roles_setList(ptr.Pointer(), C.int(int32(i)))
 	}
 }
 
 func (ptr *CustomTreeModel) __dataChanged_roles_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___dataChanged_roles_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___dataChanged_roles_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __layoutAboutToBeChanged_parents_atList(i int) *std_core.QPersistentModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQPersistentModelIndexFromPointer(C.CustomTreeModelabdc68___layoutAboutToBeChanged_parents_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQPersistentModelIndexFromPointer(C.CustomTreeModel55c818___layoutAboutToBeChanged_parents_atList(ptr.Pointer(), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QPersistentModelIndex).DestroyQPersistentModelIndex)
 		return tmpValue
 	}
@@ -414,17 +419,17 @@ func (ptr *CustomTreeModel) __layoutAboutToBeChanged_parents_atList(i int) *std_
 
 func (ptr *CustomTreeModel) __layoutAboutToBeChanged_parents_setList(i std_core.QPersistentModelIndex_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___layoutAboutToBeChanged_parents_setList(ptr.Pointer(), std_core.PointerFromQPersistentModelIndex(i))
+		C.CustomTreeModel55c818___layoutAboutToBeChanged_parents_setList(ptr.Pointer(), std_core.PointerFromQPersistentModelIndex(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __layoutAboutToBeChanged_parents_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___layoutAboutToBeChanged_parents_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___layoutAboutToBeChanged_parents_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __layoutChanged_parents_atList(i int) *std_core.QPersistentModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQPersistentModelIndexFromPointer(C.CustomTreeModelabdc68___layoutChanged_parents_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQPersistentModelIndexFromPointer(C.CustomTreeModel55c818___layoutChanged_parents_atList(ptr.Pointer(), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QPersistentModelIndex).DestroyQPersistentModelIndex)
 		return tmpValue
 	}
@@ -433,17 +438,17 @@ func (ptr *CustomTreeModel) __layoutChanged_parents_atList(i int) *std_core.QPer
 
 func (ptr *CustomTreeModel) __layoutChanged_parents_setList(i std_core.QPersistentModelIndex_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___layoutChanged_parents_setList(ptr.Pointer(), std_core.PointerFromQPersistentModelIndex(i))
+		C.CustomTreeModel55c818___layoutChanged_parents_setList(ptr.Pointer(), std_core.PointerFromQPersistentModelIndex(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __layoutChanged_parents_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___layoutChanged_parents_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___layoutChanged_parents_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __roleNames_atList(v int, i int) *std_core.QByteArray {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQByteArrayFromPointer(C.CustomTreeModelabdc68___roleNames_atList(ptr.Pointer(), C.int(int32(v)), C.int(int32(i))))
+		tmpValue := std_core.NewQByteArrayFromPointer(C.CustomTreeModel55c818___roleNames_atList(ptr.Pointer(), C.int(int32(v)), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QByteArray).DestroyQByteArray)
 		return tmpValue
 	}
@@ -452,12 +457,12 @@ func (ptr *CustomTreeModel) __roleNames_atList(v int, i int) *std_core.QByteArra
 
 func (ptr *CustomTreeModel) __roleNames_setList(key int, i std_core.QByteArray_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___roleNames_setList(ptr.Pointer(), C.int(int32(key)), std_core.PointerFromQByteArray(i))
+		C.CustomTreeModel55c818___roleNames_setList(ptr.Pointer(), C.int(int32(key)), std_core.PointerFromQByteArray(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __roleNames_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___roleNames_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___roleNames_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __roleNames_keyList() []int {
@@ -469,14 +474,14 @@ func (ptr *CustomTreeModel) __roleNames_keyList() []int {
 				out[i] = tmpList.____roleNames_keyList_atList(i)
 			}
 			return out
-		}(C.CustomTreeModelabdc68___roleNames_keyList(ptr.Pointer()))
+		}(C.CustomTreeModel55c818___roleNames_keyList(ptr.Pointer()))
 	}
 	return make([]int, 0)
 }
 
 func (ptr *CustomTreeModel) __itemData_atList(v int, i int) *std_core.QVariant {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQVariantFromPointer(C.CustomTreeModelabdc68___itemData_atList(ptr.Pointer(), C.int(int32(v)), C.int(int32(i))))
+		tmpValue := std_core.NewQVariantFromPointer(C.CustomTreeModel55c818___itemData_atList(ptr.Pointer(), C.int(int32(v)), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QVariant).DestroyQVariant)
 		return tmpValue
 	}
@@ -485,12 +490,12 @@ func (ptr *CustomTreeModel) __itemData_atList(v int, i int) *std_core.QVariant {
 
 func (ptr *CustomTreeModel) __itemData_setList(key int, i std_core.QVariant_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___itemData_setList(ptr.Pointer(), C.int(int32(key)), std_core.PointerFromQVariant(i))
+		C.CustomTreeModel55c818___itemData_setList(ptr.Pointer(), C.int(int32(key)), std_core.PointerFromQVariant(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __itemData_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___itemData_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___itemData_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __itemData_keyList() []int {
@@ -502,14 +507,14 @@ func (ptr *CustomTreeModel) __itemData_keyList() []int {
 				out[i] = tmpList.____itemData_keyList_atList(i)
 			}
 			return out
-		}(C.CustomTreeModelabdc68___itemData_keyList(ptr.Pointer()))
+		}(C.CustomTreeModel55c818___itemData_keyList(ptr.Pointer()))
 	}
 	return make([]int, 0)
 }
 
 func (ptr *CustomTreeModel) __mimeData_indexes_atList(i int) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68___mimeData_indexes_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818___mimeData_indexes_atList(ptr.Pointer(), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
@@ -518,17 +523,17 @@ func (ptr *CustomTreeModel) __mimeData_indexes_atList(i int) *std_core.QModelInd
 
 func (ptr *CustomTreeModel) __mimeData_indexes_setList(i std_core.QModelIndex_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___mimeData_indexes_setList(ptr.Pointer(), std_core.PointerFromQModelIndex(i))
+		C.CustomTreeModel55c818___mimeData_indexes_setList(ptr.Pointer(), std_core.PointerFromQModelIndex(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __mimeData_indexes_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___mimeData_indexes_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___mimeData_indexes_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __match_atList(i int) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68___match_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818___match_atList(ptr.Pointer(), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
@@ -537,17 +542,17 @@ func (ptr *CustomTreeModel) __match_atList(i int) *std_core.QModelIndex {
 
 func (ptr *CustomTreeModel) __match_setList(i std_core.QModelIndex_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___match_setList(ptr.Pointer(), std_core.PointerFromQModelIndex(i))
+		C.CustomTreeModel55c818___match_setList(ptr.Pointer(), std_core.PointerFromQModelIndex(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __match_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___match_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___match_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __persistentIndexList_atList(i int) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68___persistentIndexList_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818___persistentIndexList_atList(ptr.Pointer(), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
@@ -556,102 +561,102 @@ func (ptr *CustomTreeModel) __persistentIndexList_atList(i int) *std_core.QModel
 
 func (ptr *CustomTreeModel) __persistentIndexList_setList(i std_core.QModelIndex_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___persistentIndexList_setList(ptr.Pointer(), std_core.PointerFromQModelIndex(i))
+		C.CustomTreeModel55c818___persistentIndexList_setList(ptr.Pointer(), std_core.PointerFromQModelIndex(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __persistentIndexList_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___persistentIndexList_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___persistentIndexList_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) ____setItemData_roles_keyList_atList(i int) int {
 	if ptr.Pointer() != nil {
-		return int(int32(C.CustomTreeModelabdc68_____setItemData_roles_keyList_atList(ptr.Pointer(), C.int(int32(i)))))
+		return int(int32(C.CustomTreeModel55c818_____setItemData_roles_keyList_atList(ptr.Pointer(), C.int(int32(i)))))
 	}
 	return 0
 }
 
 func (ptr *CustomTreeModel) ____setItemData_roles_keyList_setList(i int) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_____setItemData_roles_keyList_setList(ptr.Pointer(), C.int(int32(i)))
+		C.CustomTreeModel55c818_____setItemData_roles_keyList_setList(ptr.Pointer(), C.int(int32(i)))
 	}
 }
 
 func (ptr *CustomTreeModel) ____setItemData_roles_keyList_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68_____setItemData_roles_keyList_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818_____setItemData_roles_keyList_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) ____doSetRoleNames_roleNames_keyList_atList(i int) int {
 	if ptr.Pointer() != nil {
-		return int(int32(C.CustomTreeModelabdc68_____doSetRoleNames_roleNames_keyList_atList(ptr.Pointer(), C.int(int32(i)))))
+		return int(int32(C.CustomTreeModel55c818_____doSetRoleNames_roleNames_keyList_atList(ptr.Pointer(), C.int(int32(i)))))
 	}
 	return 0
 }
 
 func (ptr *CustomTreeModel) ____doSetRoleNames_roleNames_keyList_setList(i int) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_____doSetRoleNames_roleNames_keyList_setList(ptr.Pointer(), C.int(int32(i)))
+		C.CustomTreeModel55c818_____doSetRoleNames_roleNames_keyList_setList(ptr.Pointer(), C.int(int32(i)))
 	}
 }
 
 func (ptr *CustomTreeModel) ____doSetRoleNames_roleNames_keyList_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68_____doSetRoleNames_roleNames_keyList_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818_____doSetRoleNames_roleNames_keyList_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) ____setRoleNames_roleNames_keyList_atList(i int) int {
 	if ptr.Pointer() != nil {
-		return int(int32(C.CustomTreeModelabdc68_____setRoleNames_roleNames_keyList_atList(ptr.Pointer(), C.int(int32(i)))))
+		return int(int32(C.CustomTreeModel55c818_____setRoleNames_roleNames_keyList_atList(ptr.Pointer(), C.int(int32(i)))))
 	}
 	return 0
 }
 
 func (ptr *CustomTreeModel) ____setRoleNames_roleNames_keyList_setList(i int) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_____setRoleNames_roleNames_keyList_setList(ptr.Pointer(), C.int(int32(i)))
+		C.CustomTreeModel55c818_____setRoleNames_roleNames_keyList_setList(ptr.Pointer(), C.int(int32(i)))
 	}
 }
 
 func (ptr *CustomTreeModel) ____setRoleNames_roleNames_keyList_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68_____setRoleNames_roleNames_keyList_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818_____setRoleNames_roleNames_keyList_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) ____roleNames_keyList_atList(i int) int {
 	if ptr.Pointer() != nil {
-		return int(int32(C.CustomTreeModelabdc68_____roleNames_keyList_atList(ptr.Pointer(), C.int(int32(i)))))
+		return int(int32(C.CustomTreeModel55c818_____roleNames_keyList_atList(ptr.Pointer(), C.int(int32(i)))))
 	}
 	return 0
 }
 
 func (ptr *CustomTreeModel) ____roleNames_keyList_setList(i int) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_____roleNames_keyList_setList(ptr.Pointer(), C.int(int32(i)))
+		C.CustomTreeModel55c818_____roleNames_keyList_setList(ptr.Pointer(), C.int(int32(i)))
 	}
 }
 
 func (ptr *CustomTreeModel) ____roleNames_keyList_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68_____roleNames_keyList_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818_____roleNames_keyList_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) ____itemData_keyList_atList(i int) int {
 	if ptr.Pointer() != nil {
-		return int(int32(C.CustomTreeModelabdc68_____itemData_keyList_atList(ptr.Pointer(), C.int(int32(i)))))
+		return int(int32(C.CustomTreeModel55c818_____itemData_keyList_atList(ptr.Pointer(), C.int(int32(i)))))
 	}
 	return 0
 }
 
 func (ptr *CustomTreeModel) ____itemData_keyList_setList(i int) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_____itemData_keyList_setList(ptr.Pointer(), C.int(int32(i)))
+		C.CustomTreeModel55c818_____itemData_keyList_setList(ptr.Pointer(), C.int(int32(i)))
 	}
 }
 
 func (ptr *CustomTreeModel) ____itemData_keyList_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68_____itemData_keyList_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818_____itemData_keyList_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __dynamicPropertyNames_atList(i int) *std_core.QByteArray {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQByteArrayFromPointer(C.CustomTreeModelabdc68___dynamicPropertyNames_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQByteArrayFromPointer(C.CustomTreeModel55c818___dynamicPropertyNames_atList(ptr.Pointer(), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QByteArray).DestroyQByteArray)
 		return tmpValue
 	}
@@ -660,17 +665,17 @@ func (ptr *CustomTreeModel) __dynamicPropertyNames_atList(i int) *std_core.QByte
 
 func (ptr *CustomTreeModel) __dynamicPropertyNames_setList(i std_core.QByteArray_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___dynamicPropertyNames_setList(ptr.Pointer(), std_core.PointerFromQByteArray(i))
+		C.CustomTreeModel55c818___dynamicPropertyNames_setList(ptr.Pointer(), std_core.PointerFromQByteArray(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __dynamicPropertyNames_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___dynamicPropertyNames_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___dynamicPropertyNames_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __findChildren_atList2(i int) *std_core.QObject {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.CustomTreeModelabdc68___findChildren_atList2(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQObjectFromPointer(C.CustomTreeModel55c818___findChildren_atList2(ptr.Pointer(), C.int(int32(i))))
 		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
 			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
 		}
@@ -681,17 +686,17 @@ func (ptr *CustomTreeModel) __findChildren_atList2(i int) *std_core.QObject {
 
 func (ptr *CustomTreeModel) __findChildren_setList2(i std_core.QObject_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___findChildren_setList2(ptr.Pointer(), std_core.PointerFromQObject(i))
+		C.CustomTreeModel55c818___findChildren_setList2(ptr.Pointer(), std_core.PointerFromQObject(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __findChildren_newList2() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___findChildren_newList2(ptr.Pointer())
+	return C.CustomTreeModel55c818___findChildren_newList2(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __findChildren_atList3(i int) *std_core.QObject {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.CustomTreeModelabdc68___findChildren_atList3(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQObjectFromPointer(C.CustomTreeModel55c818___findChildren_atList3(ptr.Pointer(), C.int(int32(i))))
 		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
 			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
 		}
@@ -702,17 +707,17 @@ func (ptr *CustomTreeModel) __findChildren_atList3(i int) *std_core.QObject {
 
 func (ptr *CustomTreeModel) __findChildren_setList3(i std_core.QObject_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___findChildren_setList3(ptr.Pointer(), std_core.PointerFromQObject(i))
+		C.CustomTreeModel55c818___findChildren_setList3(ptr.Pointer(), std_core.PointerFromQObject(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __findChildren_newList3() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___findChildren_newList3(ptr.Pointer())
+	return C.CustomTreeModel55c818___findChildren_newList3(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __findChildren_atList(i int) *std_core.QObject {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.CustomTreeModelabdc68___findChildren_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQObjectFromPointer(C.CustomTreeModel55c818___findChildren_atList(ptr.Pointer(), C.int(int32(i))))
 		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
 			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
 		}
@@ -723,17 +728,17 @@ func (ptr *CustomTreeModel) __findChildren_atList(i int) *std_core.QObject {
 
 func (ptr *CustomTreeModel) __findChildren_setList(i std_core.QObject_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___findChildren_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
+		C.CustomTreeModel55c818___findChildren_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __findChildren_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___findChildren_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___findChildren_newList(ptr.Pointer())
 }
 
 func (ptr *CustomTreeModel) __children_atList(i int) *std_core.QObject {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.CustomTreeModelabdc68___children_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQObjectFromPointer(C.CustomTreeModel55c818___children_atList(ptr.Pointer(), C.int(int32(i))))
 		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
 			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
 		}
@@ -744,26 +749,26 @@ func (ptr *CustomTreeModel) __children_atList(i int) *std_core.QObject {
 
 func (ptr *CustomTreeModel) __children_setList(i std_core.QObject_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68___children_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
+		C.CustomTreeModel55c818___children_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
 	}
 }
 
 func (ptr *CustomTreeModel) __children_newList() unsafe.Pointer {
-	return C.CustomTreeModelabdc68___children_newList(ptr.Pointer())
+	return C.CustomTreeModel55c818___children_newList(ptr.Pointer())
 }
 
 func NewCustomTreeModel(parent std_core.QObject_ITF) *CustomTreeModel {
-	tmpValue := NewCustomTreeModelFromPointer(C.CustomTreeModelabdc68_NewCustomTreeModel(std_core.PointerFromQObject(parent)))
+	tmpValue := NewCustomTreeModelFromPointer(C.CustomTreeModel55c818_NewCustomTreeModel(std_core.PointerFromQObject(parent)))
 	if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
 		tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
 	}
 	return tmpValue
 }
 
-//export callbackCustomTreeModelabdc68_DestroyCustomTreeModel
-func callbackCustomTreeModelabdc68_DestroyCustomTreeModel(ptr unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_DestroyCustomTreeModel
+func callbackCustomTreeModel55c818_DestroyCustomTreeModel(ptr unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "~CustomTreeModel"); signal != nil {
-		signal.(func())()
+		(*(*func())(signal))()
 	} else {
 		NewCustomTreeModelFromPointer(ptr).DestroyCustomTreeModelDefault()
 	}
@@ -773,12 +778,13 @@ func (ptr *CustomTreeModel) ConnectDestroyCustomTreeModel(f func()) {
 	if ptr.Pointer() != nil {
 
 		if signal := qt.LendSignal(ptr.Pointer(), "~CustomTreeModel"); signal != nil {
-			qt.ConnectSignal(ptr.Pointer(), "~CustomTreeModel", func() {
-				signal.(func())()
+			f := func() {
+				(*(*func())(signal))()
 				f()
-			})
+			}
+			qt.ConnectSignal(ptr.Pointer(), "~CustomTreeModel", unsafe.Pointer(&f))
 		} else {
-			qt.ConnectSignal(ptr.Pointer(), "~CustomTreeModel", f)
+			qt.ConnectSignal(ptr.Pointer(), "~CustomTreeModel", unsafe.Pointer(&f))
 		}
 	}
 }
@@ -792,7 +798,7 @@ func (ptr *CustomTreeModel) DisconnectDestroyCustomTreeModel() {
 
 func (ptr *CustomTreeModel) DestroyCustomTreeModel() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_DestroyCustomTreeModel(ptr.Pointer())
+		C.CustomTreeModel55c818_DestroyCustomTreeModel(ptr.Pointer())
 		ptr.SetPointer(nil)
 		runtime.SetFinalizer(ptr, nil)
 	}
@@ -800,16 +806,16 @@ func (ptr *CustomTreeModel) DestroyCustomTreeModel() {
 
 func (ptr *CustomTreeModel) DestroyCustomTreeModelDefault() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_DestroyCustomTreeModelDefault(ptr.Pointer())
+		C.CustomTreeModel55c818_DestroyCustomTreeModelDefault(ptr.Pointer())
 		ptr.SetPointer(nil)
 		runtime.SetFinalizer(ptr, nil)
 	}
 }
 
-//export callbackCustomTreeModelabdc68_DropMimeData
-func callbackCustomTreeModelabdc68_DropMimeData(ptr unsafe.Pointer, data unsafe.Pointer, action C.longlong, row C.int, column C.int, parent unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_DropMimeData
+func callbackCustomTreeModel55c818_DropMimeData(ptr unsafe.Pointer, data unsafe.Pointer, action C.longlong, row C.int, column C.int, parent unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "dropMimeData"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QMimeData, std_core.Qt__DropAction, int, int, *std_core.QModelIndex) bool)(std_core.NewQMimeDataFromPointer(data), std_core.Qt__DropAction(action), int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(parent)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QMimeData, std_core.Qt__DropAction, int, int, *std_core.QModelIndex) bool)(signal))(std_core.NewQMimeDataFromPointer(data), std_core.Qt__DropAction(action), int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(parent)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).DropMimeDataDefault(std_core.NewQMimeDataFromPointer(data), std_core.Qt__DropAction(action), int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(parent)))))
@@ -817,15 +823,15 @@ func callbackCustomTreeModelabdc68_DropMimeData(ptr unsafe.Pointer, data unsafe.
 
 func (ptr *CustomTreeModel) DropMimeDataDefault(data std_core.QMimeData_ITF, action std_core.Qt__DropAction, row int, column int, parent std_core.QModelIndex_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_DropMimeDataDefault(ptr.Pointer(), std_core.PointerFromQMimeData(data), C.longlong(action), C.int(int32(row)), C.int(int32(column)), std_core.PointerFromQModelIndex(parent))) != 0
+		return int8(C.CustomTreeModel55c818_DropMimeDataDefault(ptr.Pointer(), std_core.PointerFromQMimeData(data), C.longlong(action), C.int(int32(row)), C.int(int32(column)), std_core.PointerFromQModelIndex(parent))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_InsertColumns
-func callbackCustomTreeModelabdc68_InsertColumns(ptr unsafe.Pointer, column C.int, count C.int, parent unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_InsertColumns
+func callbackCustomTreeModel55c818_InsertColumns(ptr unsafe.Pointer, column C.int, count C.int, parent unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "insertColumns"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(int, int, *std_core.QModelIndex) bool)(int(int32(column)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(int, int, *std_core.QModelIndex) bool)(signal))(int(int32(column)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).InsertColumnsDefault(int(int32(column)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
@@ -833,15 +839,15 @@ func callbackCustomTreeModelabdc68_InsertColumns(ptr unsafe.Pointer, column C.in
 
 func (ptr *CustomTreeModel) InsertColumnsDefault(column int, count int, parent std_core.QModelIndex_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_InsertColumnsDefault(ptr.Pointer(), C.int(int32(column)), C.int(int32(count)), std_core.PointerFromQModelIndex(parent))) != 0
+		return int8(C.CustomTreeModel55c818_InsertColumnsDefault(ptr.Pointer(), C.int(int32(column)), C.int(int32(count)), std_core.PointerFromQModelIndex(parent))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_InsertRows
-func callbackCustomTreeModelabdc68_InsertRows(ptr unsafe.Pointer, row C.int, count C.int, parent unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_InsertRows
+func callbackCustomTreeModel55c818_InsertRows(ptr unsafe.Pointer, row C.int, count C.int, parent unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "insertRows"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(int, int, *std_core.QModelIndex) bool)(int(int32(row)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(int, int, *std_core.QModelIndex) bool)(signal))(int(int32(row)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).InsertRowsDefault(int(int32(row)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
@@ -849,15 +855,15 @@ func callbackCustomTreeModelabdc68_InsertRows(ptr unsafe.Pointer, row C.int, cou
 
 func (ptr *CustomTreeModel) InsertRowsDefault(row int, count int, parent std_core.QModelIndex_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_InsertRowsDefault(ptr.Pointer(), C.int(int32(row)), C.int(int32(count)), std_core.PointerFromQModelIndex(parent))) != 0
+		return int8(C.CustomTreeModel55c818_InsertRowsDefault(ptr.Pointer(), C.int(int32(row)), C.int(int32(count)), std_core.PointerFromQModelIndex(parent))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_MoveColumns
-func callbackCustomTreeModelabdc68_MoveColumns(ptr unsafe.Pointer, sourceParent unsafe.Pointer, sourceColumn C.int, count C.int, destinationParent unsafe.Pointer, destinationChild C.int) C.char {
+//export callbackCustomTreeModel55c818_MoveColumns
+func callbackCustomTreeModel55c818_MoveColumns(ptr unsafe.Pointer, sourceParent unsafe.Pointer, sourceColumn C.int, count C.int, destinationParent unsafe.Pointer, destinationChild C.int) C.char {
 	if signal := qt.GetSignal(ptr, "moveColumns"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int) bool)(std_core.NewQModelIndexFromPointer(sourceParent), int(int32(sourceColumn)), int(int32(count)), std_core.NewQModelIndexFromPointer(destinationParent), int(int32(destinationChild))))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int) bool)(signal))(std_core.NewQModelIndexFromPointer(sourceParent), int(int32(sourceColumn)), int(int32(count)), std_core.NewQModelIndexFromPointer(destinationParent), int(int32(destinationChild))))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).MoveColumnsDefault(std_core.NewQModelIndexFromPointer(sourceParent), int(int32(sourceColumn)), int(int32(count)), std_core.NewQModelIndexFromPointer(destinationParent), int(int32(destinationChild))))))
@@ -865,15 +871,15 @@ func callbackCustomTreeModelabdc68_MoveColumns(ptr unsafe.Pointer, sourceParent 
 
 func (ptr *CustomTreeModel) MoveColumnsDefault(sourceParent std_core.QModelIndex_ITF, sourceColumn int, count int, destinationParent std_core.QModelIndex_ITF, destinationChild int) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_MoveColumnsDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(sourceParent), C.int(int32(sourceColumn)), C.int(int32(count)), std_core.PointerFromQModelIndex(destinationParent), C.int(int32(destinationChild)))) != 0
+		return int8(C.CustomTreeModel55c818_MoveColumnsDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(sourceParent), C.int(int32(sourceColumn)), C.int(int32(count)), std_core.PointerFromQModelIndex(destinationParent), C.int(int32(destinationChild)))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_MoveRows
-func callbackCustomTreeModelabdc68_MoveRows(ptr unsafe.Pointer, sourceParent unsafe.Pointer, sourceRow C.int, count C.int, destinationParent unsafe.Pointer, destinationChild C.int) C.char {
+//export callbackCustomTreeModel55c818_MoveRows
+func callbackCustomTreeModel55c818_MoveRows(ptr unsafe.Pointer, sourceParent unsafe.Pointer, sourceRow C.int, count C.int, destinationParent unsafe.Pointer, destinationChild C.int) C.char {
 	if signal := qt.GetSignal(ptr, "moveRows"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int) bool)(std_core.NewQModelIndexFromPointer(sourceParent), int(int32(sourceRow)), int(int32(count)), std_core.NewQModelIndexFromPointer(destinationParent), int(int32(destinationChild))))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int) bool)(signal))(std_core.NewQModelIndexFromPointer(sourceParent), int(int32(sourceRow)), int(int32(count)), std_core.NewQModelIndexFromPointer(destinationParent), int(int32(destinationChild))))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).MoveRowsDefault(std_core.NewQModelIndexFromPointer(sourceParent), int(int32(sourceRow)), int(int32(count)), std_core.NewQModelIndexFromPointer(destinationParent), int(int32(destinationChild))))))
@@ -881,15 +887,15 @@ func callbackCustomTreeModelabdc68_MoveRows(ptr unsafe.Pointer, sourceParent uns
 
 func (ptr *CustomTreeModel) MoveRowsDefault(sourceParent std_core.QModelIndex_ITF, sourceRow int, count int, destinationParent std_core.QModelIndex_ITF, destinationChild int) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_MoveRowsDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(sourceParent), C.int(int32(sourceRow)), C.int(int32(count)), std_core.PointerFromQModelIndex(destinationParent), C.int(int32(destinationChild)))) != 0
+		return int8(C.CustomTreeModel55c818_MoveRowsDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(sourceParent), C.int(int32(sourceRow)), C.int(int32(count)), std_core.PointerFromQModelIndex(destinationParent), C.int(int32(destinationChild)))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_RemoveColumns
-func callbackCustomTreeModelabdc68_RemoveColumns(ptr unsafe.Pointer, column C.int, count C.int, parent unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_RemoveColumns
+func callbackCustomTreeModel55c818_RemoveColumns(ptr unsafe.Pointer, column C.int, count C.int, parent unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "removeColumns"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(int, int, *std_core.QModelIndex) bool)(int(int32(column)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(int, int, *std_core.QModelIndex) bool)(signal))(int(int32(column)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).RemoveColumnsDefault(int(int32(column)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
@@ -897,15 +903,15 @@ func callbackCustomTreeModelabdc68_RemoveColumns(ptr unsafe.Pointer, column C.in
 
 func (ptr *CustomTreeModel) RemoveColumnsDefault(column int, count int, parent std_core.QModelIndex_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_RemoveColumnsDefault(ptr.Pointer(), C.int(int32(column)), C.int(int32(count)), std_core.PointerFromQModelIndex(parent))) != 0
+		return int8(C.CustomTreeModel55c818_RemoveColumnsDefault(ptr.Pointer(), C.int(int32(column)), C.int(int32(count)), std_core.PointerFromQModelIndex(parent))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_RemoveRows
-func callbackCustomTreeModelabdc68_RemoveRows(ptr unsafe.Pointer, row C.int, count C.int, parent unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_RemoveRows
+func callbackCustomTreeModel55c818_RemoveRows(ptr unsafe.Pointer, row C.int, count C.int, parent unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "removeRows"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(int, int, *std_core.QModelIndex) bool)(int(int32(row)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(int, int, *std_core.QModelIndex) bool)(signal))(int(int32(row)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).RemoveRowsDefault(int(int32(row)), int(int32(count)), std_core.NewQModelIndexFromPointer(parent)))))
@@ -913,15 +919,15 @@ func callbackCustomTreeModelabdc68_RemoveRows(ptr unsafe.Pointer, row C.int, cou
 
 func (ptr *CustomTreeModel) RemoveRowsDefault(row int, count int, parent std_core.QModelIndex_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_RemoveRowsDefault(ptr.Pointer(), C.int(int32(row)), C.int(int32(count)), std_core.PointerFromQModelIndex(parent))) != 0
+		return int8(C.CustomTreeModel55c818_RemoveRowsDefault(ptr.Pointer(), C.int(int32(row)), C.int(int32(count)), std_core.PointerFromQModelIndex(parent))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_SetData
-func callbackCustomTreeModelabdc68_SetData(ptr unsafe.Pointer, index unsafe.Pointer, value unsafe.Pointer, role C.int) C.char {
+//export callbackCustomTreeModel55c818_SetData
+func callbackCustomTreeModel55c818_SetData(ptr unsafe.Pointer, index unsafe.Pointer, value unsafe.Pointer, role C.int) C.char {
 	if signal := qt.GetSignal(ptr, "setData"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QModelIndex, *std_core.QVariant, int) bool)(std_core.NewQModelIndexFromPointer(index), std_core.NewQVariantFromPointer(value), int(int32(role))))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QModelIndex, *std_core.QVariant, int) bool)(signal))(std_core.NewQModelIndexFromPointer(index), std_core.NewQVariantFromPointer(value), int(int32(role))))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).SetDataDefault(std_core.NewQModelIndexFromPointer(index), std_core.NewQVariantFromPointer(value), int(int32(role))))))
@@ -929,15 +935,15 @@ func callbackCustomTreeModelabdc68_SetData(ptr unsafe.Pointer, index unsafe.Poin
 
 func (ptr *CustomTreeModel) SetDataDefault(index std_core.QModelIndex_ITF, value std_core.QVariant_ITF, role int) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_SetDataDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index), std_core.PointerFromQVariant(value), C.int(int32(role)))) != 0
+		return int8(C.CustomTreeModel55c818_SetDataDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index), std_core.PointerFromQVariant(value), C.int(int32(role)))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_SetHeaderData
-func callbackCustomTreeModelabdc68_SetHeaderData(ptr unsafe.Pointer, section C.int, orientation C.longlong, value unsafe.Pointer, role C.int) C.char {
+//export callbackCustomTreeModel55c818_SetHeaderData
+func callbackCustomTreeModel55c818_SetHeaderData(ptr unsafe.Pointer, section C.int, orientation C.longlong, value unsafe.Pointer, role C.int) C.char {
 	if signal := qt.GetSignal(ptr, "setHeaderData"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(int, std_core.Qt__Orientation, *std_core.QVariant, int) bool)(int(int32(section)), std_core.Qt__Orientation(orientation), std_core.NewQVariantFromPointer(value), int(int32(role))))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(int, std_core.Qt__Orientation, *std_core.QVariant, int) bool)(signal))(int(int32(section)), std_core.Qt__Orientation(orientation), std_core.NewQVariantFromPointer(value), int(int32(role))))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).SetHeaderDataDefault(int(int32(section)), std_core.Qt__Orientation(orientation), std_core.NewQVariantFromPointer(value), int(int32(role))))))
@@ -945,15 +951,15 @@ func callbackCustomTreeModelabdc68_SetHeaderData(ptr unsafe.Pointer, section C.i
 
 func (ptr *CustomTreeModel) SetHeaderDataDefault(section int, orientation std_core.Qt__Orientation, value std_core.QVariant_ITF, role int) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_SetHeaderDataDefault(ptr.Pointer(), C.int(int32(section)), C.longlong(orientation), std_core.PointerFromQVariant(value), C.int(int32(role)))) != 0
+		return int8(C.CustomTreeModel55c818_SetHeaderDataDefault(ptr.Pointer(), C.int(int32(section)), C.longlong(orientation), std_core.PointerFromQVariant(value), C.int(int32(role)))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_SetItemData
-func callbackCustomTreeModelabdc68_SetItemData(ptr unsafe.Pointer, index unsafe.Pointer, roles C.struct_Moc_PackedList) C.char {
+//export callbackCustomTreeModel55c818_SetItemData
+func callbackCustomTreeModel55c818_SetItemData(ptr unsafe.Pointer, index unsafe.Pointer, roles C.struct_Moc_PackedList) C.char {
 	if signal := qt.GetSignal(ptr, "setItemData"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QModelIndex, map[int]*std_core.QVariant) bool)(std_core.NewQModelIndexFromPointer(index), func(l C.struct_Moc_PackedList) map[int]*std_core.QVariant {
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QModelIndex, map[int]*std_core.QVariant) bool)(signal))(std_core.NewQModelIndexFromPointer(index), func(l C.struct_Moc_PackedList) map[int]*std_core.QVariant {
 			out := make(map[int]*std_core.QVariant, int(l.len))
 			tmpList := NewCustomTreeModelFromPointer(l.data)
 			for i, v := range tmpList.__setItemData_roles_keyList() {
@@ -975,7 +981,7 @@ func callbackCustomTreeModelabdc68_SetItemData(ptr unsafe.Pointer, index unsafe.
 
 func (ptr *CustomTreeModel) SetItemDataDefault(index std_core.QModelIndex_ITF, roles map[int]*std_core.QVariant) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_SetItemDataDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index), func() unsafe.Pointer {
+		return int8(C.CustomTreeModel55c818_SetItemDataDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index), func() unsafe.Pointer {
 			tmpList := NewCustomTreeModelFromPointer(NewCustomTreeModelFromPointer(nil).__setItemData_roles_newList())
 			for k, v := range roles {
 				tmpList.__setItemData_roles_setList(k, v)
@@ -986,10 +992,10 @@ func (ptr *CustomTreeModel) SetItemDataDefault(index std_core.QModelIndex_ITF, r
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_Submit
-func callbackCustomTreeModelabdc68_Submit(ptr unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_Submit
+func callbackCustomTreeModel55c818_Submit(ptr unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "submit"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func() bool)())))
+		return C.char(int8(qt.GoBoolToInt((*(*func() bool)(signal))())))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).SubmitDefault())))
@@ -997,63 +1003,63 @@ func callbackCustomTreeModelabdc68_Submit(ptr unsafe.Pointer) C.char {
 
 func (ptr *CustomTreeModel) SubmitDefault() bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_SubmitDefault(ptr.Pointer())) != 0
+		return int8(C.CustomTreeModel55c818_SubmitDefault(ptr.Pointer())) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_ColumnsAboutToBeInserted
-func callbackCustomTreeModelabdc68_ColumnsAboutToBeInserted(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
+//export callbackCustomTreeModel55c818_ColumnsAboutToBeInserted
+func callbackCustomTreeModel55c818_ColumnsAboutToBeInserted(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
 	if signal := qt.GetSignal(ptr, "columnsAboutToBeInserted"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
+		(*(*func(*std_core.QModelIndex, int, int))(signal))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_ColumnsAboutToBeMoved
-func callbackCustomTreeModelabdc68_ColumnsAboutToBeMoved(ptr unsafe.Pointer, sourceParent unsafe.Pointer, sourceStart C.int, sourceEnd C.int, destinationParent unsafe.Pointer, destinationColumn C.int) {
+//export callbackCustomTreeModel55c818_ColumnsAboutToBeMoved
+func callbackCustomTreeModel55c818_ColumnsAboutToBeMoved(ptr unsafe.Pointer, sourceParent unsafe.Pointer, sourceStart C.int, sourceEnd C.int, destinationParent unsafe.Pointer, destinationColumn C.int) {
 	if signal := qt.GetSignal(ptr, "columnsAboutToBeMoved"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int))(std_core.NewQModelIndexFromPointer(sourceParent), int(int32(sourceStart)), int(int32(sourceEnd)), std_core.NewQModelIndexFromPointer(destinationParent), int(int32(destinationColumn)))
+		(*(*func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int))(signal))(std_core.NewQModelIndexFromPointer(sourceParent), int(int32(sourceStart)), int(int32(sourceEnd)), std_core.NewQModelIndexFromPointer(destinationParent), int(int32(destinationColumn)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_ColumnsAboutToBeRemoved
-func callbackCustomTreeModelabdc68_ColumnsAboutToBeRemoved(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
+//export callbackCustomTreeModel55c818_ColumnsAboutToBeRemoved
+func callbackCustomTreeModel55c818_ColumnsAboutToBeRemoved(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
 	if signal := qt.GetSignal(ptr, "columnsAboutToBeRemoved"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
+		(*(*func(*std_core.QModelIndex, int, int))(signal))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_ColumnsInserted
-func callbackCustomTreeModelabdc68_ColumnsInserted(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
+//export callbackCustomTreeModel55c818_ColumnsInserted
+func callbackCustomTreeModel55c818_ColumnsInserted(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
 	if signal := qt.GetSignal(ptr, "columnsInserted"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
+		(*(*func(*std_core.QModelIndex, int, int))(signal))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_ColumnsMoved
-func callbackCustomTreeModelabdc68_ColumnsMoved(ptr unsafe.Pointer, parent unsafe.Pointer, start C.int, end C.int, destination unsafe.Pointer, column C.int) {
+//export callbackCustomTreeModel55c818_ColumnsMoved
+func callbackCustomTreeModel55c818_ColumnsMoved(ptr unsafe.Pointer, parent unsafe.Pointer, start C.int, end C.int, destination unsafe.Pointer, column C.int) {
 	if signal := qt.GetSignal(ptr, "columnsMoved"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int))(std_core.NewQModelIndexFromPointer(parent), int(int32(start)), int(int32(end)), std_core.NewQModelIndexFromPointer(destination), int(int32(column)))
+		(*(*func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int))(signal))(std_core.NewQModelIndexFromPointer(parent), int(int32(start)), int(int32(end)), std_core.NewQModelIndexFromPointer(destination), int(int32(column)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_ColumnsRemoved
-func callbackCustomTreeModelabdc68_ColumnsRemoved(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
+//export callbackCustomTreeModel55c818_ColumnsRemoved
+func callbackCustomTreeModel55c818_ColumnsRemoved(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
 	if signal := qt.GetSignal(ptr, "columnsRemoved"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
+		(*(*func(*std_core.QModelIndex, int, int))(signal))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_DataChanged
-func callbackCustomTreeModelabdc68_DataChanged(ptr unsafe.Pointer, topLeft unsafe.Pointer, bottomRight unsafe.Pointer, roles C.struct_Moc_PackedList) {
+//export callbackCustomTreeModel55c818_DataChanged
+func callbackCustomTreeModel55c818_DataChanged(ptr unsafe.Pointer, topLeft unsafe.Pointer, bottomRight unsafe.Pointer, roles C.struct_Moc_PackedList) {
 	if signal := qt.GetSignal(ptr, "dataChanged"); signal != nil {
-		signal.(func(*std_core.QModelIndex, *std_core.QModelIndex, []int))(std_core.NewQModelIndexFromPointer(topLeft), std_core.NewQModelIndexFromPointer(bottomRight), func(l C.struct_Moc_PackedList) []int {
+		(*(*func(*std_core.QModelIndex, *std_core.QModelIndex, []int))(signal))(std_core.NewQModelIndexFromPointer(topLeft), std_core.NewQModelIndexFromPointer(bottomRight), func(l C.struct_Moc_PackedList) []int {
 			out := make([]int, int(l.len))
 			tmpList := NewCustomTreeModelFromPointer(l.data)
 			for i := 0; i < len(out); i++ {
@@ -1065,10 +1071,10 @@ func callbackCustomTreeModelabdc68_DataChanged(ptr unsafe.Pointer, topLeft unsaf
 
 }
 
-//export callbackCustomTreeModelabdc68_FetchMore
-func callbackCustomTreeModelabdc68_FetchMore(ptr unsafe.Pointer, parent unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_FetchMore
+func callbackCustomTreeModel55c818_FetchMore(ptr unsafe.Pointer, parent unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "fetchMore"); signal != nil {
-		signal.(func(*std_core.QModelIndex))(std_core.NewQModelIndexFromPointer(parent))
+		(*(*func(*std_core.QModelIndex))(signal))(std_core.NewQModelIndexFromPointer(parent))
 	} else {
 		NewCustomTreeModelFromPointer(ptr).FetchMoreDefault(std_core.NewQModelIndexFromPointer(parent))
 	}
@@ -1076,22 +1082,22 @@ func callbackCustomTreeModelabdc68_FetchMore(ptr unsafe.Pointer, parent unsafe.P
 
 func (ptr *CustomTreeModel) FetchMoreDefault(parent std_core.QModelIndex_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_FetchMoreDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))
+		C.CustomTreeModel55c818_FetchMoreDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))
 	}
 }
 
-//export callbackCustomTreeModelabdc68_HeaderDataChanged
-func callbackCustomTreeModelabdc68_HeaderDataChanged(ptr unsafe.Pointer, orientation C.longlong, first C.int, last C.int) {
+//export callbackCustomTreeModel55c818_HeaderDataChanged
+func callbackCustomTreeModel55c818_HeaderDataChanged(ptr unsafe.Pointer, orientation C.longlong, first C.int, last C.int) {
 	if signal := qt.GetSignal(ptr, "headerDataChanged"); signal != nil {
-		signal.(func(std_core.Qt__Orientation, int, int))(std_core.Qt__Orientation(orientation), int(int32(first)), int(int32(last)))
+		(*(*func(std_core.Qt__Orientation, int, int))(signal))(std_core.Qt__Orientation(orientation), int(int32(first)), int(int32(last)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_LayoutAboutToBeChanged
-func callbackCustomTreeModelabdc68_LayoutAboutToBeChanged(ptr unsafe.Pointer, parents C.struct_Moc_PackedList, hint C.longlong) {
+//export callbackCustomTreeModel55c818_LayoutAboutToBeChanged
+func callbackCustomTreeModel55c818_LayoutAboutToBeChanged(ptr unsafe.Pointer, parents C.struct_Moc_PackedList, hint C.longlong) {
 	if signal := qt.GetSignal(ptr, "layoutAboutToBeChanged"); signal != nil {
-		signal.(func([]*std_core.QPersistentModelIndex, std_core.QAbstractItemModel__LayoutChangeHint))(func(l C.struct_Moc_PackedList) []*std_core.QPersistentModelIndex {
+		(*(*func([]*std_core.QPersistentModelIndex, std_core.QAbstractItemModel__LayoutChangeHint))(signal))(func(l C.struct_Moc_PackedList) []*std_core.QPersistentModelIndex {
 			out := make([]*std_core.QPersistentModelIndex, int(l.len))
 			tmpList := NewCustomTreeModelFromPointer(l.data)
 			for i := 0; i < len(out); i++ {
@@ -1103,10 +1109,10 @@ func callbackCustomTreeModelabdc68_LayoutAboutToBeChanged(ptr unsafe.Pointer, pa
 
 }
 
-//export callbackCustomTreeModelabdc68_LayoutChanged
-func callbackCustomTreeModelabdc68_LayoutChanged(ptr unsafe.Pointer, parents C.struct_Moc_PackedList, hint C.longlong) {
+//export callbackCustomTreeModel55c818_LayoutChanged
+func callbackCustomTreeModel55c818_LayoutChanged(ptr unsafe.Pointer, parents C.struct_Moc_PackedList, hint C.longlong) {
 	if signal := qt.GetSignal(ptr, "layoutChanged"); signal != nil {
-		signal.(func([]*std_core.QPersistentModelIndex, std_core.QAbstractItemModel__LayoutChangeHint))(func(l C.struct_Moc_PackedList) []*std_core.QPersistentModelIndex {
+		(*(*func([]*std_core.QPersistentModelIndex, std_core.QAbstractItemModel__LayoutChangeHint))(signal))(func(l C.struct_Moc_PackedList) []*std_core.QPersistentModelIndex {
 			out := make([]*std_core.QPersistentModelIndex, int(l.len))
 			tmpList := NewCustomTreeModelFromPointer(l.data)
 			for i := 0; i < len(out); i++ {
@@ -1118,26 +1124,26 @@ func callbackCustomTreeModelabdc68_LayoutChanged(ptr unsafe.Pointer, parents C.s
 
 }
 
-//export callbackCustomTreeModelabdc68_ModelAboutToBeReset
-func callbackCustomTreeModelabdc68_ModelAboutToBeReset(ptr unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_ModelAboutToBeReset
+func callbackCustomTreeModel55c818_ModelAboutToBeReset(ptr unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "modelAboutToBeReset"); signal != nil {
-		signal.(func())()
+		(*(*func())(signal))()
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_ModelReset
-func callbackCustomTreeModelabdc68_ModelReset(ptr unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_ModelReset
+func callbackCustomTreeModel55c818_ModelReset(ptr unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "modelReset"); signal != nil {
-		signal.(func())()
+		(*(*func())(signal))()
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_ResetInternalData
-func callbackCustomTreeModelabdc68_ResetInternalData(ptr unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_ResetInternalData
+func callbackCustomTreeModel55c818_ResetInternalData(ptr unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "resetInternalData"); signal != nil {
-		signal.(func())()
+		(*(*func())(signal))()
 	} else {
 		NewCustomTreeModelFromPointer(ptr).ResetInternalDataDefault()
 	}
@@ -1145,14 +1151,14 @@ func callbackCustomTreeModelabdc68_ResetInternalData(ptr unsafe.Pointer) {
 
 func (ptr *CustomTreeModel) ResetInternalDataDefault() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_ResetInternalDataDefault(ptr.Pointer())
+		C.CustomTreeModel55c818_ResetInternalDataDefault(ptr.Pointer())
 	}
 }
 
-//export callbackCustomTreeModelabdc68_Revert
-func callbackCustomTreeModelabdc68_Revert(ptr unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_Revert
+func callbackCustomTreeModel55c818_Revert(ptr unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "revert"); signal != nil {
-		signal.(func())()
+		(*(*func())(signal))()
 	} else {
 		NewCustomTreeModelFromPointer(ptr).RevertDefault()
 	}
@@ -1160,62 +1166,62 @@ func callbackCustomTreeModelabdc68_Revert(ptr unsafe.Pointer) {
 
 func (ptr *CustomTreeModel) RevertDefault() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_RevertDefault(ptr.Pointer())
+		C.CustomTreeModel55c818_RevertDefault(ptr.Pointer())
 	}
 }
 
-//export callbackCustomTreeModelabdc68_RowsAboutToBeInserted
-func callbackCustomTreeModelabdc68_RowsAboutToBeInserted(ptr unsafe.Pointer, parent unsafe.Pointer, start C.int, end C.int) {
+//export callbackCustomTreeModel55c818_RowsAboutToBeInserted
+func callbackCustomTreeModel55c818_RowsAboutToBeInserted(ptr unsafe.Pointer, parent unsafe.Pointer, start C.int, end C.int) {
 	if signal := qt.GetSignal(ptr, "rowsAboutToBeInserted"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int))(std_core.NewQModelIndexFromPointer(parent), int(int32(start)), int(int32(end)))
+		(*(*func(*std_core.QModelIndex, int, int))(signal))(std_core.NewQModelIndexFromPointer(parent), int(int32(start)), int(int32(end)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_RowsAboutToBeMoved
-func callbackCustomTreeModelabdc68_RowsAboutToBeMoved(ptr unsafe.Pointer, sourceParent unsafe.Pointer, sourceStart C.int, sourceEnd C.int, destinationParent unsafe.Pointer, destinationRow C.int) {
+//export callbackCustomTreeModel55c818_RowsAboutToBeMoved
+func callbackCustomTreeModel55c818_RowsAboutToBeMoved(ptr unsafe.Pointer, sourceParent unsafe.Pointer, sourceStart C.int, sourceEnd C.int, destinationParent unsafe.Pointer, destinationRow C.int) {
 	if signal := qt.GetSignal(ptr, "rowsAboutToBeMoved"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int))(std_core.NewQModelIndexFromPointer(sourceParent), int(int32(sourceStart)), int(int32(sourceEnd)), std_core.NewQModelIndexFromPointer(destinationParent), int(int32(destinationRow)))
+		(*(*func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int))(signal))(std_core.NewQModelIndexFromPointer(sourceParent), int(int32(sourceStart)), int(int32(sourceEnd)), std_core.NewQModelIndexFromPointer(destinationParent), int(int32(destinationRow)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_RowsAboutToBeRemoved
-func callbackCustomTreeModelabdc68_RowsAboutToBeRemoved(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
+//export callbackCustomTreeModel55c818_RowsAboutToBeRemoved
+func callbackCustomTreeModel55c818_RowsAboutToBeRemoved(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
 	if signal := qt.GetSignal(ptr, "rowsAboutToBeRemoved"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
+		(*(*func(*std_core.QModelIndex, int, int))(signal))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_RowsInserted
-func callbackCustomTreeModelabdc68_RowsInserted(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
+//export callbackCustomTreeModel55c818_RowsInserted
+func callbackCustomTreeModel55c818_RowsInserted(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
 	if signal := qt.GetSignal(ptr, "rowsInserted"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
+		(*(*func(*std_core.QModelIndex, int, int))(signal))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_RowsMoved
-func callbackCustomTreeModelabdc68_RowsMoved(ptr unsafe.Pointer, parent unsafe.Pointer, start C.int, end C.int, destination unsafe.Pointer, row C.int) {
+//export callbackCustomTreeModel55c818_RowsMoved
+func callbackCustomTreeModel55c818_RowsMoved(ptr unsafe.Pointer, parent unsafe.Pointer, start C.int, end C.int, destination unsafe.Pointer, row C.int) {
 	if signal := qt.GetSignal(ptr, "rowsMoved"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int))(std_core.NewQModelIndexFromPointer(parent), int(int32(start)), int(int32(end)), std_core.NewQModelIndexFromPointer(destination), int(int32(row)))
+		(*(*func(*std_core.QModelIndex, int, int, *std_core.QModelIndex, int))(signal))(std_core.NewQModelIndexFromPointer(parent), int(int32(start)), int(int32(end)), std_core.NewQModelIndexFromPointer(destination), int(int32(row)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_RowsRemoved
-func callbackCustomTreeModelabdc68_RowsRemoved(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
+//export callbackCustomTreeModel55c818_RowsRemoved
+func callbackCustomTreeModel55c818_RowsRemoved(ptr unsafe.Pointer, parent unsafe.Pointer, first C.int, last C.int) {
 	if signal := qt.GetSignal(ptr, "rowsRemoved"); signal != nil {
-		signal.(func(*std_core.QModelIndex, int, int))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
+		(*(*func(*std_core.QModelIndex, int, int))(signal))(std_core.NewQModelIndexFromPointer(parent), int(int32(first)), int(int32(last)))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_Sort
-func callbackCustomTreeModelabdc68_Sort(ptr unsafe.Pointer, column C.int, order C.longlong) {
+//export callbackCustomTreeModel55c818_Sort
+func callbackCustomTreeModel55c818_Sort(ptr unsafe.Pointer, column C.int, order C.longlong) {
 	if signal := qt.GetSignal(ptr, "sort"); signal != nil {
-		signal.(func(int, std_core.Qt__SortOrder))(int(int32(column)), std_core.Qt__SortOrder(order))
+		(*(*func(int, std_core.Qt__SortOrder))(signal))(int(int32(column)), std_core.Qt__SortOrder(order))
 	} else {
 		NewCustomTreeModelFromPointer(ptr).SortDefault(int(int32(column)), std_core.Qt__SortOrder(order))
 	}
@@ -1223,16 +1229,16 @@ func callbackCustomTreeModelabdc68_Sort(ptr unsafe.Pointer, column C.int, order 
 
 func (ptr *CustomTreeModel) SortDefault(column int, order std_core.Qt__SortOrder) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_SortDefault(ptr.Pointer(), C.int(int32(column)), C.longlong(order))
+		C.CustomTreeModel55c818_SortDefault(ptr.Pointer(), C.int(int32(column)), C.longlong(order))
 	}
 }
 
-//export callbackCustomTreeModelabdc68_RoleNames
-func callbackCustomTreeModelabdc68_RoleNames(ptr unsafe.Pointer) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_RoleNames
+func callbackCustomTreeModel55c818_RoleNames(ptr unsafe.Pointer) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "roleNames"); signal != nil {
 		return func() unsafe.Pointer {
 			tmpList := NewCustomTreeModelFromPointer(NewCustomTreeModelFromPointer(nil).__roleNames_newList())
-			for k, v := range signal.(func() map[int]*std_core.QByteArray)() {
+			for k, v := range (*(*func() map[int]*std_core.QByteArray)(signal))() {
 				tmpList.__roleNames_setList(k, v)
 			}
 			return tmpList.Pointer()
@@ -1257,17 +1263,17 @@ func (ptr *CustomTreeModel) RoleNamesDefault() map[int]*std_core.QByteArray {
 				out[v] = tmpList.__roleNames_atList(v, i)
 			}
 			return out
-		}(C.CustomTreeModelabdc68_RoleNamesDefault(ptr.Pointer()))
+		}(C.CustomTreeModel55c818_RoleNamesDefault(ptr.Pointer()))
 	}
 	return make(map[int]*std_core.QByteArray, 0)
 }
 
-//export callbackCustomTreeModelabdc68_ItemData
-func callbackCustomTreeModelabdc68_ItemData(ptr unsafe.Pointer, index unsafe.Pointer) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_ItemData
+func callbackCustomTreeModel55c818_ItemData(ptr unsafe.Pointer, index unsafe.Pointer) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "itemData"); signal != nil {
 		return func() unsafe.Pointer {
 			tmpList := NewCustomTreeModelFromPointer(NewCustomTreeModelFromPointer(nil).__itemData_newList())
-			for k, v := range signal.(func(*std_core.QModelIndex) map[int]*std_core.QVariant)(std_core.NewQModelIndexFromPointer(index)) {
+			for k, v := range (*(*func(*std_core.QModelIndex) map[int]*std_core.QVariant)(signal))(std_core.NewQModelIndexFromPointer(index)) {
 				tmpList.__itemData_setList(k, v)
 			}
 			return tmpList.Pointer()
@@ -1292,15 +1298,15 @@ func (ptr *CustomTreeModel) ItemDataDefault(index std_core.QModelIndex_ITF) map[
 				out[v] = tmpList.__itemData_atList(v, i)
 			}
 			return out
-		}(C.CustomTreeModelabdc68_ItemDataDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
+		}(C.CustomTreeModel55c818_ItemDataDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
 	}
 	return make(map[int]*std_core.QVariant, 0)
 }
 
-//export callbackCustomTreeModelabdc68_MimeData
-func callbackCustomTreeModelabdc68_MimeData(ptr unsafe.Pointer, indexes C.struct_Moc_PackedList) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_MimeData
+func callbackCustomTreeModel55c818_MimeData(ptr unsafe.Pointer, indexes C.struct_Moc_PackedList) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "mimeData"); signal != nil {
-		return std_core.PointerFromQMimeData(signal.(func([]*std_core.QModelIndex) *std_core.QMimeData)(func(l C.struct_Moc_PackedList) []*std_core.QModelIndex {
+		return std_core.PointerFromQMimeData((*(*func([]*std_core.QModelIndex) *std_core.QMimeData)(signal))(func(l C.struct_Moc_PackedList) []*std_core.QModelIndex {
 			out := make([]*std_core.QModelIndex, int(l.len))
 			tmpList := NewCustomTreeModelFromPointer(l.data)
 			for i := 0; i < len(out); i++ {
@@ -1322,7 +1328,7 @@ func callbackCustomTreeModelabdc68_MimeData(ptr unsafe.Pointer, indexes C.struct
 
 func (ptr *CustomTreeModel) MimeDataDefault(indexes []*std_core.QModelIndex) *std_core.QMimeData {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQMimeDataFromPointer(C.CustomTreeModelabdc68_MimeDataDefault(ptr.Pointer(), func() unsafe.Pointer {
+		tmpValue := std_core.NewQMimeDataFromPointer(C.CustomTreeModel55c818_MimeDataDefault(ptr.Pointer(), func() unsafe.Pointer {
 			tmpList := NewCustomTreeModelFromPointer(NewCustomTreeModelFromPointer(nil).__mimeData_indexes_newList())
 			for _, v := range indexes {
 				tmpList.__mimeData_indexes_setList(v)
@@ -1337,10 +1343,10 @@ func (ptr *CustomTreeModel) MimeDataDefault(indexes []*std_core.QModelIndex) *st
 	return nil
 }
 
-//export callbackCustomTreeModelabdc68_Buddy
-func callbackCustomTreeModelabdc68_Buddy(ptr unsafe.Pointer, index unsafe.Pointer) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_Buddy
+func callbackCustomTreeModel55c818_Buddy(ptr unsafe.Pointer, index unsafe.Pointer) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "buddy"); signal != nil {
-		return std_core.PointerFromQModelIndex(signal.(func(*std_core.QModelIndex) *std_core.QModelIndex)(std_core.NewQModelIndexFromPointer(index)))
+		return std_core.PointerFromQModelIndex((*(*func(*std_core.QModelIndex) *std_core.QModelIndex)(signal))(std_core.NewQModelIndexFromPointer(index)))
 	}
 
 	return std_core.PointerFromQModelIndex(NewCustomTreeModelFromPointer(ptr).BuddyDefault(std_core.NewQModelIndexFromPointer(index)))
@@ -1348,17 +1354,17 @@ func callbackCustomTreeModelabdc68_Buddy(ptr unsafe.Pointer, index unsafe.Pointe
 
 func (ptr *CustomTreeModel) BuddyDefault(index std_core.QModelIndex_ITF) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68_BuddyDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818_BuddyDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
 	return nil
 }
 
-//export callbackCustomTreeModelabdc68_Index
-func callbackCustomTreeModelabdc68_Index(ptr unsafe.Pointer, row C.int, column C.int, parent unsafe.Pointer) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_Index
+func callbackCustomTreeModel55c818_Index(ptr unsafe.Pointer, row C.int, column C.int, parent unsafe.Pointer) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "index"); signal != nil {
-		return std_core.PointerFromQModelIndex(signal.(func(int, int, *std_core.QModelIndex) *std_core.QModelIndex)(int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(parent)))
+		return std_core.PointerFromQModelIndex((*(*func(int, int, *std_core.QModelIndex) *std_core.QModelIndex)(signal))(int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(parent)))
 	}
 
 	return std_core.PointerFromQModelIndex(NewCustomTreeModelFromPointer(ptr).IndexDefault(int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(parent)))
@@ -1366,7 +1372,7 @@ func callbackCustomTreeModelabdc68_Index(ptr unsafe.Pointer, row C.int, column C
 
 func (ptr *CustomTreeModel) Index(row int, column int, parent std_core.QModelIndex_ITF) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68_Index(ptr.Pointer(), C.int(int32(row)), C.int(int32(column)), std_core.PointerFromQModelIndex(parent)))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818_Index(ptr.Pointer(), C.int(int32(row)), C.int(int32(column)), std_core.PointerFromQModelIndex(parent)))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
@@ -1375,17 +1381,17 @@ func (ptr *CustomTreeModel) Index(row int, column int, parent std_core.QModelInd
 
 func (ptr *CustomTreeModel) IndexDefault(row int, column int, parent std_core.QModelIndex_ITF) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68_IndexDefault(ptr.Pointer(), C.int(int32(row)), C.int(int32(column)), std_core.PointerFromQModelIndex(parent)))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818_IndexDefault(ptr.Pointer(), C.int(int32(row)), C.int(int32(column)), std_core.PointerFromQModelIndex(parent)))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
 	return nil
 }
 
-//export callbackCustomTreeModelabdc68_Parent
-func callbackCustomTreeModelabdc68_Parent(ptr unsafe.Pointer, index unsafe.Pointer) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_Parent
+func callbackCustomTreeModel55c818_Parent(ptr unsafe.Pointer, index unsafe.Pointer) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "parent"); signal != nil {
-		return std_core.PointerFromQModelIndex(signal.(func(*std_core.QModelIndex) *std_core.QModelIndex)(std_core.NewQModelIndexFromPointer(index)))
+		return std_core.PointerFromQModelIndex((*(*func(*std_core.QModelIndex) *std_core.QModelIndex)(signal))(std_core.NewQModelIndexFromPointer(index)))
 	}
 
 	return std_core.PointerFromQModelIndex(NewCustomTreeModelFromPointer(ptr).ParentDefault(std_core.NewQModelIndexFromPointer(index)))
@@ -1393,7 +1399,7 @@ func callbackCustomTreeModelabdc68_Parent(ptr unsafe.Pointer, index unsafe.Point
 
 func (ptr *CustomTreeModel) Parent(index std_core.QModelIndex_ITF) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68_Parent(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818_Parent(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
@@ -1402,17 +1408,17 @@ func (ptr *CustomTreeModel) Parent(index std_core.QModelIndex_ITF) *std_core.QMo
 
 func (ptr *CustomTreeModel) ParentDefault(index std_core.QModelIndex_ITF) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68_ParentDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818_ParentDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
 	return nil
 }
 
-//export callbackCustomTreeModelabdc68_Sibling
-func callbackCustomTreeModelabdc68_Sibling(ptr unsafe.Pointer, row C.int, column C.int, index unsafe.Pointer) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_Sibling
+func callbackCustomTreeModel55c818_Sibling(ptr unsafe.Pointer, row C.int, column C.int, index unsafe.Pointer) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "sibling"); signal != nil {
-		return std_core.PointerFromQModelIndex(signal.(func(int, int, *std_core.QModelIndex) *std_core.QModelIndex)(int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(index)))
+		return std_core.PointerFromQModelIndex((*(*func(int, int, *std_core.QModelIndex) *std_core.QModelIndex)(signal))(int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(index)))
 	}
 
 	return std_core.PointerFromQModelIndex(NewCustomTreeModelFromPointer(ptr).SiblingDefault(int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(index)))
@@ -1420,19 +1426,19 @@ func callbackCustomTreeModelabdc68_Sibling(ptr unsafe.Pointer, row C.int, column
 
 func (ptr *CustomTreeModel) SiblingDefault(row int, column int, index std_core.QModelIndex_ITF) *std_core.QModelIndex {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModelabdc68_SiblingDefault(ptr.Pointer(), C.int(int32(row)), C.int(int32(column)), std_core.PointerFromQModelIndex(index)))
+		tmpValue := std_core.NewQModelIndexFromPointer(C.CustomTreeModel55c818_SiblingDefault(ptr.Pointer(), C.int(int32(row)), C.int(int32(column)), std_core.PointerFromQModelIndex(index)))
 		runtime.SetFinalizer(tmpValue, (*std_core.QModelIndex).DestroyQModelIndex)
 		return tmpValue
 	}
 	return nil
 }
 
-//export callbackCustomTreeModelabdc68_Match
-func callbackCustomTreeModelabdc68_Match(ptr unsafe.Pointer, start unsafe.Pointer, role C.int, value unsafe.Pointer, hits C.int, flags C.longlong) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_Match
+func callbackCustomTreeModel55c818_Match(ptr unsafe.Pointer, start unsafe.Pointer, role C.int, value unsafe.Pointer, hits C.int, flags C.longlong) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "match"); signal != nil {
 		return func() unsafe.Pointer {
 			tmpList := NewCustomTreeModelFromPointer(NewCustomTreeModelFromPointer(nil).__match_newList())
-			for _, v := range signal.(func(*std_core.QModelIndex, int, *std_core.QVariant, int, std_core.Qt__MatchFlag) []*std_core.QModelIndex)(std_core.NewQModelIndexFromPointer(start), int(int32(role)), std_core.NewQVariantFromPointer(value), int(int32(hits)), std_core.Qt__MatchFlag(flags)) {
+			for _, v := range (*(*func(*std_core.QModelIndex, int, *std_core.QVariant, int, std_core.Qt__MatchFlag) []*std_core.QModelIndex)(signal))(std_core.NewQModelIndexFromPointer(start), int(int32(role)), std_core.NewQVariantFromPointer(value), int(int32(hits)), std_core.Qt__MatchFlag(flags)) {
 				tmpList.__match_setList(v)
 			}
 			return tmpList.Pointer()
@@ -1457,15 +1463,15 @@ func (ptr *CustomTreeModel) MatchDefault(start std_core.QModelIndex_ITF, role in
 				out[i] = tmpList.__match_atList(i)
 			}
 			return out
-		}(C.CustomTreeModelabdc68_MatchDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(start), C.int(int32(role)), std_core.PointerFromQVariant(value), C.int(int32(hits)), C.longlong(flags)))
+		}(C.CustomTreeModel55c818_MatchDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(start), C.int(int32(role)), std_core.PointerFromQVariant(value), C.int(int32(hits)), C.longlong(flags)))
 	}
 	return make([]*std_core.QModelIndex, 0)
 }
 
-//export callbackCustomTreeModelabdc68_Span
-func callbackCustomTreeModelabdc68_Span(ptr unsafe.Pointer, index unsafe.Pointer) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_Span
+func callbackCustomTreeModel55c818_Span(ptr unsafe.Pointer, index unsafe.Pointer) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "span"); signal != nil {
-		return std_core.PointerFromQSize(signal.(func(*std_core.QModelIndex) *std_core.QSize)(std_core.NewQModelIndexFromPointer(index)))
+		return std_core.PointerFromQSize((*(*func(*std_core.QModelIndex) *std_core.QSize)(signal))(std_core.NewQModelIndexFromPointer(index)))
 	}
 
 	return std_core.PointerFromQSize(NewCustomTreeModelFromPointer(ptr).SpanDefault(std_core.NewQModelIndexFromPointer(index)))
@@ -1473,17 +1479,17 @@ func callbackCustomTreeModelabdc68_Span(ptr unsafe.Pointer, index unsafe.Pointer
 
 func (ptr *CustomTreeModel) SpanDefault(index std_core.QModelIndex_ITF) *std_core.QSize {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQSizeFromPointer(C.CustomTreeModelabdc68_SpanDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
+		tmpValue := std_core.NewQSizeFromPointer(C.CustomTreeModel55c818_SpanDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
 		runtime.SetFinalizer(tmpValue, (*std_core.QSize).DestroyQSize)
 		return tmpValue
 	}
 	return nil
 }
 
-//export callbackCustomTreeModelabdc68_MimeTypes
-func callbackCustomTreeModelabdc68_MimeTypes(ptr unsafe.Pointer) C.struct_Moc_PackedString {
+//export callbackCustomTreeModel55c818_MimeTypes
+func callbackCustomTreeModel55c818_MimeTypes(ptr unsafe.Pointer) C.struct_Moc_PackedString {
 	if signal := qt.GetSignal(ptr, "mimeTypes"); signal != nil {
-		tempVal := signal.(func() []string)()
+		tempVal := (*(*func() []string)(signal))()
 		return C.struct_Moc_PackedString{data: C.CString(strings.Join(tempVal, "|")), len: C.longlong(len(strings.Join(tempVal, "|")))}
 	}
 	tempVal := NewCustomTreeModelFromPointer(ptr).MimeTypesDefault()
@@ -1492,15 +1498,15 @@ func callbackCustomTreeModelabdc68_MimeTypes(ptr unsafe.Pointer) C.struct_Moc_Pa
 
 func (ptr *CustomTreeModel) MimeTypesDefault() []string {
 	if ptr.Pointer() != nil {
-		return strings.Split(cGoUnpackString(C.CustomTreeModelabdc68_MimeTypesDefault(ptr.Pointer())), "|")
+		return strings.Split(cGoUnpackString(C.CustomTreeModel55c818_MimeTypesDefault(ptr.Pointer())), "|")
 	}
 	return make([]string, 0)
 }
 
-//export callbackCustomTreeModelabdc68_Data
-func callbackCustomTreeModelabdc68_Data(ptr unsafe.Pointer, index unsafe.Pointer, role C.int) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_Data
+func callbackCustomTreeModel55c818_Data(ptr unsafe.Pointer, index unsafe.Pointer, role C.int) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "data"); signal != nil {
-		return std_core.PointerFromQVariant(signal.(func(*std_core.QModelIndex, int) *std_core.QVariant)(std_core.NewQModelIndexFromPointer(index), int(int32(role))))
+		return std_core.PointerFromQVariant((*(*func(*std_core.QModelIndex, int) *std_core.QVariant)(signal))(std_core.NewQModelIndexFromPointer(index), int(int32(role))))
 	}
 
 	return std_core.PointerFromQVariant(NewCustomTreeModelFromPointer(ptr).DataDefault(std_core.NewQModelIndexFromPointer(index), int(int32(role))))
@@ -1508,7 +1514,7 @@ func callbackCustomTreeModelabdc68_Data(ptr unsafe.Pointer, index unsafe.Pointer
 
 func (ptr *CustomTreeModel) Data(index std_core.QModelIndex_ITF, role int) *std_core.QVariant {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQVariantFromPointer(C.CustomTreeModelabdc68_Data(ptr.Pointer(), std_core.PointerFromQModelIndex(index), C.int(int32(role))))
+		tmpValue := std_core.NewQVariantFromPointer(C.CustomTreeModel55c818_Data(ptr.Pointer(), std_core.PointerFromQModelIndex(index), C.int(int32(role))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QVariant).DestroyQVariant)
 		return tmpValue
 	}
@@ -1517,17 +1523,17 @@ func (ptr *CustomTreeModel) Data(index std_core.QModelIndex_ITF, role int) *std_
 
 func (ptr *CustomTreeModel) DataDefault(index std_core.QModelIndex_ITF, role int) *std_core.QVariant {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQVariantFromPointer(C.CustomTreeModelabdc68_DataDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index), C.int(int32(role))))
+		tmpValue := std_core.NewQVariantFromPointer(C.CustomTreeModel55c818_DataDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index), C.int(int32(role))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QVariant).DestroyQVariant)
 		return tmpValue
 	}
 	return nil
 }
 
-//export callbackCustomTreeModelabdc68_HeaderData
-func callbackCustomTreeModelabdc68_HeaderData(ptr unsafe.Pointer, section C.int, orientation C.longlong, role C.int) unsafe.Pointer {
+//export callbackCustomTreeModel55c818_HeaderData
+func callbackCustomTreeModel55c818_HeaderData(ptr unsafe.Pointer, section C.int, orientation C.longlong, role C.int) unsafe.Pointer {
 	if signal := qt.GetSignal(ptr, "headerData"); signal != nil {
-		return std_core.PointerFromQVariant(signal.(func(int, std_core.Qt__Orientation, int) *std_core.QVariant)(int(int32(section)), std_core.Qt__Orientation(orientation), int(int32(role))))
+		return std_core.PointerFromQVariant((*(*func(int, std_core.Qt__Orientation, int) *std_core.QVariant)(signal))(int(int32(section)), std_core.Qt__Orientation(orientation), int(int32(role))))
 	}
 
 	return std_core.PointerFromQVariant(NewCustomTreeModelFromPointer(ptr).HeaderDataDefault(int(int32(section)), std_core.Qt__Orientation(orientation), int(int32(role))))
@@ -1535,17 +1541,17 @@ func callbackCustomTreeModelabdc68_HeaderData(ptr unsafe.Pointer, section C.int,
 
 func (ptr *CustomTreeModel) HeaderDataDefault(section int, orientation std_core.Qt__Orientation, role int) *std_core.QVariant {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQVariantFromPointer(C.CustomTreeModelabdc68_HeaderDataDefault(ptr.Pointer(), C.int(int32(section)), C.longlong(orientation), C.int(int32(role))))
+		tmpValue := std_core.NewQVariantFromPointer(C.CustomTreeModel55c818_HeaderDataDefault(ptr.Pointer(), C.int(int32(section)), C.longlong(orientation), C.int(int32(role))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QVariant).DestroyQVariant)
 		return tmpValue
 	}
 	return nil
 }
 
-//export callbackCustomTreeModelabdc68_SupportedDragActions
-func callbackCustomTreeModelabdc68_SupportedDragActions(ptr unsafe.Pointer) C.longlong {
+//export callbackCustomTreeModel55c818_SupportedDragActions
+func callbackCustomTreeModel55c818_SupportedDragActions(ptr unsafe.Pointer) C.longlong {
 	if signal := qt.GetSignal(ptr, "supportedDragActions"); signal != nil {
-		return C.longlong(signal.(func() std_core.Qt__DropAction)())
+		return C.longlong((*(*func() std_core.Qt__DropAction)(signal))())
 	}
 
 	return C.longlong(NewCustomTreeModelFromPointer(ptr).SupportedDragActionsDefault())
@@ -1553,15 +1559,15 @@ func callbackCustomTreeModelabdc68_SupportedDragActions(ptr unsafe.Pointer) C.lo
 
 func (ptr *CustomTreeModel) SupportedDragActionsDefault() std_core.Qt__DropAction {
 	if ptr.Pointer() != nil {
-		return std_core.Qt__DropAction(C.CustomTreeModelabdc68_SupportedDragActionsDefault(ptr.Pointer()))
+		return std_core.Qt__DropAction(C.CustomTreeModel55c818_SupportedDragActionsDefault(ptr.Pointer()))
 	}
 	return 0
 }
 
-//export callbackCustomTreeModelabdc68_SupportedDropActions
-func callbackCustomTreeModelabdc68_SupportedDropActions(ptr unsafe.Pointer) C.longlong {
+//export callbackCustomTreeModel55c818_SupportedDropActions
+func callbackCustomTreeModel55c818_SupportedDropActions(ptr unsafe.Pointer) C.longlong {
 	if signal := qt.GetSignal(ptr, "supportedDropActions"); signal != nil {
-		return C.longlong(signal.(func() std_core.Qt__DropAction)())
+		return C.longlong((*(*func() std_core.Qt__DropAction)(signal))())
 	}
 
 	return C.longlong(NewCustomTreeModelFromPointer(ptr).SupportedDropActionsDefault())
@@ -1569,15 +1575,15 @@ func callbackCustomTreeModelabdc68_SupportedDropActions(ptr unsafe.Pointer) C.lo
 
 func (ptr *CustomTreeModel) SupportedDropActionsDefault() std_core.Qt__DropAction {
 	if ptr.Pointer() != nil {
-		return std_core.Qt__DropAction(C.CustomTreeModelabdc68_SupportedDropActionsDefault(ptr.Pointer()))
+		return std_core.Qt__DropAction(C.CustomTreeModel55c818_SupportedDropActionsDefault(ptr.Pointer()))
 	}
 	return 0
 }
 
-//export callbackCustomTreeModelabdc68_Flags
-func callbackCustomTreeModelabdc68_Flags(ptr unsafe.Pointer, index unsafe.Pointer) C.longlong {
+//export callbackCustomTreeModel55c818_Flags
+func callbackCustomTreeModel55c818_Flags(ptr unsafe.Pointer, index unsafe.Pointer) C.longlong {
 	if signal := qt.GetSignal(ptr, "flags"); signal != nil {
-		return C.longlong(signal.(func(*std_core.QModelIndex) std_core.Qt__ItemFlag)(std_core.NewQModelIndexFromPointer(index)))
+		return C.longlong((*(*func(*std_core.QModelIndex) std_core.Qt__ItemFlag)(signal))(std_core.NewQModelIndexFromPointer(index)))
 	}
 
 	return C.longlong(NewCustomTreeModelFromPointer(ptr).FlagsDefault(std_core.NewQModelIndexFromPointer(index)))
@@ -1585,15 +1591,15 @@ func callbackCustomTreeModelabdc68_Flags(ptr unsafe.Pointer, index unsafe.Pointe
 
 func (ptr *CustomTreeModel) FlagsDefault(index std_core.QModelIndex_ITF) std_core.Qt__ItemFlag {
 	if ptr.Pointer() != nil {
-		return std_core.Qt__ItemFlag(C.CustomTreeModelabdc68_FlagsDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
+		return std_core.Qt__ItemFlag(C.CustomTreeModel55c818_FlagsDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(index)))
 	}
 	return 0
 }
 
-//export callbackCustomTreeModelabdc68_CanDropMimeData
-func callbackCustomTreeModelabdc68_CanDropMimeData(ptr unsafe.Pointer, data unsafe.Pointer, action C.longlong, row C.int, column C.int, parent unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_CanDropMimeData
+func callbackCustomTreeModel55c818_CanDropMimeData(ptr unsafe.Pointer, data unsafe.Pointer, action C.longlong, row C.int, column C.int, parent unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "canDropMimeData"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QMimeData, std_core.Qt__DropAction, int, int, *std_core.QModelIndex) bool)(std_core.NewQMimeDataFromPointer(data), std_core.Qt__DropAction(action), int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(parent)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QMimeData, std_core.Qt__DropAction, int, int, *std_core.QModelIndex) bool)(signal))(std_core.NewQMimeDataFromPointer(data), std_core.Qt__DropAction(action), int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(parent)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).CanDropMimeDataDefault(std_core.NewQMimeDataFromPointer(data), std_core.Qt__DropAction(action), int(int32(row)), int(int32(column)), std_core.NewQModelIndexFromPointer(parent)))))
@@ -1601,15 +1607,15 @@ func callbackCustomTreeModelabdc68_CanDropMimeData(ptr unsafe.Pointer, data unsa
 
 func (ptr *CustomTreeModel) CanDropMimeDataDefault(data std_core.QMimeData_ITF, action std_core.Qt__DropAction, row int, column int, parent std_core.QModelIndex_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_CanDropMimeDataDefault(ptr.Pointer(), std_core.PointerFromQMimeData(data), C.longlong(action), C.int(int32(row)), C.int(int32(column)), std_core.PointerFromQModelIndex(parent))) != 0
+		return int8(C.CustomTreeModel55c818_CanDropMimeDataDefault(ptr.Pointer(), std_core.PointerFromQMimeData(data), C.longlong(action), C.int(int32(row)), C.int(int32(column)), std_core.PointerFromQModelIndex(parent))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_CanFetchMore
-func callbackCustomTreeModelabdc68_CanFetchMore(ptr unsafe.Pointer, parent unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_CanFetchMore
+func callbackCustomTreeModel55c818_CanFetchMore(ptr unsafe.Pointer, parent unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "canFetchMore"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QModelIndex) bool)(std_core.NewQModelIndexFromPointer(parent)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QModelIndex) bool)(signal))(std_core.NewQModelIndexFromPointer(parent)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).CanFetchMoreDefault(std_core.NewQModelIndexFromPointer(parent)))))
@@ -1617,15 +1623,15 @@ func callbackCustomTreeModelabdc68_CanFetchMore(ptr unsafe.Pointer, parent unsaf
 
 func (ptr *CustomTreeModel) CanFetchMoreDefault(parent std_core.QModelIndex_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_CanFetchMoreDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))) != 0
+		return int8(C.CustomTreeModel55c818_CanFetchMoreDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_HasChildren
-func callbackCustomTreeModelabdc68_HasChildren(ptr unsafe.Pointer, parent unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_HasChildren
+func callbackCustomTreeModel55c818_HasChildren(ptr unsafe.Pointer, parent unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "hasChildren"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QModelIndex) bool)(std_core.NewQModelIndexFromPointer(parent)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QModelIndex) bool)(signal))(std_core.NewQModelIndexFromPointer(parent)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).HasChildrenDefault(std_core.NewQModelIndexFromPointer(parent)))))
@@ -1633,15 +1639,15 @@ func callbackCustomTreeModelabdc68_HasChildren(ptr unsafe.Pointer, parent unsafe
 
 func (ptr *CustomTreeModel) HasChildrenDefault(parent std_core.QModelIndex_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_HasChildrenDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))) != 0
+		return int8(C.CustomTreeModel55c818_HasChildrenDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_ColumnCount
-func callbackCustomTreeModelabdc68_ColumnCount(ptr unsafe.Pointer, parent unsafe.Pointer) C.int {
+//export callbackCustomTreeModel55c818_ColumnCount
+func callbackCustomTreeModel55c818_ColumnCount(ptr unsafe.Pointer, parent unsafe.Pointer) C.int {
 	if signal := qt.GetSignal(ptr, "columnCount"); signal != nil {
-		return C.int(int32(signal.(func(*std_core.QModelIndex) int)(std_core.NewQModelIndexFromPointer(parent))))
+		return C.int(int32((*(*func(*std_core.QModelIndex) int)(signal))(std_core.NewQModelIndexFromPointer(parent))))
 	}
 
 	return C.int(int32(NewCustomTreeModelFromPointer(ptr).ColumnCountDefault(std_core.NewQModelIndexFromPointer(parent))))
@@ -1649,22 +1655,22 @@ func callbackCustomTreeModelabdc68_ColumnCount(ptr unsafe.Pointer, parent unsafe
 
 func (ptr *CustomTreeModel) ColumnCount(parent std_core.QModelIndex_ITF) int {
 	if ptr.Pointer() != nil {
-		return int(int32(C.CustomTreeModelabdc68_ColumnCount(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))))
+		return int(int32(C.CustomTreeModel55c818_ColumnCount(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))))
 	}
 	return 0
 }
 
 func (ptr *CustomTreeModel) ColumnCountDefault(parent std_core.QModelIndex_ITF) int {
 	if ptr.Pointer() != nil {
-		return int(int32(C.CustomTreeModelabdc68_ColumnCountDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))))
+		return int(int32(C.CustomTreeModel55c818_ColumnCountDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))))
 	}
 	return 0
 }
 
-//export callbackCustomTreeModelabdc68_RowCount
-func callbackCustomTreeModelabdc68_RowCount(ptr unsafe.Pointer, parent unsafe.Pointer) C.int {
+//export callbackCustomTreeModel55c818_RowCount
+func callbackCustomTreeModel55c818_RowCount(ptr unsafe.Pointer, parent unsafe.Pointer) C.int {
 	if signal := qt.GetSignal(ptr, "rowCount"); signal != nil {
-		return C.int(int32(signal.(func(*std_core.QModelIndex) int)(std_core.NewQModelIndexFromPointer(parent))))
+		return C.int(int32((*(*func(*std_core.QModelIndex) int)(signal))(std_core.NewQModelIndexFromPointer(parent))))
 	}
 
 	return C.int(int32(NewCustomTreeModelFromPointer(ptr).RowCountDefault(std_core.NewQModelIndexFromPointer(parent))))
@@ -1672,22 +1678,22 @@ func callbackCustomTreeModelabdc68_RowCount(ptr unsafe.Pointer, parent unsafe.Po
 
 func (ptr *CustomTreeModel) RowCount(parent std_core.QModelIndex_ITF) int {
 	if ptr.Pointer() != nil {
-		return int(int32(C.CustomTreeModelabdc68_RowCount(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))))
+		return int(int32(C.CustomTreeModel55c818_RowCount(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))))
 	}
 	return 0
 }
 
 func (ptr *CustomTreeModel) RowCountDefault(parent std_core.QModelIndex_ITF) int {
 	if ptr.Pointer() != nil {
-		return int(int32(C.CustomTreeModelabdc68_RowCountDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))))
+		return int(int32(C.CustomTreeModel55c818_RowCountDefault(ptr.Pointer(), std_core.PointerFromQModelIndex(parent))))
 	}
 	return 0
 }
 
-//export callbackCustomTreeModelabdc68_Event
-func callbackCustomTreeModelabdc68_Event(ptr unsafe.Pointer, e unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_Event
+func callbackCustomTreeModel55c818_Event(ptr unsafe.Pointer, e unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "event"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QEvent) bool)(std_core.NewQEventFromPointer(e)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QEvent) bool)(signal))(std_core.NewQEventFromPointer(e)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).EventDefault(std_core.NewQEventFromPointer(e)))))
@@ -1695,15 +1701,15 @@ func callbackCustomTreeModelabdc68_Event(ptr unsafe.Pointer, e unsafe.Pointer) C
 
 func (ptr *CustomTreeModel) EventDefault(e std_core.QEvent_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_EventDefault(ptr.Pointer(), std_core.PointerFromQEvent(e))) != 0
+		return int8(C.CustomTreeModel55c818_EventDefault(ptr.Pointer(), std_core.PointerFromQEvent(e))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_EventFilter
-func callbackCustomTreeModelabdc68_EventFilter(ptr unsafe.Pointer, watched unsafe.Pointer, event unsafe.Pointer) C.char {
+//export callbackCustomTreeModel55c818_EventFilter
+func callbackCustomTreeModel55c818_EventFilter(ptr unsafe.Pointer, watched unsafe.Pointer, event unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "eventFilter"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QObject, *std_core.QEvent) bool)(std_core.NewQObjectFromPointer(watched), std_core.NewQEventFromPointer(event)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QObject, *std_core.QEvent) bool)(signal))(std_core.NewQObjectFromPointer(watched), std_core.NewQEventFromPointer(event)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewCustomTreeModelFromPointer(ptr).EventFilterDefault(std_core.NewQObjectFromPointer(watched), std_core.NewQEventFromPointer(event)))))
@@ -1711,15 +1717,15 @@ func callbackCustomTreeModelabdc68_EventFilter(ptr unsafe.Pointer, watched unsaf
 
 func (ptr *CustomTreeModel) EventFilterDefault(watched std_core.QObject_ITF, event std_core.QEvent_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.CustomTreeModelabdc68_EventFilterDefault(ptr.Pointer(), std_core.PointerFromQObject(watched), std_core.PointerFromQEvent(event))) != 0
+		return int8(C.CustomTreeModel55c818_EventFilterDefault(ptr.Pointer(), std_core.PointerFromQObject(watched), std_core.PointerFromQEvent(event))) != 0
 	}
 	return false
 }
 
-//export callbackCustomTreeModelabdc68_ChildEvent
-func callbackCustomTreeModelabdc68_ChildEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_ChildEvent
+func callbackCustomTreeModel55c818_ChildEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "childEvent"); signal != nil {
-		signal.(func(*std_core.QChildEvent))(std_core.NewQChildEventFromPointer(event))
+		(*(*func(*std_core.QChildEvent))(signal))(std_core.NewQChildEventFromPointer(event))
 	} else {
 		NewCustomTreeModelFromPointer(ptr).ChildEventDefault(std_core.NewQChildEventFromPointer(event))
 	}
@@ -1727,14 +1733,14 @@ func callbackCustomTreeModelabdc68_ChildEvent(ptr unsafe.Pointer, event unsafe.P
 
 func (ptr *CustomTreeModel) ChildEventDefault(event std_core.QChildEvent_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_ChildEventDefault(ptr.Pointer(), std_core.PointerFromQChildEvent(event))
+		C.CustomTreeModel55c818_ChildEventDefault(ptr.Pointer(), std_core.PointerFromQChildEvent(event))
 	}
 }
 
-//export callbackCustomTreeModelabdc68_ConnectNotify
-func callbackCustomTreeModelabdc68_ConnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_ConnectNotify
+func callbackCustomTreeModel55c818_ConnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "connectNotify"); signal != nil {
-		signal.(func(*std_core.QMetaMethod))(std_core.NewQMetaMethodFromPointer(sign))
+		(*(*func(*std_core.QMetaMethod))(signal))(std_core.NewQMetaMethodFromPointer(sign))
 	} else {
 		NewCustomTreeModelFromPointer(ptr).ConnectNotifyDefault(std_core.NewQMetaMethodFromPointer(sign))
 	}
@@ -1742,14 +1748,14 @@ func callbackCustomTreeModelabdc68_ConnectNotify(ptr unsafe.Pointer, sign unsafe
 
 func (ptr *CustomTreeModel) ConnectNotifyDefault(sign std_core.QMetaMethod_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_ConnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
+		C.CustomTreeModel55c818_ConnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
 	}
 }
 
-//export callbackCustomTreeModelabdc68_CustomEvent
-func callbackCustomTreeModelabdc68_CustomEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_CustomEvent
+func callbackCustomTreeModel55c818_CustomEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "customEvent"); signal != nil {
-		signal.(func(*std_core.QEvent))(std_core.NewQEventFromPointer(event))
+		(*(*func(*std_core.QEvent))(signal))(std_core.NewQEventFromPointer(event))
 	} else {
 		NewCustomTreeModelFromPointer(ptr).CustomEventDefault(std_core.NewQEventFromPointer(event))
 	}
@@ -1757,14 +1763,14 @@ func callbackCustomTreeModelabdc68_CustomEvent(ptr unsafe.Pointer, event unsafe.
 
 func (ptr *CustomTreeModel) CustomEventDefault(event std_core.QEvent_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_CustomEventDefault(ptr.Pointer(), std_core.PointerFromQEvent(event))
+		C.CustomTreeModel55c818_CustomEventDefault(ptr.Pointer(), std_core.PointerFromQEvent(event))
 	}
 }
 
-//export callbackCustomTreeModelabdc68_DeleteLater
-func callbackCustomTreeModelabdc68_DeleteLater(ptr unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_DeleteLater
+func callbackCustomTreeModel55c818_DeleteLater(ptr unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "deleteLater"); signal != nil {
-		signal.(func())()
+		(*(*func())(signal))()
 	} else {
 		NewCustomTreeModelFromPointer(ptr).DeleteLaterDefault()
 	}
@@ -1772,24 +1778,24 @@ func callbackCustomTreeModelabdc68_DeleteLater(ptr unsafe.Pointer) {
 
 func (ptr *CustomTreeModel) DeleteLaterDefault() {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_DeleteLaterDefault(ptr.Pointer())
-		ptr.SetPointer(nil)
+		C.CustomTreeModel55c818_DeleteLaterDefault(ptr.Pointer())
 		runtime.SetFinalizer(ptr, nil)
 	}
 }
 
-//export callbackCustomTreeModelabdc68_Destroyed
-func callbackCustomTreeModelabdc68_Destroyed(ptr unsafe.Pointer, obj unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_Destroyed
+func callbackCustomTreeModel55c818_Destroyed(ptr unsafe.Pointer, obj unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "destroyed"); signal != nil {
-		signal.(func(*std_core.QObject))(std_core.NewQObjectFromPointer(obj))
+		(*(*func(*std_core.QObject))(signal))(std_core.NewQObjectFromPointer(obj))
 	}
+	qt.Unregister(ptr)
 
 }
 
-//export callbackCustomTreeModelabdc68_DisconnectNotify
-func callbackCustomTreeModelabdc68_DisconnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_DisconnectNotify
+func callbackCustomTreeModel55c818_DisconnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "disconnectNotify"); signal != nil {
-		signal.(func(*std_core.QMetaMethod))(std_core.NewQMetaMethodFromPointer(sign))
+		(*(*func(*std_core.QMetaMethod))(signal))(std_core.NewQMetaMethodFromPointer(sign))
 	} else {
 		NewCustomTreeModelFromPointer(ptr).DisconnectNotifyDefault(std_core.NewQMetaMethodFromPointer(sign))
 	}
@@ -1797,22 +1803,22 @@ func callbackCustomTreeModelabdc68_DisconnectNotify(ptr unsafe.Pointer, sign uns
 
 func (ptr *CustomTreeModel) DisconnectNotifyDefault(sign std_core.QMetaMethod_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_DisconnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
+		C.CustomTreeModel55c818_DisconnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
 	}
 }
 
-//export callbackCustomTreeModelabdc68_ObjectNameChanged
-func callbackCustomTreeModelabdc68_ObjectNameChanged(ptr unsafe.Pointer, objectName C.struct_Moc_PackedString) {
+//export callbackCustomTreeModel55c818_ObjectNameChanged
+func callbackCustomTreeModel55c818_ObjectNameChanged(ptr unsafe.Pointer, objectName C.struct_Moc_PackedString) {
 	if signal := qt.GetSignal(ptr, "objectNameChanged"); signal != nil {
-		signal.(func(string))(cGoUnpackString(objectName))
+		(*(*func(string))(signal))(cGoUnpackString(objectName))
 	}
 
 }
 
-//export callbackCustomTreeModelabdc68_TimerEvent
-func callbackCustomTreeModelabdc68_TimerEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
+//export callbackCustomTreeModel55c818_TimerEvent
+func callbackCustomTreeModel55c818_TimerEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "timerEvent"); signal != nil {
-		signal.(func(*std_core.QTimerEvent))(std_core.NewQTimerEventFromPointer(event))
+		(*(*func(*std_core.QTimerEvent))(signal))(std_core.NewQTimerEventFromPointer(event))
 	} else {
 		NewCustomTreeModelFromPointer(ptr).TimerEventDefault(std_core.NewQTimerEventFromPointer(event))
 	}
@@ -1820,7 +1826,7 @@ func callbackCustomTreeModelabdc68_TimerEvent(ptr unsafe.Pointer, event unsafe.P
 
 func (ptr *CustomTreeModel) TimerEventDefault(event std_core.QTimerEvent_ITF) {
 	if ptr.Pointer() != nil {
-		C.CustomTreeModelabdc68_TimerEventDefault(ptr.Pointer(), std_core.PointerFromQTimerEvent(event))
+		C.CustomTreeModel55c818_TimerEventDefault(ptr.Pointer(), std_core.PointerFromQTimerEvent(event))
 	}
 }
 
@@ -1873,19 +1879,19 @@ func NewTreeItemFromPointer(ptr unsafe.Pointer) (n *TreeItem) {
 	return
 }
 
-//export callbackTreeItemabdc68_Constructor
-func callbackTreeItemabdc68_Constructor(ptr unsafe.Pointer) {
+//export callbackTreeItem55c818_Constructor
+func callbackTreeItem55c818_Constructor(ptr unsafe.Pointer) {
 	this := NewTreeItemFromPointer(ptr)
 	qt.Register(ptr, this)
 	this.init()
 }
 
 func TreeItem_QRegisterMetaType() int {
-	return int(int32(C.TreeItemabdc68_TreeItemabdc68_QRegisterMetaType()))
+	return int(int32(C.TreeItem55c818_TreeItem55c818_QRegisterMetaType()))
 }
 
 func (ptr *TreeItem) QRegisterMetaType() int {
-	return int(int32(C.TreeItemabdc68_TreeItemabdc68_QRegisterMetaType()))
+	return int(int32(C.TreeItem55c818_TreeItem55c818_QRegisterMetaType()))
 }
 
 func TreeItem_QRegisterMetaType2(typeName string) int {
@@ -1894,7 +1900,7 @@ func TreeItem_QRegisterMetaType2(typeName string) int {
 		typeNameC = C.CString(typeName)
 		defer C.free(unsafe.Pointer(typeNameC))
 	}
-	return int(int32(C.TreeItemabdc68_TreeItemabdc68_QRegisterMetaType2(typeNameC)))
+	return int(int32(C.TreeItem55c818_TreeItem55c818_QRegisterMetaType2(typeNameC)))
 }
 
 func (ptr *TreeItem) QRegisterMetaType2(typeName string) int {
@@ -1903,15 +1909,15 @@ func (ptr *TreeItem) QRegisterMetaType2(typeName string) int {
 		typeNameC = C.CString(typeName)
 		defer C.free(unsafe.Pointer(typeNameC))
 	}
-	return int(int32(C.TreeItemabdc68_TreeItemabdc68_QRegisterMetaType2(typeNameC)))
+	return int(int32(C.TreeItem55c818_TreeItem55c818_QRegisterMetaType2(typeNameC)))
 }
 
 func TreeItem_QmlRegisterType() int {
-	return int(int32(C.TreeItemabdc68_TreeItemabdc68_QmlRegisterType()))
+	return int(int32(C.TreeItem55c818_TreeItem55c818_QmlRegisterType()))
 }
 
 func (ptr *TreeItem) QmlRegisterType() int {
-	return int(int32(C.TreeItemabdc68_TreeItemabdc68_QmlRegisterType()))
+	return int(int32(C.TreeItem55c818_TreeItem55c818_QmlRegisterType()))
 }
 
 func TreeItem_QmlRegisterType2(uri string, versionMajor int, versionMinor int, qmlName string) int {
@@ -1925,7 +1931,7 @@ func TreeItem_QmlRegisterType2(uri string, versionMajor int, versionMinor int, q
 		qmlNameC = C.CString(qmlName)
 		defer C.free(unsafe.Pointer(qmlNameC))
 	}
-	return int(int32(C.TreeItemabdc68_TreeItemabdc68_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
+	return int(int32(C.TreeItem55c818_TreeItem55c818_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
 }
 
 func (ptr *TreeItem) QmlRegisterType2(uri string, versionMajor int, versionMinor int, qmlName string) int {
@@ -1939,12 +1945,12 @@ func (ptr *TreeItem) QmlRegisterType2(uri string, versionMajor int, versionMinor
 		qmlNameC = C.CString(qmlName)
 		defer C.free(unsafe.Pointer(qmlNameC))
 	}
-	return int(int32(C.TreeItemabdc68_TreeItemabdc68_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
+	return int(int32(C.TreeItem55c818_TreeItem55c818_QmlRegisterType2(uriC, C.int(int32(versionMajor)), C.int(int32(versionMinor)), qmlNameC)))
 }
 
 func (ptr *TreeItem) __dynamicPropertyNames_atList(i int) *std_core.QByteArray {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQByteArrayFromPointer(C.TreeItemabdc68___dynamicPropertyNames_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQByteArrayFromPointer(C.TreeItem55c818___dynamicPropertyNames_atList(ptr.Pointer(), C.int(int32(i))))
 		runtime.SetFinalizer(tmpValue, (*std_core.QByteArray).DestroyQByteArray)
 		return tmpValue
 	}
@@ -1953,17 +1959,17 @@ func (ptr *TreeItem) __dynamicPropertyNames_atList(i int) *std_core.QByteArray {
 
 func (ptr *TreeItem) __dynamicPropertyNames_setList(i std_core.QByteArray_ITF) {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68___dynamicPropertyNames_setList(ptr.Pointer(), std_core.PointerFromQByteArray(i))
+		C.TreeItem55c818___dynamicPropertyNames_setList(ptr.Pointer(), std_core.PointerFromQByteArray(i))
 	}
 }
 
 func (ptr *TreeItem) __dynamicPropertyNames_newList() unsafe.Pointer {
-	return C.TreeItemabdc68___dynamicPropertyNames_newList(ptr.Pointer())
+	return C.TreeItem55c818___dynamicPropertyNames_newList(ptr.Pointer())
 }
 
 func (ptr *TreeItem) __findChildren_atList2(i int) *std_core.QObject {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.TreeItemabdc68___findChildren_atList2(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem55c818___findChildren_atList2(ptr.Pointer(), C.int(int32(i))))
 		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
 			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
 		}
@@ -1974,17 +1980,17 @@ func (ptr *TreeItem) __findChildren_atList2(i int) *std_core.QObject {
 
 func (ptr *TreeItem) __findChildren_setList2(i std_core.QObject_ITF) {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68___findChildren_setList2(ptr.Pointer(), std_core.PointerFromQObject(i))
+		C.TreeItem55c818___findChildren_setList2(ptr.Pointer(), std_core.PointerFromQObject(i))
 	}
 }
 
 func (ptr *TreeItem) __findChildren_newList2() unsafe.Pointer {
-	return C.TreeItemabdc68___findChildren_newList2(ptr.Pointer())
+	return C.TreeItem55c818___findChildren_newList2(ptr.Pointer())
 }
 
 func (ptr *TreeItem) __findChildren_atList3(i int) *std_core.QObject {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.TreeItemabdc68___findChildren_atList3(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem55c818___findChildren_atList3(ptr.Pointer(), C.int(int32(i))))
 		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
 			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
 		}
@@ -1995,17 +2001,17 @@ func (ptr *TreeItem) __findChildren_atList3(i int) *std_core.QObject {
 
 func (ptr *TreeItem) __findChildren_setList3(i std_core.QObject_ITF) {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68___findChildren_setList3(ptr.Pointer(), std_core.PointerFromQObject(i))
+		C.TreeItem55c818___findChildren_setList3(ptr.Pointer(), std_core.PointerFromQObject(i))
 	}
 }
 
 func (ptr *TreeItem) __findChildren_newList3() unsafe.Pointer {
-	return C.TreeItemabdc68___findChildren_newList3(ptr.Pointer())
+	return C.TreeItem55c818___findChildren_newList3(ptr.Pointer())
 }
 
 func (ptr *TreeItem) __findChildren_atList(i int) *std_core.QObject {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.TreeItemabdc68___findChildren_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem55c818___findChildren_atList(ptr.Pointer(), C.int(int32(i))))
 		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
 			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
 		}
@@ -2016,17 +2022,17 @@ func (ptr *TreeItem) __findChildren_atList(i int) *std_core.QObject {
 
 func (ptr *TreeItem) __findChildren_setList(i std_core.QObject_ITF) {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68___findChildren_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
+		C.TreeItem55c818___findChildren_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
 	}
 }
 
 func (ptr *TreeItem) __findChildren_newList() unsafe.Pointer {
-	return C.TreeItemabdc68___findChildren_newList(ptr.Pointer())
+	return C.TreeItem55c818___findChildren_newList(ptr.Pointer())
 }
 
 func (ptr *TreeItem) __children_atList(i int) *std_core.QObject {
 	if ptr.Pointer() != nil {
-		tmpValue := std_core.NewQObjectFromPointer(C.TreeItemabdc68___children_atList(ptr.Pointer(), C.int(int32(i))))
+		tmpValue := std_core.NewQObjectFromPointer(C.TreeItem55c818___children_atList(ptr.Pointer(), C.int(int32(i))))
 		if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
 			tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
 		}
@@ -2037,26 +2043,26 @@ func (ptr *TreeItem) __children_atList(i int) *std_core.QObject {
 
 func (ptr *TreeItem) __children_setList(i std_core.QObject_ITF) {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68___children_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
+		C.TreeItem55c818___children_setList(ptr.Pointer(), std_core.PointerFromQObject(i))
 	}
 }
 
 func (ptr *TreeItem) __children_newList() unsafe.Pointer {
-	return C.TreeItemabdc68___children_newList(ptr.Pointer())
+	return C.TreeItem55c818___children_newList(ptr.Pointer())
 }
 
 func NewTreeItem(parent std_core.QObject_ITF) *TreeItem {
-	tmpValue := NewTreeItemFromPointer(C.TreeItemabdc68_NewTreeItem(std_core.PointerFromQObject(parent)))
+	tmpValue := NewTreeItemFromPointer(C.TreeItem55c818_NewTreeItem(std_core.PointerFromQObject(parent)))
 	if !qt.ExistsSignal(tmpValue.Pointer(), "destroyed") {
 		tmpValue.ConnectDestroyed(func(*std_core.QObject) { tmpValue.SetPointer(nil) })
 	}
 	return tmpValue
 }
 
-//export callbackTreeItemabdc68_DestroyTreeItem
-func callbackTreeItemabdc68_DestroyTreeItem(ptr unsafe.Pointer) {
+//export callbackTreeItem55c818_DestroyTreeItem
+func callbackTreeItem55c818_DestroyTreeItem(ptr unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "~TreeItem"); signal != nil {
-		signal.(func())()
+		(*(*func())(signal))()
 	} else {
 		NewTreeItemFromPointer(ptr).DestroyTreeItemDefault()
 	}
@@ -2066,12 +2072,13 @@ func (ptr *TreeItem) ConnectDestroyTreeItem(f func()) {
 	if ptr.Pointer() != nil {
 
 		if signal := qt.LendSignal(ptr.Pointer(), "~TreeItem"); signal != nil {
-			qt.ConnectSignal(ptr.Pointer(), "~TreeItem", func() {
-				signal.(func())()
+			f := func() {
+				(*(*func())(signal))()
 				f()
-			})
+			}
+			qt.ConnectSignal(ptr.Pointer(), "~TreeItem", unsafe.Pointer(&f))
 		} else {
-			qt.ConnectSignal(ptr.Pointer(), "~TreeItem", f)
+			qt.ConnectSignal(ptr.Pointer(), "~TreeItem", unsafe.Pointer(&f))
 		}
 	}
 }
@@ -2085,7 +2092,7 @@ func (ptr *TreeItem) DisconnectDestroyTreeItem() {
 
 func (ptr *TreeItem) DestroyTreeItem() {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68_DestroyTreeItem(ptr.Pointer())
+		C.TreeItem55c818_DestroyTreeItem(ptr.Pointer())
 		ptr.SetPointer(nil)
 		runtime.SetFinalizer(ptr, nil)
 	}
@@ -2093,16 +2100,16 @@ func (ptr *TreeItem) DestroyTreeItem() {
 
 func (ptr *TreeItem) DestroyTreeItemDefault() {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68_DestroyTreeItemDefault(ptr.Pointer())
+		C.TreeItem55c818_DestroyTreeItemDefault(ptr.Pointer())
 		ptr.SetPointer(nil)
 		runtime.SetFinalizer(ptr, nil)
 	}
 }
 
-//export callbackTreeItemabdc68_Event
-func callbackTreeItemabdc68_Event(ptr unsafe.Pointer, e unsafe.Pointer) C.char {
+//export callbackTreeItem55c818_Event
+func callbackTreeItem55c818_Event(ptr unsafe.Pointer, e unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "event"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QEvent) bool)(std_core.NewQEventFromPointer(e)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QEvent) bool)(signal))(std_core.NewQEventFromPointer(e)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewTreeItemFromPointer(ptr).EventDefault(std_core.NewQEventFromPointer(e)))))
@@ -2110,15 +2117,15 @@ func callbackTreeItemabdc68_Event(ptr unsafe.Pointer, e unsafe.Pointer) C.char {
 
 func (ptr *TreeItem) EventDefault(e std_core.QEvent_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.TreeItemabdc68_EventDefault(ptr.Pointer(), std_core.PointerFromQEvent(e))) != 0
+		return int8(C.TreeItem55c818_EventDefault(ptr.Pointer(), std_core.PointerFromQEvent(e))) != 0
 	}
 	return false
 }
 
-//export callbackTreeItemabdc68_EventFilter
-func callbackTreeItemabdc68_EventFilter(ptr unsafe.Pointer, watched unsafe.Pointer, event unsafe.Pointer) C.char {
+//export callbackTreeItem55c818_EventFilter
+func callbackTreeItem55c818_EventFilter(ptr unsafe.Pointer, watched unsafe.Pointer, event unsafe.Pointer) C.char {
 	if signal := qt.GetSignal(ptr, "eventFilter"); signal != nil {
-		return C.char(int8(qt.GoBoolToInt(signal.(func(*std_core.QObject, *std_core.QEvent) bool)(std_core.NewQObjectFromPointer(watched), std_core.NewQEventFromPointer(event)))))
+		return C.char(int8(qt.GoBoolToInt((*(*func(*std_core.QObject, *std_core.QEvent) bool)(signal))(std_core.NewQObjectFromPointer(watched), std_core.NewQEventFromPointer(event)))))
 	}
 
 	return C.char(int8(qt.GoBoolToInt(NewTreeItemFromPointer(ptr).EventFilterDefault(std_core.NewQObjectFromPointer(watched), std_core.NewQEventFromPointer(event)))))
@@ -2126,15 +2133,15 @@ func callbackTreeItemabdc68_EventFilter(ptr unsafe.Pointer, watched unsafe.Point
 
 func (ptr *TreeItem) EventFilterDefault(watched std_core.QObject_ITF, event std_core.QEvent_ITF) bool {
 	if ptr.Pointer() != nil {
-		return int8(C.TreeItemabdc68_EventFilterDefault(ptr.Pointer(), std_core.PointerFromQObject(watched), std_core.PointerFromQEvent(event))) != 0
+		return int8(C.TreeItem55c818_EventFilterDefault(ptr.Pointer(), std_core.PointerFromQObject(watched), std_core.PointerFromQEvent(event))) != 0
 	}
 	return false
 }
 
-//export callbackTreeItemabdc68_ChildEvent
-func callbackTreeItemabdc68_ChildEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
+//export callbackTreeItem55c818_ChildEvent
+func callbackTreeItem55c818_ChildEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "childEvent"); signal != nil {
-		signal.(func(*std_core.QChildEvent))(std_core.NewQChildEventFromPointer(event))
+		(*(*func(*std_core.QChildEvent))(signal))(std_core.NewQChildEventFromPointer(event))
 	} else {
 		NewTreeItemFromPointer(ptr).ChildEventDefault(std_core.NewQChildEventFromPointer(event))
 	}
@@ -2142,14 +2149,14 @@ func callbackTreeItemabdc68_ChildEvent(ptr unsafe.Pointer, event unsafe.Pointer)
 
 func (ptr *TreeItem) ChildEventDefault(event std_core.QChildEvent_ITF) {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68_ChildEventDefault(ptr.Pointer(), std_core.PointerFromQChildEvent(event))
+		C.TreeItem55c818_ChildEventDefault(ptr.Pointer(), std_core.PointerFromQChildEvent(event))
 	}
 }
 
-//export callbackTreeItemabdc68_ConnectNotify
-func callbackTreeItemabdc68_ConnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
+//export callbackTreeItem55c818_ConnectNotify
+func callbackTreeItem55c818_ConnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "connectNotify"); signal != nil {
-		signal.(func(*std_core.QMetaMethod))(std_core.NewQMetaMethodFromPointer(sign))
+		(*(*func(*std_core.QMetaMethod))(signal))(std_core.NewQMetaMethodFromPointer(sign))
 	} else {
 		NewTreeItemFromPointer(ptr).ConnectNotifyDefault(std_core.NewQMetaMethodFromPointer(sign))
 	}
@@ -2157,14 +2164,14 @@ func callbackTreeItemabdc68_ConnectNotify(ptr unsafe.Pointer, sign unsafe.Pointe
 
 func (ptr *TreeItem) ConnectNotifyDefault(sign std_core.QMetaMethod_ITF) {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68_ConnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
+		C.TreeItem55c818_ConnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
 	}
 }
 
-//export callbackTreeItemabdc68_CustomEvent
-func callbackTreeItemabdc68_CustomEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
+//export callbackTreeItem55c818_CustomEvent
+func callbackTreeItem55c818_CustomEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "customEvent"); signal != nil {
-		signal.(func(*std_core.QEvent))(std_core.NewQEventFromPointer(event))
+		(*(*func(*std_core.QEvent))(signal))(std_core.NewQEventFromPointer(event))
 	} else {
 		NewTreeItemFromPointer(ptr).CustomEventDefault(std_core.NewQEventFromPointer(event))
 	}
@@ -2172,14 +2179,14 @@ func callbackTreeItemabdc68_CustomEvent(ptr unsafe.Pointer, event unsafe.Pointer
 
 func (ptr *TreeItem) CustomEventDefault(event std_core.QEvent_ITF) {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68_CustomEventDefault(ptr.Pointer(), std_core.PointerFromQEvent(event))
+		C.TreeItem55c818_CustomEventDefault(ptr.Pointer(), std_core.PointerFromQEvent(event))
 	}
 }
 
-//export callbackTreeItemabdc68_DeleteLater
-func callbackTreeItemabdc68_DeleteLater(ptr unsafe.Pointer) {
+//export callbackTreeItem55c818_DeleteLater
+func callbackTreeItem55c818_DeleteLater(ptr unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "deleteLater"); signal != nil {
-		signal.(func())()
+		(*(*func())(signal))()
 	} else {
 		NewTreeItemFromPointer(ptr).DeleteLaterDefault()
 	}
@@ -2187,24 +2194,24 @@ func callbackTreeItemabdc68_DeleteLater(ptr unsafe.Pointer) {
 
 func (ptr *TreeItem) DeleteLaterDefault() {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68_DeleteLaterDefault(ptr.Pointer())
-		ptr.SetPointer(nil)
+		C.TreeItem55c818_DeleteLaterDefault(ptr.Pointer())
 		runtime.SetFinalizer(ptr, nil)
 	}
 }
 
-//export callbackTreeItemabdc68_Destroyed
-func callbackTreeItemabdc68_Destroyed(ptr unsafe.Pointer, obj unsafe.Pointer) {
+//export callbackTreeItem55c818_Destroyed
+func callbackTreeItem55c818_Destroyed(ptr unsafe.Pointer, obj unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "destroyed"); signal != nil {
-		signal.(func(*std_core.QObject))(std_core.NewQObjectFromPointer(obj))
+		(*(*func(*std_core.QObject))(signal))(std_core.NewQObjectFromPointer(obj))
 	}
+	qt.Unregister(ptr)
 
 }
 
-//export callbackTreeItemabdc68_DisconnectNotify
-func callbackTreeItemabdc68_DisconnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
+//export callbackTreeItem55c818_DisconnectNotify
+func callbackTreeItem55c818_DisconnectNotify(ptr unsafe.Pointer, sign unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "disconnectNotify"); signal != nil {
-		signal.(func(*std_core.QMetaMethod))(std_core.NewQMetaMethodFromPointer(sign))
+		(*(*func(*std_core.QMetaMethod))(signal))(std_core.NewQMetaMethodFromPointer(sign))
 	} else {
 		NewTreeItemFromPointer(ptr).DisconnectNotifyDefault(std_core.NewQMetaMethodFromPointer(sign))
 	}
@@ -2212,22 +2219,22 @@ func callbackTreeItemabdc68_DisconnectNotify(ptr unsafe.Pointer, sign unsafe.Poi
 
 func (ptr *TreeItem) DisconnectNotifyDefault(sign std_core.QMetaMethod_ITF) {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68_DisconnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
+		C.TreeItem55c818_DisconnectNotifyDefault(ptr.Pointer(), std_core.PointerFromQMetaMethod(sign))
 	}
 }
 
-//export callbackTreeItemabdc68_ObjectNameChanged
-func callbackTreeItemabdc68_ObjectNameChanged(ptr unsafe.Pointer, objectName C.struct_Moc_PackedString) {
+//export callbackTreeItem55c818_ObjectNameChanged
+func callbackTreeItem55c818_ObjectNameChanged(ptr unsafe.Pointer, objectName C.struct_Moc_PackedString) {
 	if signal := qt.GetSignal(ptr, "objectNameChanged"); signal != nil {
-		signal.(func(string))(cGoUnpackString(objectName))
+		(*(*func(string))(signal))(cGoUnpackString(objectName))
 	}
 
 }
 
-//export callbackTreeItemabdc68_TimerEvent
-func callbackTreeItemabdc68_TimerEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
+//export callbackTreeItem55c818_TimerEvent
+func callbackTreeItem55c818_TimerEvent(ptr unsafe.Pointer, event unsafe.Pointer) {
 	if signal := qt.GetSignal(ptr, "timerEvent"); signal != nil {
-		signal.(func(*std_core.QTimerEvent))(std_core.NewQTimerEventFromPointer(event))
+		(*(*func(*std_core.QTimerEvent))(signal))(std_core.NewQTimerEventFromPointer(event))
 	} else {
 		NewTreeItemFromPointer(ptr).TimerEventDefault(std_core.NewQTimerEventFromPointer(event))
 	}
@@ -2235,6 +2242,6 @@ func callbackTreeItemabdc68_TimerEvent(ptr unsafe.Pointer, event unsafe.Pointer)
 
 func (ptr *TreeItem) TimerEventDefault(event std_core.QTimerEvent_ITF) {
 	if ptr.Pointer() != nil {
-		C.TreeItemabdc68_TimerEventDefault(ptr.Pointer(), std_core.PointerFromQTimerEvent(event))
+		C.TreeItem55c818_TimerEventDefault(ptr.Pointer(), std_core.PointerFromQTimerEvent(event))
 	}
 }

@@ -19,18 +19,18 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_CustomListModel75cd65_t {
+struct qt_meta_stringdata_CustomListModelbd2412_t {
     QByteArrayData data[11];
     char stringdata0[76];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_CustomListModel75cd65_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_CustomListModelbd2412_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_CustomListModel75cd65_t qt_meta_stringdata_CustomListModel75cd65 = {
+static const qt_meta_stringdata_CustomListModelbd2412_t qt_meta_stringdata_CustomListModelbd2412 = {
     {
-QT_MOC_LITERAL(0, 0, 21), // "CustomListModel75cd65"
+QT_MOC_LITERAL(0, 0, 21), // "CustomListModelbd2412"
 QT_MOC_LITERAL(1, 22, 6), // "remove"
 QT_MOC_LITERAL(2, 29, 0), // ""
 QT_MOC_LITERAL(3, 30, 3), // "add"
@@ -43,13 +43,13 @@ QT_MOC_LITERAL(9, 62, 8), // "removeAt"
 QT_MOC_LITERAL(10, 71, 4) // "iStr"
 
     },
-    "CustomListModel75cd65\0remove\0\0add\0"
+    "CustomListModelbd2412\0remove\0\0add\0"
     "quintptr\0item\0edit\0Name\0URI\0removeAt\0"
     "iStr"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_CustomListModel75cd65[] = {
+static const uint qt_meta_data_CustomListModelbd2412[] = {
 
  // content:
        8,       // revision
@@ -77,10 +77,10 @@ static const uint qt_meta_data_CustomListModel75cd65[] = {
        0        // eod
 };
 
-void CustomListModel75cd65::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void CustomListModelbd2412::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        CustomListModel75cd65 *_t = static_cast<CustomListModel75cd65 *>(_o);
+        CustomListModelbd2412 *_t = static_cast<CustomListModelbd2412 *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->remove(); break;
@@ -92,29 +92,29 @@ void CustomListModel75cd65::qt_static_metacall(QObject *_o, QMetaObject::Call _c
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            using _t = void (CustomListModel75cd65::*)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomListModel75cd65::remove)) {
+            using _t = void (CustomListModelbd2412::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomListModelbd2412::remove)) {
                 *result = 0;
                 return;
             }
         }
         {
-            using _t = void (CustomListModel75cd65::*)(quintptr );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomListModel75cd65::add)) {
+            using _t = void (CustomListModelbd2412::*)(quintptr );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomListModelbd2412::add)) {
                 *result = 1;
                 return;
             }
         }
         {
-            using _t = void (CustomListModel75cd65::*)(QString , QString );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomListModel75cd65::edit)) {
+            using _t = void (CustomListModelbd2412::*)(QString , QString );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomListModelbd2412::edit)) {
                 *result = 2;
                 return;
             }
         }
         {
-            using _t = void (CustomListModel75cd65::*)(QString );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomListModel75cd65::removeAt)) {
+            using _t = void (CustomListModelbd2412::*)(QString );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CustomListModelbd2412::removeAt)) {
                 *result = 3;
                 return;
             }
@@ -122,30 +122,30 @@ void CustomListModel75cd65::qt_static_metacall(QObject *_o, QMetaObject::Call _c
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject CustomListModel75cd65::staticMetaObject = { {
+QT_INIT_METAOBJECT const QMetaObject CustomListModelbd2412::staticMetaObject = { {
     &QAbstractListModel::staticMetaObject,
-    qt_meta_stringdata_CustomListModel75cd65.data,
-    qt_meta_data_CustomListModel75cd65,
+    qt_meta_stringdata_CustomListModelbd2412.data,
+    qt_meta_data_CustomListModelbd2412,
     qt_static_metacall,
     nullptr,
     nullptr
 } };
 
 
-const QMetaObject *CustomListModel75cd65::metaObject() const
+const QMetaObject *CustomListModelbd2412::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *CustomListModel75cd65::qt_metacast(const char *_clname)
+void *CustomListModelbd2412::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_CustomListModel75cd65.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_CustomListModelbd2412.stringdata0))
         return static_cast<void*>(this);
     return QAbstractListModel::qt_metacast(_clname);
 }
 
-int CustomListModel75cd65::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int CustomListModelbd2412::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QAbstractListModel::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -163,27 +163,27 @@ int CustomListModel75cd65::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void CustomListModel75cd65::remove()
+void CustomListModelbd2412::remove()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }
 
 // SIGNAL 1
-void CustomListModel75cd65::add(quintptr _t1)
+void CustomListModelbd2412::add(quintptr _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
-void CustomListModel75cd65::edit(QString _t1, QString _t2)
+void CustomListModelbd2412::edit(QString _t1, QString _t2)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
-void CustomListModel75cd65::removeAt(QString _t1)
+void CustomListModelbd2412::removeAt(QString _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
