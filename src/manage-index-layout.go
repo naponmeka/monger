@@ -1,6 +1,9 @@
 package src
 
 import (
+	"fmt"
+
+	"github.com/naponmeka/robone/connectdb"
 	"github.com/naponmeka/robone/tree"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/uitools"
@@ -8,11 +11,12 @@ import (
 )
 
 func RefreshIndexTree(
+	indexTreeview *widgets.QTreeView,
 	model *tree.CustomTreeModel,
 	globalState *GlobalState,
 ) {
 	model.RemoveAll()
-	items, err := tree.CreateIndexItems(*globalState.mongoURI, *globalState.currentDB, *globalState.currentCollection, *globalState.timeout)
+	items, documents, err := tree.CreateIndexItems(*globalState.mongoURI, *globalState.currentDB, *globalState.currentCollection, *globalState.timeout)
 	if err != nil {
 		widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 	}
@@ -20,6 +24,8 @@ func RefreshIndexTree(
 	for _, item := range items {
 		model.Add(item)
 	}
+	globalState.indice = &documents
+	indexTreeview.ExpandAll()
 }
 
 func NewManageIndexLayout(subwin *widgets.QDialog, globalState *GlobalState) *widgets.QWidget {
@@ -32,17 +38,49 @@ func NewManageIndexLayout(subwin *widgets.QDialog, globalState *GlobalState) *wi
 	indexTreeview := widgets.NewQTreeViewFromPointer(widget.FindChild("indexTreeView", core.Qt__FindChildrenRecursively).Pointer())
 	model := tree.NewCustomTreeModel(nil)
 	indexTreeview.SetModel(model)
-	RefreshIndexTree(model, globalState)
-	indexTreeview.ExpandAll()
+	RefreshIndexTree(indexTreeview, model, globalState)
 
 	addBtn := widgets.NewQPushButtonFromPointer(layoutWidget.FindChild("addBtn", core.Qt__FindChildrenRecursively).Pointer())
 	addBtn.ConnectClicked(func(bool) {
 		subwin := widgets.NewQDialog(nil, 0)
 		subwin.SetWindowTitle("Create index")
 		subwin.SetLayout(widgets.NewQHBoxLayout())
-		createIndexLayout := NewCreateIndexLayout(subwin, model, globalState, false)
+		createIndexLayout := NewCreateIndexLayout(subwin, indexTreeview, model, globalState, false)
 		subwin.Layout().AddWidget(createIndexLayout)
 		subwin.SetModal(true)
+		subwin.Exec()
+	})
+
+	removeBtn := widgets.NewQPushButtonFromPointer(widget.FindChild("removeBtn", core.Qt__FindChildrenRecursively).Pointer())
+	removeBtn.ConnectClicked(func(bool) {
+		selected := findRow(indexTreeview, indexTreeview.CurrentIndex())
+		selectedIndex := (*globalState.indice)[selected]
+		indexName := tree.CastToString(selectedIndex["name"])
+		subwin := widgets.NewQDialog(nil, 0)
+		subwin.SetWindowTitle(fmt.Sprintf("Delete: %s", indexName))
+		subwin.SetLayout(widgets.NewQHBoxLayout())
+		deleteConfirmLayout := NewConfirmLayout("Confirm delete?\n")
+		subwin.Layout().AddWidget(deleteConfirmLayout)
+
+		buttonBox := widgets.NewQDialogButtonBoxFromPointer(deleteConfirmLayout.FindChild("buttonBox", core.Qt__FindChildrenRecursively).Pointer())
+		buttonBox.ConnectAccepted(func() {
+			err := connectdb.DropIndex(*globalState.mongoURI,
+				*globalState.currentDB,
+				*globalState.currentCollection,
+				indexName,
+			)
+			if err != nil {
+				widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+			} else {
+				RefreshIndexTree(indexTreeview, model, globalState)
+			}
+			subwin.Close()
+		})
+		buttonBox.ConnectRejected(func() {
+			subwin.Close()
+		})
+		subwin.SetModal(true)
+		subwin.SetMinimumSize2(100, 100)
 		subwin.Exec()
 	})
 

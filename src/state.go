@@ -35,6 +35,7 @@ type GlobalState struct {
 	resultTextEditJson  *widgets.QPlainTextEdit
 	defaultView         *int
 	timeout             *int
+	indice              *[]bson.M
 }
 
 func (gs *GlobalState) BindExecuteQuery(event *gui.QKeyEvent) {

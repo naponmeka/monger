@@ -11,6 +11,7 @@ import (
 
 func NewCreateIndexLayout(
 	subwin *widgets.QDialog,
+	indexTreeview *widgets.QTreeView,
 	model *tree.CustomTreeModel,
 	globalState *GlobalState,
 	isEdit bool,
@@ -80,7 +81,7 @@ func NewCreateIndexLayout(
 			widgets.QMessageBox_Critical(nil, "Error", "Error:\n"+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 			return
 		}
-		RefreshIndexTree(model, globalState)
+		RefreshIndexTree(indexTreeview, model, globalState)
 		subwin.Close()
 	})
 	return layoutWidget

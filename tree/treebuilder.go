@@ -34,9 +34,9 @@ func CreateIndexItems(
 	db string,
 	collectionName string,
 	timeout int,
-) (items []*TreeItem, err error) {
+) (items []*TreeItem, documents []bson.M, err error) {
 	collection := connectdb.GetCollection(mongoURI, db, collectionName)
-	documents, err := connectdb.ListIndex(timeout, collection)
+	documents, err = connectdb.ListIndex(timeout, collection)
 	for _, doc := range documents {
 		item := NewTreeItem(nil).initWith([]string{
 			"Name",
@@ -47,7 +47,7 @@ func CreateIndexItems(
 		items = append(items, item)
 	}
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	return
 }
